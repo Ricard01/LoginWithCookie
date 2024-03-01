@@ -11,7 +11,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,6 +29,11 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\.angular\cache\17.0.0\babel-webpack\" />
+      <Folder Include="ClientApp\src\app\core\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ERP.Infrastructure\ERP.Infrastructure.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

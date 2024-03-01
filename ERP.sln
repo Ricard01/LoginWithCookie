@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Api", "src\ERP.Api\ERP.Api.csproj", "{8E2B93C6-E4BC-4084-A084-DA62764061AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Infrastructure", "src\ERP.Infrastructure\ERP.Infrastructure.csproj", "{6D2C8416-E658-40BE-91E8-F789117C0099}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Domain", "src\ERP.Domain\ERP.Domain.csproj", "{DDD40982-B3EC-4EDA-92F3-546DA342996D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{8E2B93C6-E4BC-4084-A084-DA62764061AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E2B93C6-E4BC-4084-A084-DA62764061AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E2B93C6-E4BC-4084-A084-DA62764061AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D2C8416-E658-40BE-91E8-F789117C0099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D2C8416-E658-40BE-91E8-F789117C0099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D2C8416-E658-40BE-91E8-F789117C0099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D2C8416-E658-40BE-91E8-F789117C0099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD40982-B3EC-4EDA-92F3-546DA342996D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD40982-B3EC-4EDA-92F3-546DA342996D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD40982-B3EC-4EDA-92F3-546DA342996D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD40982-B3EC-4EDA-92F3-546DA342996D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
