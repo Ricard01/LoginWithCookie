@@ -7,7 +7,7 @@ import {CreateuserComponent} from "./createuser/createuser.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full' },
-  {path: 'login', component: LoginComponent},
+  {path: 'login', loadChildren:() => import('./auth/login/login.module').then(m => m.LoginModule)},
   {path: 'create', component: CreateuserComponent},
 ]
 
