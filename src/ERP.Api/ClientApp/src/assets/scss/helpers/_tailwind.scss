@@ -1,3 +1,9 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer base {
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: inherit; // me ayuda a centrar el logo cuando el sidenav esta normal
+  }
+}
