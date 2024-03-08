@@ -1,0 +1,25 @@
+@use 'helpers/variables' as *;
+
+.container-wrap {
+  height: 100%;
+}
+
+.main-content {
+  transition: all .1s ease-out;
+
+  @media (min-width: 768px) {
+    margin-left: $sidenav-width;
+  }
+}
+
+.page-content {
+  padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
+}
+
+.simplebar-track.simplebar-vertical .simplebar-scrollbar::before {
+  background: linear-gradient(135deg, #8039BF, #6700F4);
+}
+
+
+
+

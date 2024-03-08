@@ -1,19 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./core/services/auth.service";
-import {User} from "oidc-client";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  template: `<router-outlet></router-outlet>`
 })
 export class AppComponent implements OnInit {
-  title = 'app';
 
-
+  user: any;
 
   constructor(private auth: AuthService) {
   }
-
 
 
   ngOnInit(): void {
@@ -21,8 +18,6 @@ export class AppComponent implements OnInit {
 
     this.user = this.auth.user;
   }
-
-  user: any;
 
 
 }

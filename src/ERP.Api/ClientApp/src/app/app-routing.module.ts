@@ -1,15 +1,24 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
-import {LoginComponent} from "./login/login.component";
+import {LayoutComponent} from "./layout/layout.component";
 import {HomeComponent} from "./home/home.component";
-import {CreateuserComponent} from "./createuser/createuser.component";
+import {AuthLayoutComponent} from "./auth/auth-layout.component";
+
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, pathMatch: 'full' },
-  {path: 'login', loadChildren:() => import('./auth/login/login.module').then(m => m.LoginModule)},
-  {path: 'create', component: CreateuserComponent},
-]
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path:  'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) },
+      { path: 'home', component: HomeComponent}
+    ]
+  },
+  {path: '', component:AuthLayoutComponent , children: [
+      { path: 'login',  loadChildren: ()=> import('./auth/login/login.module').then(m => m.LoginModule) }
+  ]},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
