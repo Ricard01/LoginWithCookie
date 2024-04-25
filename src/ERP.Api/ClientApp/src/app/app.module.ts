@@ -11,6 +11,7 @@ import {LayoutModule} from "./layout/layout.module";
 import {SharedModule} from "./shared/shared.module";
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 @NgModule({
@@ -24,11 +25,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    // BsDropdownModule.forRoot(),
     AppRoutingModule,
     LayoutModule,
     SharedModule,
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [],
   bootstrap: [AppComponent]

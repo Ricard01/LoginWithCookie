@@ -11,7 +11,6 @@ namespace ERP.Api.Controllers;
 
 public record Response(bool IsSuccess, string Message);
 
-public record User(string Email, string Name, string Password);
 
 public record CreateRequest(string Email, string Password, string ConfirmPassword);
 

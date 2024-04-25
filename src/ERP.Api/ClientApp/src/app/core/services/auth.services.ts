@@ -54,24 +54,7 @@
 //   }
 //
 //
-//   getUserProfile(id: string) {
-//
-//     // because of the AuthGuard and reloads
-//     // this can be trigger multiple times so i want to check if i already have the user to skip a backend call
-//     const user: IUser = JSON.parse(localStorage.getItem('user'));
-//
-//     if (user) {
-//       this.store.dispatch(browserReload({user}));
-//
-//     } else {
-//       this.userService.getById(Guid.parse(id))
-//         .subscribe((user: IUser) => {
-//           this.store.dispatch(loggedIn({user: user}))
-//         });
-//     }
-//
-//
-//   }
+
 //
 //   public getIsAuthenticated(ignoreCache: boolean = false) {
 //     return this.getSession(ignoreCache).pipe(
@@ -101,24 +84,5 @@
 //   }
 // }
 //
-// export interface Claim {
-//   type: string;
-//   value: string;
-// }
-//
-// export interface AuthUser {
-//   name: string;
-//   userName: string;
-//   profilePicture: string;
-// }
-//
-// export type Session = Claim[] | null;
-//
-// function UserIsAuthenticated(s: Session): s is Claim[] {
-//   return s !== null;
-// }
-//
-// function UserIsAnonymous(s: Session): s is null {
-//   return s === null;
-// }
+
 //

@@ -1,15 +1,38 @@
-
 <header id="page-topbar">
-  <!--  //color="primary">-->
-  <!--  <div class="navbar-header">
-  <div class="d-flex"> -->
   <div class="navbar-header">
-    <button mat-icon-button aria-label="Menu icon" class="px-3 fs-16 header-item" (click)="toggleSidenav.emit()">
+
+
+    <button mat-icon-button aria-label="Menu icon" class="mx-3" (click)="toggleSidenav.emit()">
       <mat-icon>menu</mat-icon>
     </button>
 
-    <h1>My Layout</h1>
+
+    <!-- userMenu STARTS -->
+    <button id="userBtn" mat-button [matMenuTriggerFor]="userMenu" (menuOpened)="menuOpened()" (menuClosed)=menuClosed()>
+
+      <span class="d-flex justify-content-start">
+        <img class="rounded-circle img-profile-user" src="assets/images/user.png" alt="Profile Picture">
+        <span>Ricardo Chavez</span>
+
+        <mat-icon class="mx-2" *ngIf="menuOpen">expand_less</mat-icon>
+        <mat-icon class="mx-2" *ngIf="!menuOpen">expand_more</mat-icon>
+      </span>
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Logout </span>
+      </button>
+    </mat-menu>
+    <!-- userMenu ENDS -->
+
+
+    <!--    End Main Classes-->
   </div>
-  <!-- </div>
-</div> -->
 </header>
+
+

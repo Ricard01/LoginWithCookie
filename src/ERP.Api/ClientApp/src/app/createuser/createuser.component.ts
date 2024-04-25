@@ -15,8 +15,8 @@ export class CreateuserComponent {
   constructor(private authService: AuthService) {
   }
 
-  create() {
-    return this.authService.createUser({email: this.email, password: this.password, confirmPassword: this.password});
-  }
+  // create() {
+  //   return this.authService.createUser({email: this.email, password: this.password, confirmPassword: this.password});
+  // }
 
 }

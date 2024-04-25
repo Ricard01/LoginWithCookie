@@ -6,22 +6,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import {MatMenuModule} from "@angular/material/menu";
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+
 
 const myCommonsModule = [
   CommonModule,
   FormsModule,
   MatIconModule,
+  MatMenuModule,
   MatButtonModule,
   MatToolbarModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  BsDropdownModule
 ]
 
 
 
 @NgModule({
   declarations: [],
-  imports: [...myCommonsModule ],
+  imports: [...myCommonsModule],
   exports: [...myCommonsModule ]
 })
 export class SharedModule { }

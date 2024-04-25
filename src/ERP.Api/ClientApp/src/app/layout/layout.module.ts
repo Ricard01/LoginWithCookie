@@ -6,6 +6,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { SimplebarAngularModule } from 'simplebar-angular';
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 
 
 
@@ -16,12 +17,13 @@ import { SimplebarAngularModule } from 'simplebar-angular';
     SidebarComponent
 
   ],
-  imports: [
-    RouterModule,
-    CommonModule,
-    SharedModule,
-    SimplebarAngularModule,
-    NgOptimizedImage
-  ]
+    imports: [
+        RouterModule,
+        CommonModule,
+        SharedModule,
+        SimplebarAngularModule,
+        NgOptimizedImage,
+
+    ]
 })
 export class LayoutModule { }
