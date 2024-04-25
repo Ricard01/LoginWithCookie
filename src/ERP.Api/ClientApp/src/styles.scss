@@ -3,9 +3,3 @@
 @use 'assets/scss/layout';
 @use 'assets/scss/app-theme';
 @use 'assets/scss/material/material-theme';
-
-/* Importing Bootstrap SCSS file. */
-@import "./node_modules/bootstrap/scss/bootstrap";
-
-/* Importing Datepicker SCSS file. */
-@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

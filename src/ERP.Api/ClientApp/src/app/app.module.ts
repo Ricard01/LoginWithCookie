@@ -11,7 +11,8 @@ import {LayoutModule} from "./layout/layout.module";
 import {SharedModule} from "./shared/shared.module";
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
+
 
 
 @NgModule({
