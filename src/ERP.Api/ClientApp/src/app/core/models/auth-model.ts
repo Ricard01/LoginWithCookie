@@ -6,6 +6,12 @@ export interface IUserSession {
   permissions?: [];
 }
 
+export interface ICredentials {
+  email: string;
+  password: string;
+  returnUrl?: string;
+}
+
 
 export interface IUserForAuthentication {
   email: string;

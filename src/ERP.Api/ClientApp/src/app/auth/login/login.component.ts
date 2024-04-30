@@ -1,18 +1,22 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../core/services/auth.service";
+import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
-import {IUserForAuthentication} from "../../core/models/auth-model";
-import {HttpErrorResponse} from "@angular/common/http";
+import {IAppState} from "../../state/app.state";
+import {Store} from "@ngrx/store";
+import * as AuthActions from "../../state/auth/auth.actions";
+import {ICredentials} from "../../core/models/auth-model";
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styles: []
 })
+
 export class LoginComponent {
 
-  private returnUrl: string | undefined;
+  returnUrl: string | undefined;
+  credentials: ICredentials = {email: '', password: ''};
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required]],//[Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
@@ -20,38 +24,27 @@ export class LoginComponent {
   });
 
 
-  // showError: boolean;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    public store: Store<IAppState>, // la diferencia entre llamar el estado global y el estado
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute) {
   }
 
+
   ngOnInit(): void {
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-
   }
 
   onLogin() {
 
-    console.log('onLogin');
-
     if (this.loginForm.valid) {
       if (this.loginForm.dirty) {
-        const user: IUserForAuthentication = {...this.loginForm.value as IUserForAuthentication};
-        console.log('user', user);
 
-        this.authService.login(user).subscribe({
-          next: () => {
-            this.router.navigate([this.returnUrl]);
-          },
-          error: (err: HttpErrorResponse) => {
-            console.log('error', err)
-          }
-        })
+        const credentials: ICredentials = {...this.loginForm.value as ICredentials, returnUrl: this.returnUrl};
 
+        this.store.dispatch(AuthActions.login({credentials}));
       }
     }
-
-
   }
 
   // loginUser = (loginFormValue) => {

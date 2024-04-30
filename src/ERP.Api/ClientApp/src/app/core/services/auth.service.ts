@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of, shareReplay, tap} from "rxjs";
-import {IUserForAuthentication, IUserSession} from "../models/auth-model";
+import {ICredentials, IUserForAuthentication, IUserSession} from "../models/auth-model";
 
 const ANONYMOUS: IUserSession | null = null;
 const CACHE_SIZE = 1;
@@ -18,11 +18,17 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  login(userForAuth: IUserForAuthentication) {
+  login(credentials: ICredentials) {
 
-    return this.http.post(`${this.authUrl}/login`, userForAuth, {withCredentials: true});
+    return this.http.post(`${this.authUrl}/login`, credentials, {withCredentials: true});
 
   }
+
+  // login(userForAuth: IUserForAuthentication) {
+  //
+  //   return this.http.post(`${this.authUrl}/login`, userForAuth, {withCredentials: true});
+  //
+  // }
 
   public getUserSession(ignoreCache: boolean = false) {
 
