@@ -1,10 +1,10 @@
 import {ActionReducer} from "@ngrx/store";
-import {AuthState} from "./auth/auth.reducers";
-import {UserState} from "./users/user.reducers";
+import {IAuthState} from "./auth/auth.reducers";
+import {IUserState} from "./users/user.reducers";
 
 export interface IAppState {
-  authState: AuthState;
-  userState: UserState;
+  authState: IAuthState;
+  userState: IUserState;
 }
 
 export enum Features {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers;
 
-public record SignInRequest(string Email, string Password, string ReturnUrl);
+public record SignInRequest(string Email, string Password);
 
 public record AuthUser
 {
@@ -15,6 +15,8 @@ public record AuthUser
     public string? Name { get; set; }
 
     public string? ProfilePictureUrl { get; set; }
+
+    public string? Role { get; set; }
 
     public IEnumerable<string>? Permissions { get; set; }
 }
@@ -43,33 +45,40 @@ public class AuthController : ApiControllerBase
 
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok(new Response(true, "Signed in successfully"));
             }
         }
 
-        return BadRequest(new Response(false, "Invalid credentials."));
+        return BadRequest(new Response(false, "Invalid Credentials"));
     }
+
 
     [HttpGet("session")]
     public async Task<ActionResult<AuthUser>> GetUserSession()
     {
-        var httpconext = HttpContext.User;
-
         var user = await _userManager.GetUserAsync(HttpContext.User);
 
-        var packedPermissions = HttpContext.User?.Claims
-            .SingleOrDefault(x => x.Type == Constants.ClaimTypePermissions);
 
-        var claims = packedPermissions?.Value.UnpackPermissionsFromString().Select(x => x.ToString());
-
-
-        return new AuthUser
+        if (user != null)
         {
-            Id = user?.Id.ToString(),
-            Name = user?.Name,
-            ProfilePictureUrl = user?.ProfilePictureUrl,
-            Permissions = claims
-        };
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var packedPermissions = HttpContext.User?.Claims
+                .SingleOrDefault(x => x.Type == Constants.ClaimTypePermissions);
+
+            var claims = packedPermissions?.Value.UnpackPermissionsFromString().Select(x => x.ToString());
+
+            return new AuthUser
+            {
+                Id = user?.Id.ToString(),
+                Name = user?.Name,
+                ProfilePictureUrl = user?.ProfilePictureUrl,
+                Role = roles.FirstOrDefault(),
+                Permissions = claims
+            };
+        }
+
+        return BadRequest("Error al obtener la sesion del usuario ");
     }
 
 

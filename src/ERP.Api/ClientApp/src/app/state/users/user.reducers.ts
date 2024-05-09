@@ -8,13 +8,13 @@ import * as UserActions from "./user.actions";
 * Reducer functions handle these transitions by determining which actions to handle based on the action's type.
 * */
 
-export interface UserState {
+export interface IUserState {
   isLoggedIn: boolean;
   user: IUser | null;
   error: string | null;
 }
 
-const initialState: UserState = {
+const initialState: IUserState = {
   isLoggedIn: false,
   user: null,
   error: null,

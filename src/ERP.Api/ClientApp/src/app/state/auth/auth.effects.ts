@@ -1,8 +1,10 @@
 import {Injectable} from "@angular/core";
 import * as AuthActions from "./auth.actions";
-import {catchError, exhaustMap, map, of, switchMap} from "rxjs";
+import {catchError, exhaustMap, map, of, switchMap, tap} from "rxjs";
 import {AuthService} from "../../core/services/auth.service";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
+import {Router} from "@angular/router";
+
 
 // Effects are usually used to perform side effects like fetching data using HTTP, WebSockets, writing to browser storage, and more.
 // Most effects are straightforward: they receive a triggering action, perform a side effect, and return an Observable stream of another
@@ -11,17 +13,49 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 @Injectable()
 export class AuthEffects {
 
-  login$ = createEffect(() => this.actions$.pipe(
-      ofType(AuthActions.login), // filtra acciones
-      switchMap(action =>
+  onLoginSubmitted$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.login),
+      exhaustMap(action =>
+        this.authService.login(action.credentials).pipe(
+          map(result => {
+            console.log('result', result);
 
-          this.authService.login(action.credentials).pipe(
-            map(user => AuthActions.loginSuccess({user: user})),
-            catchError(error => of(AuthActions.loginFailure({error})))
-          )
+            return AuthActions.loadAuthUser({returnUrl: action.returnUrl});
+
+          }),
+          catchError(error => {
+            const errorMessage = error.error.message || 'Unknown error occurred';
+            return of(AuthActions.loginFailure({error: errorMessage}));
+          })
+        )
       )
     )
- );
+  );
+
+
+  loadUserSession$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loadAuthUser),
+      switchMap(action =>
+        this.authService.getUserSession().pipe(
+          map(user => AuthActions.loginSuccess({user, returnUrl: action.returnUrl})),
+          catchError(error => of(AuthActions.loginFailure({error: 'Failed to load user session'})))
+        )
+      )
+    )
+  );
+
+  loginSuccess$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginSuccess),
+        tap(({returnUrl}) => {
+          this.router.navigateByUrl(returnUrl);
+        })
+      ),
+    {dispatch: false}
+  );
+
 
   // https://dev.to/this-is-angular/manipulating-ngrx-effects-400d
   // Handling a pure side effect
@@ -40,7 +74,7 @@ export class AuthEffects {
   //       )
   //   , {dispatch: false});
 
-  constructor(private actions$: Actions, private authService: AuthService) {
+  constructor(private actions$: Actions, private authService: AuthService, private router: Router) {
   }
 
   // In this example, we use tap to perform the side effect itself, and pass “{dispatch: false}” to the “createEffect”

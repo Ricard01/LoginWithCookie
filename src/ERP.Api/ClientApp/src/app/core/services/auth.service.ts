@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, map, Observable, of, shareReplay, tap} from "rxjs";
-import {ICredentials, IUserForAuthentication, IUserSession} from "../models/auth-model";
+import {catchError, map, Observable, of, shareReplay, switchMap, tap} from "rxjs";
+import {ICredentials, IAuthUser, IAuthResult} from "../models/auth-model";
 
-const ANONYMOUS: IUserSession | null = null;
+const ANONYMOUS: IAuthUser | null = null;
 const CACHE_SIZE = 1;
 
 @Injectable({
@@ -13,20 +13,35 @@ export class AuthService {
 
   private authUrl = 'api/auth';
   // isAuthenticated$: Observable<boolean>;
-  private session$: Observable<IUserSession | null> | null = null;
+  private session$: Observable<IAuthUser | null> | null = null;
 
   constructor(private http: HttpClient) {
   }
 
   login(credentials: ICredentials) {
 
-    return this.http.post(`${this.authUrl}/login`, credentials, {withCredentials: true});
+    return this.http.post<IAuthResult>(`${this.authUrl}/login`, credentials, {withCredentials: true});
 
   }
 
-  // login(userForAuth: IUserForAuthentication) {
+  getAuthenticatedUserSession() {
+
+    return this.http.get<IAuthUser>(`${this.authUrl}/session`);
+
+  }
+
+  // login(credentials: ICredentials) {
   //
-  //   return this.http.post(`${this.authUrl}/login`, userForAuth, {withCredentials: true});
+  //   return this.http.post<IAuthResult>(`${this.authUrl}/login`, credentials, { withCredentials: true }).pipe(
+  //     switchMap(result => {
+  //       if (result.isSuccess === 'true') {
+  //         return this.getUserSession(true);
+  //       } else {
+  //         throw new Error(result.message);
+  //       }
+  //     }),
+  //     catchError(err => of(null))  // Maneja errores generales aquí
+  //   );
   //
   // }
 
@@ -36,7 +51,7 @@ export class AuthService {
     if (!this.session$ || ignoreCache) {
 
       // get the session from endpoint and set in localStore.
-      this.session$ = this.http.get<IUserSession>(`${this.authUrl}/session`).pipe(
+      this.session$ = this.http.get<IAuthUser>(`${this.authUrl}/session`).pipe(
         tap(user => {
           this.saveUser(user);
         }),
@@ -51,7 +66,8 @@ export class AuthService {
 
   }
 
-  private saveUser(user: IUserSession) {
+
+  private saveUser(user: IAuthUser) {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -74,7 +90,7 @@ export class AuthService {
 }
 
 
-export type Session = IUserSession | null;
+export type Session = IAuthUser | null;
 
 function UserIsAuthenticated(s: Session): boolean {
   return s !== null;

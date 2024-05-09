@@ -1,4 +1,4 @@
-export interface IUserSession {
+export interface IAuthUser {
   id?: string;
   name?: string;
   profilePictureUrl?: string;
@@ -9,11 +9,9 @@ export interface IUserSession {
 export interface ICredentials {
   email: string;
   password: string;
-  returnUrl?: string;
 }
 
-
-export interface IUserForAuthentication {
-  email: string;
-  password: string;
+export interface IAuthResult {
+  isSuccess: string;
+  message: string;
 }

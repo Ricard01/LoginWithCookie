@@ -10,11 +10,12 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path:  'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) },
+      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)},
+      {path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule)},
     ]
   },
-      { path: 'login',  loadChildren: ()=> import('./auth/login/login.module').then(m => m.LoginModule) }
+  {path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule)}
 
 ];
 

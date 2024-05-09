@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
 import {IAppState} from "../../state/app.state";
 import {Store} from "@ngrx/store";
-import * as AuthActions from "../../state/auth/auth.actions";
 import {ICredentials} from "../../core/models/auth-model";
+import * as AuthActions from "../../state/auth/auth.actions";
+import {AuthService} from "../../core/services/auth.service";
 
 
 @Component({
@@ -15,7 +16,7 @@ import {ICredentials} from "../../core/models/auth-model";
 
 export class LoginComponent {
 
-  returnUrl: string | undefined;
+  returnUrl: string = '/';
   credentials: ICredentials = {email: '', password: ''};
 
   loginForm = this.formBuilder.group({
@@ -27,7 +28,9 @@ export class LoginComponent {
   constructor(
     public store: Store<IAppState>, // la diferencia entre llamar el estado global y el estado
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute) {
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
 
 
@@ -38,14 +41,30 @@ export class LoginComponent {
   onLogin() {
 
     if (this.loginForm.valid) {
-      if (this.loginForm.dirty) {
 
-        const credentials: ICredentials = {...this.loginForm.value as ICredentials, returnUrl: this.returnUrl};
+      const credentials: ICredentials = {...this.loginForm.value as ICredentials};
+      this.store.dispatch(AuthActions.login({ credentials, returnUrl: this.returnUrl }));
 
-        this.store.dispatch(AuthActions.login({credentials}));
-      }
     }
   }
+
+  // private loadUserAndRedirect() {
+  //   this.authService.getUserSession(true).subscribe({
+  //     next: (user) => {
+  //       if (user) {
+  //         this.store.dispatch(AuthActions.loginSuccess({user}));
+  //         // Redirección usando returnUrl de las credenciales
+  //         this.router.navigateByUrl(this.returnUrl);
+  //       } else {
+  //         // Maneja el caso donde no se obtienen los datos del usuario
+  //         console.error('Failed to load user data');
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error('Error loading user session:', error);
+  //     }
+  //   });
+  // }
 
   // loginUser = (loginFormValue) => {
   //   this.showError = false;

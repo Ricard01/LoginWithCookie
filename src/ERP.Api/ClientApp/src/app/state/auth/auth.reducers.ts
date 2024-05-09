@@ -1,19 +1,20 @@
-import {IUser} from "./auth.model";
+
 import {createReducer, on} from "@ngrx/store";
 import * as AuthActions from "./auth.actions";
+import {IAuthUser} from "../../core/models/auth-model";
 
 /* Reducers
 * Are responsible for handling transitions from one state to the next state in your application.
 * Reducer functions handle these transitions by determining which actions to handle based on the action's type.
 * */
 
-export interface AuthState {
+export interface IAuthState {
   isLoggedIn: boolean;
-  user: IUser | null;
+  user: IAuthUser | null;
   error: string | null;
 }
 
-const initialState: AuthState = {
+const initialState: IAuthState = {
   isLoggedIn: false,
   user: null,
   error: null,
@@ -25,9 +26,8 @@ const initialState: AuthState = {
 * */
 export const authReducer = createReducer(
   initialState,
-  on(AuthActions.login, (state) => ({ ...state, error: null })), // What the store should do in response to the login action.
-  on(AuthActions.loginSuccess, (state, { user }) => ({ ...state, isLoggedIn: true, user, error: null, })),
-  on(AuthActions.loginFailure, (state, { error }) => ({ ...state, error })),
-  on(AuthActions.logout, (state) => ({ ...state, user: null })),
-
+  on(AuthActions.checkAuthComplete, (state) => ({...state, isLoggedIn: true})), // What the store should do in response to the login action.
+  on(AuthActions.loginSuccess, (state, {user}) => ({...state, isLoggedIn: true, user, error: null,})),
+  on(AuthActions.loginFailure, (state, {error}) => ({...state, error})),
+  on(AuthActions.logout, (state) => ({...state, user: null})),
 );

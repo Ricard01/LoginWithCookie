@@ -3,14 +3,14 @@ import {AuthService} from "../../core/services/auth.service";
 import {HttpClient} from "@angular/common/http";
 
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+
+  resp: any;
 
   constructor(private authService: AuthService, private http: HttpClient) {
     // this.authService.getUserSession().subscribe(resp => {
@@ -32,11 +32,11 @@ export class DashboardComponent {
   }
 
   getPermissions() {
-    return this.http.get("api/users/GetPermissions")
-      .subscribe(resp => {
-        console.log(resp)
+    this.authService.getUserSession().subscribe(resp => {
+      console.log('permissions' + resp);
+      this.resp = resp;
+    })
 
-      });
   }
 
   // login() {
