@@ -17,8 +17,8 @@ public static class AddIdentity
             .AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.ExpireTimeSpan = TimeSpan.FromDays(14);
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Solo envia cookies por https 
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
                 options.SlidingExpiration = true;
 
                 options.Cookie.SameSite = SameSiteMode.Strict;

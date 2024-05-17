@@ -10,34 +10,35 @@ internal static class Extensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder, IConfiguration configuration)
     {
-        
         builder.Services.AddScoped<ErpClaimsFactory>();
-        
+
         builder.Services
-            .AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>(); // este orden tiene el ejemplo online
+            .AddSingleton<IAuthorizationPolicyProvider,
+                AuthorizationPolicyProvider>(); // este orden tiene el ejemplo online
         builder.Services
             .AddScoped<IAuthorizationHandler,
                 PermissionHandler>(); // en las primeras pruebas el orden no afecto el funcionamiento (AuthorizacionPolicy)
-        
+
         builder.Services.AddMyIdentity();
 
+        builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
         builder.Services.AddMyDbContext(builder.Configuration);
-        
+
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
         builder.Services.AddAuthorization();
 
         builder.Services.AddControllers();
-        
-        
-        
+
+
         return builder.Build();
     }
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         if (!app.Environment.IsDevelopment()) app.UseHsts();
-        
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
@@ -51,7 +52,6 @@ internal static class Extensions
 
         app.MapFallbackToFile("index.html");
 
-        return app; 
+        return app;
     }
-
 }

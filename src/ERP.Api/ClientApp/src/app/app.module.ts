@@ -11,8 +11,9 @@ import {LayoutModule} from "./layout/layout.module";
 import {SharedModule} from "./shared/shared.module";
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {loggingMetaReducer} from "./state/app.state";
+
 import { EffectsModule } from '@ngrx/effects';
+import {CoreModule} from "./core/core.module";
 
 
 @NgModule({
@@ -27,10 +28,11 @@ import { EffectsModule } from '@ngrx/effects';
     FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    CoreModule,
     LayoutModule,
     SharedModule,
     StoreModule.forRoot({}, {
-      metaReducers: [loggingMetaReducer],
+     // metaReducers: [loggingMetaReducer],
       runtimeChecks: {
         strictStateImmutability: true, // Avoid writing wrong
         strictActionImmutability: true,

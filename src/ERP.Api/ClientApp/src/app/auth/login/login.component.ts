@@ -5,7 +5,8 @@ import {IAppState} from "../../state/app.state";
 import {Store} from "@ngrx/store";
 import {ICredentials} from "../../core/models/auth-model";
 import * as AuthActions from "../../state/auth/auth.actions";
-import {AuthService} from "../../core/services/auth.service";
+import {selectIsLoggedIn} from "../../state/auth/auth.selectors";
+import {tap} from "rxjs";
 
 
 @Component({
@@ -28,14 +29,27 @@ export class LoginComponent {
   constructor(
     public store: Store<IAppState>, // la diferencia entre llamar el estado global y el estado
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router
+  ) {
   }
 
 
   ngOnInit(): void {
+
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    // to prevent the user going to log in if already loggedIn
+    this.store.select(selectIsLoggedIn).pipe(
+      tap(isLoggedIn => {
+        if (isLoggedIn) {
+          this.router.navigate(['dashboard']);
+        }
+      })
+    ).subscribe()
+
+
+
   }
 
   onLogin() {
@@ -43,47 +57,11 @@ export class LoginComponent {
     if (this.loginForm.valid) {
 
       const credentials: ICredentials = {...this.loginForm.value as ICredentials};
-      this.store.dispatch(AuthActions.login({ credentials, returnUrl: this.returnUrl }));
+      this.store.dispatch(AuthActions.login({credentials, returnUrl: this.returnUrl}));
 
     }
+
   }
 
-  // private loadUserAndRedirect() {
-  //   this.authService.getUserSession(true).subscribe({
-  //     next: (user) => {
-  //       if (user) {
-  //         this.store.dispatch(AuthActions.loginSuccess({user}));
-  //         // Redirección usando returnUrl de las credenciales
-  //         this.router.navigateByUrl(this.returnUrl);
-  //       } else {
-  //         // Maneja el caso donde no se obtienen los datos del usuario
-  //         console.error('Failed to load user data');
-  //       }
-  //     },
-  //     error: (error) => {
-  //       console.error('Error loading user session:', error);
-  //     }
-  //   });
-  // }
-
-  // loginUser = (loginFormValue) => {
-  //   this.showError = false;
-  //   const login = {...loginFormValue};
-  //   const userForAuth: UserForAuthenticationDto = {
-  //     email: login.username,
-  //     password: login.password
-  //   }
-  //   this.authService.loginUser('api/accounts/login', userForAuth)
-  //     .subscribe({
-  //       next: (res: AuthResponseDto) => {
-  //         localStorage.setItem("token", res.token);
-  //         this.router.navigate([this.returnUrl]);
-  //       },
-  //       error: (err: HttpErrorResponse) => {
-  //         this.errorMessage = err.message;
-  //         this.showError = true;
-  //       }
-  //     })
-  // }
 
 }

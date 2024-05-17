@@ -8,18 +8,12 @@ namespace ERP.Api.Controllers;
 
 public record SignInRequest(string Email, string Password);
 
-public record AuthUser
-{
-    public string? Id { get; set; }
-
-    public string? Name { get; set; }
-
-    public string? ProfilePictureUrl { get; set; }
-
-    public string? Role { get; set; }
-
-    public IEnumerable<string>? Permissions { get; set; }
-}
+public record AuthUser(
+    string Id,
+    string Name,
+    string? ProfilePictureUrl,
+    string? Role,
+    IEnumerable<string>? Permissions);
 
 [Authorize]
 public class AuthController : ApiControllerBase
@@ -63,29 +57,31 @@ public class AuthController : ApiControllerBase
         {
             var roles = await _userManager.GetRolesAsync(user);
 
-            var packedPermissions = HttpContext.User?.Claims
+            var packedPermissions = HttpContext.User.Claims
                 .SingleOrDefault(x => x.Type == Constants.ClaimTypePermissions);
 
             var claims = packedPermissions?.Value.UnpackPermissionsFromString().Select(x => x.ToString());
 
             return new AuthUser
-            {
-                Id = user?.Id.ToString(),
-                Name = user?.Name,
-                ProfilePictureUrl = user?.ProfilePictureUrl,
-                Role = roles.FirstOrDefault(),
-                Permissions = claims
-            };
+            (
+                user.Id.ToString(),
+                user.Name,
+                user.ProfilePictureUrl,
+                roles.FirstOrDefault(),
+                claims
+            );
         }
 
         return BadRequest("Error al obtener la sesion del usuario ");
     }
 
 
-    [HttpGet("[action]")]
+    [HttpPost("[action]")]
+    // [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut()
     {
-        await _signInManager.SignOutAsync();
-        return Ok();
+        // ASP.NET Core Identity. Esto eliminará la cookie de autenticación del navegador del usuario.
+        await _signInManager.SignOutAsync(); 
+        return Ok(new Response(true, "Signed out successfully"));
     }
 }

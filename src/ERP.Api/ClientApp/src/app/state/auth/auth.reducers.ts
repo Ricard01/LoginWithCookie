@@ -1,7 +1,7 @@
-
 import {createReducer, on} from "@ngrx/store";
 import * as AuthActions from "./auth.actions";
 import {IAuthUser} from "../../core/models/auth-model";
+import {browseReload} from "./auth.actions";
 
 /* Reducers
 * Are responsible for handling transitions from one state to the next state in your application.
@@ -26,8 +26,9 @@ const initialState: IAuthState = {
 * */
 export const authReducer = createReducer(
   initialState,
-  on(AuthActions.checkAuthComplete, (state) => ({...state, isLoggedIn: true})), // What the store should do in response to the login action.
-  on(AuthActions.loginSuccess, (state, {user}) => ({...state, isLoggedIn: true, user, error: null,})),
+  on(AuthActions.loginSuccess, browseReload, (state, {user}) => ({...state, isLoggedIn: true, user, error: null,})), //En este caso, necesito el estado actual y los datos adicionales (payload) que la acción lleva para modificar el estado.
   on(AuthActions.loginFailure, (state, {error}) => ({...state, error})),
-  on(AuthActions.logout, (state) => ({...state, user: null})),
+  on(AuthActions.logOutSuccess, (state) => ({...state, isLoggedIn: false, user: null, error: null})), // En este caso, la acción logOut no necesita datos adicionales, solo necesita cambiar el estado. Por eso solo se pasa state al reducer.
+  on(AuthActions.logOutFailure, (state, {error}) => ({...state, error})),
+
 );
