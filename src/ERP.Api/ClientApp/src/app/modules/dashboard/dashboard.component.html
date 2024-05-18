@@ -2,3 +2,13 @@
 <button mat-stroked-button (click)="getPermissions()"> GetPermissions</button>
 
 <p>{{ resp | json }}</p>
+
+<br><br>
+<button mat-stroked-button (click)="testProtectedEndpoint()"> testProtectedEndpoint</button>
+
+<p> {{ protectedData | json }} </p>
+
+<br><br>
+<button mat-stroked-button (click)="testUnProtectedEndpoint()"> UnProtectedEndPoint</button>
+
+<p> {{ UnprotectedData | json }} </p>

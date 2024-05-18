@@ -1,5 +1,6 @@
 using ERP.Domain.Entities;
 using ERP.Infrastructure.AuthFeatures;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,18 +19,21 @@ public record AuthUser(
 [Authorize]
 public class AuthController : ApiControllerBase
 {
+    private readonly IAntiforgery _antiforgery;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
+        IAntiforgery antiforgery)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _antiforgery = antiforgery;
     }
 
     [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
     [HttpPost("[action]")]
-    // [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(SignInRequest signInRequest)
     {
         if (ModelState.IsValid)
@@ -39,6 +43,9 @@ public class AuthController : ApiControllerBase
 
             if (result.Succeeded)
             {
+                // var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+                // HttpContext.Response.Headers.Add("ANY-CSRF-TOKEN", tokens.RequestToken);
+
                 return Ok(new Response(true, "Signed in successfully"));
             }
         }
@@ -77,11 +84,38 @@ public class AuthController : ApiControllerBase
 
 
     [HttpPost("[action]")]
-    // [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken] Sirve para MVC asi que aqui NO tiene caso
     public async Task<IActionResult> LogOut()
     {
-        // ASP.NET Core Identity. Esto eliminará la cookie de autenticación del navegador del usuario.
-        await _signInManager.SignOutAsync(); 
+        await _signInManager
+            .SignOutAsync(); // ASP.NET Core Identity. Esto eliminará la cookie de autenticación (ERP.Cookie).
+
+        // Eliminar la cookie de antifalsificación
+        var cookies = HttpContext.Request.Cookies;
+        foreach (var cookie in cookies)
+        {
+            if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "ANY-XSRF-TOKEN")
+            {
+                HttpContext.Response.Cookies.Delete(cookie.Key);
+            }
+        }
+
         return Ok(new Response(true, "Signed out successfully"));
+    }
+
+    [HttpGet("[action]")]
+    [Authorize]
+    public IActionResult Protected()
+    {
+        var protectedData = new { Message = "This is protected data" };
+        return Ok(protectedData);
+    }
+
+    [HttpGet("[action]")]
+    [AllowAnonymous]
+    public IActionResult UnProtected()
+    {
+        var unprotectedData = new { Message = "This is unProtected data" };
+        return Ok(unprotectedData);
     }
 }

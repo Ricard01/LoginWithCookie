@@ -1,8 +1,11 @@
 using ERP.Infrastructure.AuthFeatures.Policy;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ERP.Api;
 
@@ -10,27 +13,31 @@ internal static class Extensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder, IConfiguration configuration)
     {
+        // Servicios específicos de configuración
         builder.Services.AddScoped<ErpClaimsFactory>();
 
-        builder.Services
-            .AddSingleton<IAuthorizationPolicyProvider,
-                AuthorizationPolicyProvider>(); // este orden tiene el ejemplo online
-        builder.Services
-            .AddScoped<IAuthorizationHandler,
-                PermissionHandler>(); // en las primeras pruebas el orden no afecto el funcionamiento (AuthorizacionPolicy)
+        // Servicios de autorización
+        builder.Services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
+        builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
+        // Servicios de identidad
         builder.Services.AddMyIdentity();
 
-        builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
+        // Configuración del contexto de datos
         builder.Services.AddMyDbContext(builder.Configuration);
-
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
+        // Configuración de autorización
         builder.Services.AddAuthorization();
 
-        builder.Services.AddControllers();
+        // Configuración de controladores y filtros (añadir servicios necesarios)
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+        });
 
+        // Configuración del servicio de antifalsificación
+        builder.Services.AddAntiforgery(options => options.HeaderName = "ANY-XSRF-TOKEN");
 
         return builder.Build();
     }
@@ -46,6 +53,24 @@ internal static class Extensions
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.Use(async (context, next) =>
+        {
+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
+            {
+                var antiforgery = context.RequestServices.GetService<IAntiforgery>();
+                if (antiforgery != null)
+                {
+                    var tokens = antiforgery.GetAndStoreTokens(context);
+                    if (tokens.RequestToken != null)
+                    {
+                        context.Response.Cookies.Append("ANY-XSRF-TOKEN", tokens.RequestToken,
+                            new CookieOptions { HttpOnly = false }); // Necesario para que Angular pueda leer el token
+                    }
+                }
+            }
+
+            await next(context);
+        });
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");

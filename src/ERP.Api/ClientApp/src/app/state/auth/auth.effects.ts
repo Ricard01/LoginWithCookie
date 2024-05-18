@@ -4,7 +4,6 @@ import {catchError, exhaustMap, map, of, switchMap, tap} from "rxjs";
 import {AuthService} from "../../core/services/auth.service";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {Router} from "@angular/router";
-import {IAppState} from "../app.state";
 import {Store} from "@ngrx/store";
 import {IAuthState} from "./auth.reducers";
 
@@ -22,7 +21,12 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.login(action.credentials).pipe(
           map(result => {
-            console.log('result', result);
+
+            // const csrfToken = result.headers.get('ANY-CSRF-TOKEN');
+            // if (csrfToken) {
+            //   console.log('loginSubmitREsult ' + result);
+            //   localStorage.setItem('CSRF_TOKEN', csrfToken);
+            // }
 
             return AuthActions.loadAuthUser({returnUrl: action.returnUrl});
 

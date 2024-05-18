@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, isDevMode} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {NavMenuComponent} from './nav-menu/nav-menu.component';
 import {AppRoutingModule} from "./app-routing.module";
@@ -14,6 +14,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 import { EffectsModule } from '@ngrx/effects';
 import {CoreModule} from "./core/core.module";
+import {CsrfInterceptor} from "./core/interceptor/csrf-interceptor";
 
 
 @NgModule({
@@ -46,7 +47,9 @@ import {CoreModule} from "./core/core.module";
     EffectsModule.forRoot([]),
     //EffectsModule.forRoot([]),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

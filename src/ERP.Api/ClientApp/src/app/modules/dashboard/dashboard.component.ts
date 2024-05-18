@@ -12,6 +12,10 @@ export class DashboardComponent {
 
   resp: any;
 
+  protectedData: any;
+
+  UnprotectedData: any
+
   constructor(private authService: AuthService, private http: HttpClient) {
     // this.authService.getUserSession().subscribe(resp => {
     //   this.authUser = resp;
@@ -39,13 +43,22 @@ export class DashboardComponent {
 
   }
 
-  // login() {
-  //   return this.authService.login({email: this.email, password: this.password});
-  //
-  // }
+
+  testProtectedEndpoint(): void {
+    this.authService.getProtectedData().subscribe(data => {
+      this.protectedData = data;
+    }, error => {
+      console.error('Error fetching protected data', error);
+    });
+  }
+
+  testUnProtectedEndpoint(): void {
+    this.authService.getUnProtectedData().subscribe(data => {
+      this.UnprotectedData = data;
+    }, error => {
+      console.error('Error fetching protected data', error);
+    });
+  }
 
 
-  // logout() {
-  //   return this.authService.logOut();
-  // }
 }

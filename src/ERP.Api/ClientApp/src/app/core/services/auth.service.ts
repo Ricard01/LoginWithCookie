@@ -15,7 +15,7 @@ export class AuthService {
   }
 
   login(credentials: ICredentials) {
-    return this.http.post<IAuthResult>(`${this.authUrl}/login`, credentials, {withCredentials: true});
+    return this.http.post(`${this.authUrl}/login`, credentials, {observe: 'response', withCredentials: true});
   }
 
   logOut() {
@@ -24,6 +24,14 @@ export class AuthService {
 
   getUserSession() {
     return this.http.get<IAuthUser>(`${this.authUrl}/session`);
+  }
+
+  getProtectedData() {
+    return this.http.get(`${this.authUrl}/protected`);
+  }
+
+  getUnProtectedData() {
+    return this.http.get(`${this.authUrl}/unprotected`);
   }
 
 
