@@ -14,8 +14,10 @@ export class CsrfInterceptor implements HttpInterceptor {
       const clonedRequest = req.clone({
         headers: req.headers.set('ANY-XSRF-TOKEN', xsrfToken)
       });
+      console.log('Headers:', clonedRequest.headers.keys());
       return next.handle(clonedRequest);
     }
+    console.log('Headers:', req.headers.keys());
     return next.handle(req);
   }
 

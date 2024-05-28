@@ -1,14 +1,30 @@
-<p>dashboard works!</p>
 <button mat-stroked-button (click)="getPermissions()"> GetPermissions</button>
 
 <p>{{ resp | json }}</p>
 
-<br><br>
-<button mat-stroked-button (click)="testProtectedEndpoint()"> testProtectedEndpoint</button>
+<hr class="mt-5">
 
-<p> {{ protectedData | json }} </p>
+<h2 class="mt-2 font-bold">Validacion Cross-Site Request Forgery (XSRF/CSRF)</h2>
+<label> Los tokens antiforgery están diseñados para proteger contra ataques CSRF y generalmente se aplican a solicitudes que cambian el estado del
+  servidor, como POST, PUT, DELETE, etc. Las solicitudes GET, por su naturaleza, deberían ser idempotentes y no cambiar
+  el estado del servidor, por lo que normalmente no se protegen con tokens antiforgery.</label>
 
-<br><br>
-<button mat-stroked-button (click)="testUnProtectedEndpoint()"> UnProtectedEndPoint</button>
+<div class="button-container">
+  <button mat-stroked-button (click)="testProtectedEndpoint()">Protected Endpoint</button>
+  <p>{{ protectedData | json }}</p>
+</div>
 
-<p> {{ UnprotectedData | json }} </p>
+<div class="button-container">
+  <button mat-stroked-button (click)="testProtectedEndpointPUT()">Protected Endpoint PUT</button>
+  <p>{{ protectedPUT | json }}</p>
+</div>
+
+<div class="button-container">
+  <button mat-stroked-button (click)="testProtectedEndpointDELETE()">Protected EndPoint DELETE</button>
+  <p>{{ protectedDelete | json }}</p>
+</div>
+
+<div class="button-container">
+  <button mat-stroked-button (click)="testUnProtectedEndpoint()">UnProtected EndPoint POST</button>
+  <p>{{ UnprotectedData | json }}</p>
+</div>

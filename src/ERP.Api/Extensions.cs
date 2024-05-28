@@ -68,6 +68,11 @@ internal static class Extensions
                     }
                 }
             }
+            Console.WriteLine("Request Headers:");
+            foreach (var header in context.Request.Headers)
+            {
+                Console.WriteLine($"{header.Key}: {header.Value}");
+            }
 
             await next(context);
         });

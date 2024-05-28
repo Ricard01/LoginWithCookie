@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace ERP.Infrastructure.Extensions;
 
@@ -12,7 +14,7 @@ public static class AddIdentity
 {
     public static IServiceCollection AddMyIdentity(this IServiceCollection services)
     {
-        
+        Log.Information("DENTRO DE ADD MY IDENTITY");
         // AddIdentity adds addAuthentication & addCookie
         services.AddIdentity<ApplicationUser, ApplicationRole>()
             .AddDefaultTokenProviders()
@@ -23,7 +25,7 @@ public static class AddIdentity
         //By default, cookie authentication redirects the user to the login URL if authentication failed. Hence, we’re setting the delegate function options.Events.OnRedirectToLogin with a lambda expression. This expression returns an unauthorized HTTP status code 401.
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
-            {
+            {   Log.Information("Inside COOKIE...");
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
@@ -35,14 +37,24 @@ public static class AddIdentity
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
-
+           
                 options.Events.OnValidatePrincipal = async context =>
                 {
                     var userPrincipal = context.Principal;
+                    
+                    Log.Information("OUTSIDE IF: {User}", userPrincipal!.Identity!.Name);
+                    
                     if (userPrincipal == null || !userPrincipal.Identity!.IsAuthenticated)
                     {
                         context.RejectPrincipal();
                         await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    }
+                    else
+                    {
+                        // Log details about the principal
+                     
+                        //var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                        Log.Information("Validating principal: {User}", userPrincipal.Identity.Name);
                     }
                 };
             });

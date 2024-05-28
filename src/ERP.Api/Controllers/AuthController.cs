@@ -1,6 +1,5 @@
 using ERP.Domain.Entities;
 using ERP.Infrastructure.AuthFeatures;
-using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,19 +15,18 @@ public record AuthUser(
     string? Role,
     IEnumerable<string>? Permissions);
 
-[Authorize]
+
 public class AuthController : ApiControllerBase
 {
-    private readonly IAntiforgery _antiforgery;
+
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-        IAntiforgery antiforgery)
+    public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
-        _antiforgery = antiforgery;
+  
     }
 
     [AllowAnonymous]
@@ -43,8 +41,7 @@ public class AuthController : ApiControllerBase
 
             if (result.Succeeded)
             {
-                // var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
-                // HttpContext.Response.Headers.Add("ANY-CSRF-TOKEN", tokens.RequestToken);
+          
 
                 return Ok(new Response(true, "Signed in successfully"));
             }
@@ -103,19 +100,33 @@ public class AuthController : ApiControllerBase
         return Ok(new Response(true, "Signed out successfully"));
     }
 
-    [HttpGet("[action]")]
-    [Authorize]
+
+    [HttpPost("[action]")]
     public IActionResult Protected()
     {
         var protectedData = new { Message = "This is protected data" };
         return Ok(protectedData);
     }
+    
+    [HttpPut("[action]")]
+    public IActionResult ProtectedPut()
+    {
+        var protectedData = new { Message = "This is protected PUT" };
+        return Ok(protectedData);
+    }
+    
+    [HttpDelete("[action]")]
+    public IActionResult ProtectedDelete()
+    {
+        var protectedData = new { Message = "This is protected DELETE" };
+        return Ok(protectedData);
+    }
 
-    [HttpGet("[action]")]
+    [HttpPost("[action]")]
     [AllowAnonymous]
     public IActionResult UnProtected()
     {
-        var unprotectedData = new { Message = "This is unProtected data" };
+        var unprotectedData = new { Message = "This is UnProtected data" };
         return Ok(unprotectedData);
     }
 }

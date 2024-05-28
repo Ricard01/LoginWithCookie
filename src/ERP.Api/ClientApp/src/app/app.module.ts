@@ -43,7 +43,7 @@ import {CsrfInterceptor} from "./core/interceptor/csrf-interceptor";
     //EffectsModule.forRoot([]),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true }
+     { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

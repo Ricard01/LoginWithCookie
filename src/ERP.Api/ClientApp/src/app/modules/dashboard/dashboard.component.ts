@@ -14,6 +14,10 @@ export class DashboardComponent {
 
   protectedData: any;
 
+  protectedPUT: any;
+
+  protectedDelete: any;
+
   UnprotectedData: any
 
   constructor(private authService: AuthService, private http: HttpClient) {
@@ -49,6 +53,22 @@ export class DashboardComponent {
       this.protectedData = data;
     }, error => {
       console.error('Error fetching protected data', error);
+    });
+  }
+
+  testProtectedEndpointPUT(): void {
+    this.authService.getProtectedPUT().subscribe(data => {
+      this.protectedPUT = data;
+    }, error => {
+      console.error('Error fetching protected PUT', error);
+    });
+  }
+
+  testProtectedEndpointDELETE(): void {
+    this.authService.getProtectedDELETE().subscribe(data => {
+      this.protectedDelete = data;
+    }, error => {
+      console.error('Error fetching protected DELETE', error);
     });
   }
 

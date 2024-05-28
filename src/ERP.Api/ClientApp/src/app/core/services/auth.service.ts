@@ -27,11 +27,19 @@ export class AuthService {
   }
 
   getProtectedData() {
-    return this.http.get(`${this.authUrl}/protected`);
+    return this.http.post(`${this.authUrl}/protected`,{});
+  }
+
+  getProtectedPUT() {
+    return this.http.put(`${this.authUrl}/protectedPut`,{});
+  }
+
+  getProtectedDELETE() {
+    return this.http.delete(`${this.authUrl}/protectedDelete`,{});
   }
 
   getUnProtectedData() {
-    return this.http.get(`${this.authUrl}/unprotected`);
+    return this.http.post(`${this.authUrl}/unprotected`,{});
   }
 
 
