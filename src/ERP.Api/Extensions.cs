@@ -55,6 +55,8 @@ internal static class Extensions
 
         app.Use(async (context, next) =>
         {
+            Console.WriteLine($"Request Path: {context.Request.Path}, Authenticated: {context.User.Identity.IsAuthenticated}");
+            
             if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
             {
                 var antiforgery = context.RequestServices.GetService<IAntiforgery>();
@@ -68,6 +70,7 @@ internal static class Extensions
                     }
                 }
             }
+
             Console.WriteLine("Request Headers:");
             foreach (var header in context.Request.Headers)
             {
@@ -76,11 +79,33 @@ internal static class Extensions
 
             await next(context);
         });
+
+        app.Use(async (context, next) =>
+        {
+            if (!context.User.Identity.IsAuthenticated)
+            {
+                var cookies = context.Request.Cookies;
+                Console.WriteLine("Request Headers:");
+                Console.WriteLine($"{cookies}");
+                foreach (var cookie in cookies)
+                {
+                    if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "X-XSRF-TOKEN")
+                    {
+                        context.Response.Cookies.Delete(cookie.Key);
+                        Console.WriteLine($"Cookie {cookie.Key} eliminada.");
+                    }
+                }
+            }
+        
+            await next(context);
+        });
+
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
         app.MapFallbackToFile("index.html");
+        
 
         return app;
     }

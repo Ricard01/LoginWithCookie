@@ -9,9 +9,10 @@ import {LayoutModule} from "./layout/layout.module";
 import {SharedModule} from "./shared/shared.module";
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
+import {EffectsModule} from '@ngrx/effects';
 import {CoreModule} from "./core/core.module";
-import {CsrfInterceptor} from "./core/interceptor/csrf-interceptor";
+import {CsrfInterceptor} from "./core/interceptor/csrf.interceptor";
+import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
 
 
 @NgModule({
@@ -28,7 +29,7 @@ import {CsrfInterceptor} from "./core/interceptor/csrf-interceptor";
     LayoutModule,
     SharedModule,
     StoreModule.forRoot({}, {
-     // metaReducers: [loggingMetaReducer],
+      // metaReducers: [loggingMetaReducer],
       runtimeChecks: {
         strictStateImmutability: true, // Avoid writing wrong
         strictActionImmutability: true,
@@ -43,7 +44,8 @@ import {CsrfInterceptor} from "./core/interceptor/csrf-interceptor";
     //EffectsModule.forRoot([]),
   ],
   providers: [
-     { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

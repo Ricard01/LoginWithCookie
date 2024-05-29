@@ -81,6 +81,7 @@ export class AuthEffects {
         return this.authService.logOut().pipe(
           tap(() => {
             localStorage.removeItem('user');
+            // localStorage.removeItem('logout-event');
             this.router.navigate(['/login']); // Redirige al usuario a la página de login
           }),
           map(() => AuthActions.logOutSuccess()),

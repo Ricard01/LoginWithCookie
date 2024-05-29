@@ -79,7 +79,8 @@ public class AuthController : ApiControllerBase
         return BadRequest("Error al obtener la sesion del usuario ");
     }
 
-
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
     [HttpPost("[action]")]
     // [ValidateAntiForgeryToken] Sirve para MVC asi que aqui NO tiene caso
     public async Task<IActionResult> LogOut()

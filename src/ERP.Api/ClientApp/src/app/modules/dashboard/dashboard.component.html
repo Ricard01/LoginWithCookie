@@ -5,9 +5,9 @@
 <hr class="mt-5">
 
 <h2 class="mt-2 font-bold">Validacion Cross-Site Request Forgery (XSRF/CSRF)</h2>
-<label> Los tokens antiforgery están diseñados para proteger contra ataques CSRF y generalmente se aplican a solicitudes que cambian el estado del
+<p> Los tokens antiforgery están diseñados para proteger contra ataques CSRF y generalmente se aplican a solicitudes que cambian el estado del
   servidor, como POST, PUT, DELETE, etc. Las solicitudes GET, por su naturaleza, deberían ser idempotentes y no cambiar
-  el estado del servidor, por lo que normalmente no se protegen con tokens antiforgery.</label>
+  el estado del servidor, por lo que normalmente no se protegen con tokens antiforgery.</p>
 
 <div class="button-container">
   <button mat-stroked-button (click)="testProtectedEndpoint()">Protected Endpoint</button>
