@@ -27,12 +27,15 @@ internal static class Extensions
         builder.Services.AddMyDbContext(builder.Configuration);
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
-        // Configuración de autorización
+        
         builder.Services.AddAuthorization();
 
-        // Configuración de controladores y filtros (añadir servicios necesarios)
+
         builder.Services.AddControllersWithViews(options =>
         {
+            //  Se aplica automáticamente a todas las acciones de los controladores que manejan solicitudes HTTP que modifican datos (como POST, PUT, DELETE) Y
+            // valida automáticamente los antiforgery tokens en las solicitudes entrantes para asegurarse de que la solicitud se originó desde la propia aplicación
+            // y no desde un sitio externo malicioso.
             options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
         });
 
@@ -53,9 +56,11 @@ internal static class Extensions
         app.UseAuthentication();
         app.UseAuthorization();
 
+        
+        // Si el usuario está autenticado, obtiene un token antiforgery y lo almacena en una cookie con nombre ANY-XSRF-TOKEN, que Angular puede leer.
         app.Use(async (context, next) =>
         {
-            Console.WriteLine($"Request Path: {context.Request.Path}, Authenticated: {context.User.Identity.IsAuthenticated}");
+            // Console.WriteLine($"Request Path: {context.Request.Path}, Authenticated: {context.User.Identity.IsAuthenticated}");
             
             if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
             {
@@ -71,34 +76,37 @@ internal static class Extensions
                 }
             }
 
-            Console.WriteLine("Request Headers:");
-            foreach (var header in context.Request.Headers)
-            {
-                Console.WriteLine($"{header.Key}: {header.Value}");
-            }
+            // if (app.Environment.IsDevelopment())
+            // {
+            //     Console.WriteLine("Request Headers:");
+            //     foreach (var header in context.Request.Headers)
+            //     {
+            //         Console.WriteLine($"{header.Key}: {header.Value}");
+            //     }
+            // }
 
             await next(context);
         });
 
-        app.Use(async (context, next) =>
-        {
-            if (!context.User.Identity.IsAuthenticated)
-            {
-                var cookies = context.Request.Cookies;
-                Console.WriteLine("Request Headers:");
-                Console.WriteLine($"{cookies}");
-                foreach (var cookie in cookies)
-                {
-                    if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "X-XSRF-TOKEN")
-                    {
-                        context.Response.Cookies.Delete(cookie.Key);
-                        Console.WriteLine($"Cookie {cookie.Key} eliminada.");
-                    }
-                }
-            }
-        
-            await next(context);
-        });
+        // app.Use(async (context, next) =>
+        // {
+        //     if (!context.User.Identity.IsAuthenticated)
+        //     {
+        //         var cookies = context.Request.Cookies;
+        //         Console.WriteLine("Request Headers:");
+        //         Console.WriteLine($"{cookies}");
+        //         foreach (var cookie in cookies)
+        //         {
+        //             if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "X-XSRF-TOKEN")
+        //             {
+        //                 context.Response.Cookies.Delete(cookie.Key);
+        //                 Console.WriteLine($"Cookie {cookie.Key} eliminada.");
+        //             }
+        //         }
+        //     }
+        //
+        //     await next(context);
+        // });
 
         app.MapControllerRoute(
             name: "default",

@@ -15,10 +15,8 @@ public record AuthUser(
     string? Role,
     IEnumerable<string>? Permissions);
 
-
 public class AuthController : ApiControllerBase
 {
-
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -26,7 +24,6 @@ public class AuthController : ApiControllerBase
     {
         _signInManager = signInManager;
         _userManager = userManager;
-  
     }
 
     [AllowAnonymous]
@@ -41,8 +38,6 @@ public class AuthController : ApiControllerBase
 
             if (result.Succeeded)
             {
-          
-
                 return Ok(new Response(true, "Signed in successfully"));
             }
         }
@@ -79,16 +74,15 @@ public class AuthController : ApiControllerBase
         return BadRequest("Error al obtener la sesion del usuario ");
     }
 
-    [AllowAnonymous]
-    [IgnoreAntiforgeryToken]
+
     [HttpPost("[action]")]
-    // [ValidateAntiForgeryToken] Sirve para MVC asi que aqui NO tiene caso
+    // [ValidateAntiForgeryToken] //Sirve para MVC y esta configurado globalmente asi que aqui NO tiene caso
     public async Task<IActionResult> LogOut()
     {
         await _signInManager
             .SignOutAsync(); // ASP.NET Core Identity. Esto eliminará la cookie de autenticación (ERP.Cookie).
-
-        // Eliminar la cookie de antifalsificación
+        
+        // Elimina las cookies de antifalsificación
         var cookies = HttpContext.Request.Cookies;
         foreach (var cookie in cookies)
         {
@@ -101,6 +95,25 @@ public class AuthController : ApiControllerBase
         return Ok(new Response(true, "Signed out successfully"));
     }
 
+    [AllowAnonymous]
+    // [IgnoreAntiforgeryToken] No aplica Para peticiones GET 
+    [HttpGet("[action]")]
+    public  IActionResult InactivityLogOut()
+    {
+
+        var cookies = HttpContext.Request.Cookies;
+        
+        foreach (var cookie in cookies)
+        {
+            if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "ANY-XSRF-TOKEN")
+            {
+                HttpContext.Response.Cookies.Delete(cookie.Key);
+            }
+        }
+
+        return Ok(new Response(true, "Signed out for Inactivity"));
+    }
+
 
     [HttpPost("[action]")]
     public IActionResult Protected()
@@ -108,14 +121,14 @@ public class AuthController : ApiControllerBase
         var protectedData = new { Message = "This is protected data" };
         return Ok(protectedData);
     }
-    
+
     [HttpPut("[action]")]
     public IActionResult ProtectedPut()
     {
         var protectedData = new { Message = "This is protected PUT" };
         return Ok(protectedData);
     }
-    
+
     [HttpDelete("[action]")]
     public IActionResult ProtectedDelete()
     {

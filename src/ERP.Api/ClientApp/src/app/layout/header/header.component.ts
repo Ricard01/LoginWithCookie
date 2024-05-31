@@ -1,8 +1,8 @@
 import {Component, DoCheck, EventEmitter, Output, ViewEncapsulation} from '@angular/core';
-import {IAuthState} from "../../state/auth/auth.reducers";
 import {Store} from "@ngrx/store";
 import * as AuthActions from "../../state/auth/auth.actions";
 import {IAppState} from "../../state/app.state";
+import {TabService} from "../../core/services/tab.service";
 
 @Component({
   selector: 'app-header',
@@ -14,7 +14,7 @@ export class HeaderComponent implements DoCheck {
 
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(public store: Store<IAppState>) {
+  constructor(public store: Store<IAppState>, private tabService: TabService) {
 
   }
 
@@ -40,7 +40,9 @@ export class HeaderComponent implements DoCheck {
   }
 
   onLogOut() {
-    console.log("logOut Submitted")
+
+    this.tabService.notifyOtherTabsOfLogout();
+
     this.store.dispatch(AuthActions.logOut());
   }
 

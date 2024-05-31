@@ -22,6 +22,10 @@ export class AuthService {
     return this.http.post<IAuthResult>(`${this.authUrl}/logout`, {});
   }
 
+  logOutByInactivity() {
+    return this.http.get<IAuthResult>(`${this.authUrl}/inactivityLogOut`, {});
+  }
+
   getUserSession() {
     return this.http.get<IAuthUser>(`${this.authUrl}/session`);
   }

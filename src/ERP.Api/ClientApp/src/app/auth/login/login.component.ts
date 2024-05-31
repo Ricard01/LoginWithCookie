@@ -32,6 +32,7 @@ export class LoginComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
+
   }
 
 
@@ -49,10 +50,11 @@ export class LoginComponent {
     ).subscribe()
 
 
-
   }
 
   onLogin() {
+
+this.removeLogOutEvent();
 
     if (this.loginForm.valid) {
 
@@ -61,6 +63,16 @@ export class LoginComponent {
 
     }
 
+  }
+
+  private removeLogOutEvent() {
+    // Se genera cuando existen multiples pestañas y se cierra la sesion
+    const logOutEvent = localStorage.getItem('logout-event');
+
+    if (logOutEvent) {
+      //Elimino
+      localStorage.removeItem('logout-event');
+    }
   }
 
 

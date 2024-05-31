@@ -7,11 +7,12 @@ import {Store} from "@ngrx/store";
 import {IAppState} from "../../state/app.state";
 import {logOut} from "../../state/auth/auth.actions";
 import * as AuthActions from "../../state/auth/auth.actions";
+import {TabService} from "../services/tab.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private store: Store<IAppState>) {
+  constructor(private tabService: TabService,  router: Router, private store: Store<IAppState>) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -27,9 +28,15 @@ export class ErrorInterceptor implements HttpInterceptor {
             break;
           case 401:
             errorMessage = 'Unauthorized';
-            // Emitir un evento de cierre de sesión
-            localStorage.setItem('logout-event', Date.now().toString());
-            this.store.dispatch(AuthActions.logOut());
+            /*
+             El BackEnd se configuró para que después de un periodo de inactividad se borre la Cookie.
+             Esto provocará que la próxima llamada al backend genere el error 401 y por consiguiente necesito cerrar la sesión.
+             */
+
+            this.tabService.notifyOtherTabsOfLogout();
+
+            this.store.dispatch(AuthActions.logOutByInactivity());
+
             break;
           case 403:
             errorMessage = 'Forbidden';
