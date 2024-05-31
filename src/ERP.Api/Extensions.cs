@@ -2,10 +2,8 @@ using ERP.Infrastructure.AuthFeatures.Policy;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ERP.Api;
 
@@ -76,37 +74,9 @@ internal static class Extensions
                 }
             }
 
-            // if (app.Environment.IsDevelopment())
-            // {
-            //     Console.WriteLine("Request Headers:");
-            //     foreach (var header in context.Request.Headers)
-            //     {
-            //         Console.WriteLine($"{header.Key}: {header.Value}");
-            //     }
-            // }
-
             await next(context);
         });
-
-        // app.Use(async (context, next) =>
-        // {
-        //     if (!context.User.Identity.IsAuthenticated)
-        //     {
-        //         var cookies = context.Request.Cookies;
-        //         Console.WriteLine("Request Headers:");
-        //         Console.WriteLine($"{cookies}");
-        //         foreach (var cookie in cookies)
-        //         {
-        //             if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "X-XSRF-TOKEN")
-        //             {
-        //                 context.Response.Cookies.Delete(cookie.Key);
-        //                 Console.WriteLine($"Cookie {cookie.Key} eliminada.");
-        //             }
-        //         }
-        //     }
-        //
-        //     await next(context);
-        // });
+        
 
         app.MapControllerRoute(
             name: "default",

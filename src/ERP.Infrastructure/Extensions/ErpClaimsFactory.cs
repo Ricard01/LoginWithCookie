@@ -10,6 +10,7 @@ namespace ERP.Infrastructure.Extensions;
 
 public class ErpClaimsFactory : UserClaimsPrincipalFactory<ApplicationUser>
 {
+    
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -53,5 +54,8 @@ public class ErpClaimsFactory : UserClaimsPrincipalFactory<ApplicationUser>
         }
         
         return identity;
+        
     }
+    
+    
 }
