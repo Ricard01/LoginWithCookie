@@ -3,6 +3,7 @@ import {LoginComponent} from './login.component';
 import {Route, RouterModule} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AuthStateModule} from "../../state/auth/auth.state.module";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 
 const authRoutes: Route[] = [
@@ -17,7 +18,9 @@ const authRoutes: Route[] = [
   imports: [
     RouterModule.forChild(authRoutes),
     ReactiveFormsModule,
-    AuthStateModule
+    AuthStateModule,
+    NgIf,
+    AsyncPipe
   ],
 })
 export class LoginModule {

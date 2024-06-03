@@ -5,8 +5,8 @@ import {IAppState} from "../../state/app.state";
 import {Store} from "@ngrx/store";
 import {ICredentials} from "../../core/models/auth-model";
 import * as AuthActions from "../../state/auth/auth.actions";
-import {selectIsLoggedIn} from "../../state/auth/auth.selectors";
-import {tap} from "rxjs";
+import {selectIsLoggedIn, selectUserError} from "../../state/auth/auth.selectors";
+import {Observable, tap} from "rxjs";
 
 
 @Component({
@@ -19,6 +19,7 @@ export class LoginComponent {
 
   returnUrl: string = '/';
   credentials: ICredentials = {email: '', password: ''};
+  errorMessage$: Observable<string | null>;
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required]],//[Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
@@ -32,7 +33,7 @@ export class LoginComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-
+    this.errorMessage$ = this.store.select(selectUserError);
   }
 
 
@@ -54,11 +55,12 @@ export class LoginComponent {
 
   onLogin() {
 
-this.removeLogOutEvent();
+    this.removeLogOutEvent();
 
     if (this.loginForm.valid) {
 
       const credentials: ICredentials = {...this.loginForm.value as ICredentials};
+
       this.store.dispatch(AuthActions.login({credentials, returnUrl: this.returnUrl}));
 
     }

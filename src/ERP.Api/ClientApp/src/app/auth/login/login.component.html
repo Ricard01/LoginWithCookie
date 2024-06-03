@@ -72,7 +72,8 @@
 
 
               </div>
-              <p class="hidden text-xs text-red-600 mt-2" id="error-password">8+ characters required</p>
+              <p class="text-xs text-red-600 mt-2" id="error-password" *ngIf="errorMessage$ | async as error "
+              ><b>Error:</b> {{ error }}</p>
 
             </div>
 

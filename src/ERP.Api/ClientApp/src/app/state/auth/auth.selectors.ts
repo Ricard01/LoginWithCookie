@@ -13,3 +13,8 @@ export const selectUserInfo = createSelector(
   getAuthFeatureState,
   state => state.user
 );
+
+export const selectUserError = createSelector(
+  getAuthFeatureState,
+  state => state.error
+)
