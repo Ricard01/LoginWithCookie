@@ -7,9 +7,9 @@ public class ApplicationRole : IdentityRole<Guid>
     /// <summary>
     ///     A human-friendly description of what the Role does
     /// </summary>
-    public string? Description { get; init; }
+    public string? Description { get; set; }
 
-    public string? Permissions { get; init; }
+    public string? Permissions { get; set; }
 
 
     public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }

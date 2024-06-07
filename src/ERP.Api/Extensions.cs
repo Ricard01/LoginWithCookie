@@ -1,6 +1,9 @@
+using System.Reflection;
 using ERP.Infrastructure.AuthFeatures.Policy;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
+using ERP.Infrastructure.Repositories.Roles;
+using ERP.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +28,9 @@ internal static class Extensions
         builder.Services.AddMyDbContext(builder.Configuration);
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
-        
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
         builder.Services.AddAuthorization();
 
 
@@ -39,6 +44,9 @@ internal static class Extensions
 
         // Configuración del servicio de antifalsificación
         builder.Services.AddAntiforgery(options => options.HeaderName = "ANY-XSRF-TOKEN");
+
+
+        builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationDbContext)));
 
         return builder.Build();
     }
@@ -54,12 +62,12 @@ internal static class Extensions
         app.UseAuthentication();
         app.UseAuthorization();
 
-        
+
         // Si el usuario está autenticado, obtiene un token antiforgery y lo almacena en una cookie con nombre ANY-XSRF-TOKEN, que Angular puede leer.
         app.Use(async (context, next) =>
         {
             // Console.WriteLine($"Request Path: {context.Request.Path}, Authenticated: {context.User.Identity.IsAuthenticated}");
-            
+
             if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
             {
                 var antiforgery = context.RequestServices.GetService<IAntiforgery>();
@@ -76,14 +84,14 @@ internal static class Extensions
 
             await next(context);
         });
-        
+
 
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
         app.MapFallbackToFile("index.html");
-        
+
 
         return app;
     }

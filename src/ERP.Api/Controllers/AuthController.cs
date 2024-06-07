@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers;
 
+public record Response(bool IsSuccess, string Message);
+
 public record SignInRequest(string Email, string Password);
 
 public record AuthUser(
