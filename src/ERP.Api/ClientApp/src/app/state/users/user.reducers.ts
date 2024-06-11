@@ -1,24 +1,37 @@
-import {IUser} from "./user.model";
+import {IUser} from "../../modules/users/models/user.model";
 import {createReducer, on} from "@ngrx/store";
-import * as UserActions from "./user.actions";
+import {createEntityAdapter, EntityAdapter, EntityState} from "@ngrx/entity";
+import {UserActions} from "./user.actions";
 
 
-/* Reducers
-* Are responsible for handling transitions from one state to the next state in your application.
-* Reducer functions handle these transitions by determining which actions to handle based on the action's type.
-* */
+/*
+  The Entity State is a predefined generic interface for a given entity collection with the following interface:
 
-export interface IUserState {
-  isLoggedIn: boolean;
-  user: IUser | null;
-  error: string | null;
+  interface EntityState<V> {
+    ids: string[] | number[];
+    entities: { [id: string | id: number]: V };
+  }
+  - ids: An array of all the primary ids in the collection
+  - entities: A dictionary of entities in the collection indexed by the primary id
+
+Extend this interface to provide any additional properties for the entity state.
+ */
+export interface IUserState extends EntityState<IUser> {
+  // additional entity state properties
+  selectedUserId: string | null;
+  isLoading: boolean,
+
+  error: string | null,
+
 }
+export const adapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
 
-const initialState: IUserState = {
-  isLoggedIn: false,
-  user: null,
+export const initialState: IUserState = adapter.getInitialState({
+  // additional entity state properties
+  selectedUserId: null,
+  isLoading: false,
   error: null,
-};
+});
 
 /* reducers executes after the dispatch
 *  When an action is dispatched, all registered reducers receive the action.
@@ -26,7 +39,12 @@ const initialState: IUserState = {
 * */
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.testUser, (state) => ({ ...state, error: null })), // What the store should do in response to the login action.
+  on(UserActions.opened, (state) => ({...state, isLoading: true})), // What the store should do in response to the login action.
+  on(UserActions.usersLoadedSuccess, (state, action) => {
+    return adapter.setAll(action.users, {...state,  isLoading: false});
+  }),
 
 
 );
+
+export const {selectAll, selectEntities} = adapter.getSelectors();

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../core/services/auth.service";
 import {HttpClient} from "@angular/common/http";
+import {UsersService} from "../users/services/users.service";
 
 
 @Component({
@@ -12,6 +13,8 @@ export class DashboardComponent {
 
   resp: any;
 
+  usersList: any
+
   protectedData: any;
 
   protectedPUT: any;
@@ -20,7 +23,7 @@ export class DashboardComponent {
 
   UnprotectedData: any
 
-  constructor(private authService: AuthService, private http: HttpClient) {
+  constructor(private usersService: UsersService, private authService: AuthService, private http: HttpClient) {
     // this.authService.getUserSession().subscribe(resp => {
     //   this.authUser = resp;
     //   console.log('authUser', this.authUser)
@@ -81,4 +84,10 @@ export class DashboardComponent {
   }
 
 
+  getAllUsers() {
+    this.usersService.getAll().subscribe(resp => {
+      console.log(resp);
+
+    })
+  }
 }

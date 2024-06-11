@@ -1,6 +1,7 @@
-import {ActionReducer} from "@ngrx/store";
+
 import {IAuthState} from "./auth/auth.reducers";
 import {IUserState} from "./users/user.reducers";
+
 
 export interface IAppState {
   authState: IAuthState;
