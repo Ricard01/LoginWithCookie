@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IAppState} from "../../../state/app.state";
 import {Store} from "@ngrx/store";
-import {UserActions} from "../../../state/users";
+import { UsersPageActions} from "../../../state/users";
 
 
 @Component({
@@ -15,7 +15,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(UserActions.opened());
+    this.store.dispatch(UsersPageActions.opened());
   }
 
 }

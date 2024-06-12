@@ -1,7 +1,7 @@
 import {IUser} from "../../modules/users/models/user.model";
 import {createReducer, on} from "@ngrx/store";
 import {createEntityAdapter, EntityAdapter, EntityState} from "@ngrx/entity";
-import {UserActions} from "./user.actions";
+import {UsersApiActions, UsersPageActions} from "./user.actions";
 
 
 /*
@@ -16,35 +16,34 @@ import {UserActions} from "./user.actions";
 
 Extend this interface to provide any additional properties for the entity state.
  */
+
 export interface IUserState extends EntityState<IUser> {
-  // additional entity state properties
   selectedUserId: string | null;
   isLoading: boolean,
-
   error: string | null,
-
 }
+
 export const adapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
 
 export const initialState: IUserState = adapter.getInitialState({
-  // additional entity state properties
   selectedUserId: null,
   isLoading: false,
   error: null,
 });
 
-/* reducers executes after the dispatch
-*  When an action is dispatched, all registered reducers receive the action.
-*  Whether they handle the action is determined by the on functions that associate one or more actions with a given state change.
-* */
+
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.opened, (state) => ({...state, isLoading: true})), // What the store should do in response to the login action.
-  on(UserActions.usersLoadedSuccess, (state, action) => {
-    return adapter.setAll(action.users, {...state,  isLoading: false});
+  on(UsersPageActions.opened, (state) => ({...state, isLoading: true})),
+  on(UsersApiActions.loadedSuccess, (state, action) => {
+    return adapter.setAll(action.users, {...state, isLoading: false});
   }),
-
-
+  on(UsersApiActions.addedSuccess, (state, {user}) => {
+    return adapter.addOne(user, state)
+  }),
+  on(UsersApiActions.loadFailed, (state, action) => {
+    return {...state, isLoading: false, error: action.error};
+  })
 );
 
 export const {selectAll, selectEntities} = adapter.getSelectors();
