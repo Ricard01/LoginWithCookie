@@ -27,6 +27,7 @@
     "@angular/router": "^17.3.6",
     "@ngrx/effects": "^17.2.0",
     "@ngrx/entity": "^17.2.0",
+    "@ngrx/operators": "^17.2.0",
     "@ngrx/store": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",
     "@preline/toggle-password": "^2.3.0",

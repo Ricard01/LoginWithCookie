@@ -4,11 +4,15 @@ export interface IUserVm {
 
 export class IUser {
   id!: number;
-  username!: string;
+  userName!: string;
   name!: string;
   email?: string;
   profilePictureUrl?: string
-  role?: string
+  userRoles!: IUserRole[];
+}
+
+interface IUserRole {
+  roleName: string;
 }
 
 export interface IResult {

@@ -20,7 +20,7 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<UsersVm>> Get()
     {
         var users = await _userRepository.Get();
-
+        
         return Ok(users);
     }
 

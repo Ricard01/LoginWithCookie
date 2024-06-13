@@ -24,6 +24,7 @@ export const UsersApiActions = createActionGroup({
     'Update Failed ': props<{ error: string }>(),
     'Delete Success': emptyProps(),
     'Delete Failed ': props<{ error: string }>(),
+    'Error Occurred': props<{ error: string }>(),
   },
 });
 

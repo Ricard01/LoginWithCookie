@@ -21,9 +21,9 @@ import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
   ],
   imports: [
     HttpClientModule,
+    BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     LayoutModule,
