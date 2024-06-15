@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {IAppState} from "../../../state/app.state";
 import {select, Store} from "@ngrx/store";
 import {UsersPageActions} from "../../../state/users";
@@ -7,6 +7,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {map, Observable} from "rxjs";
 import {selectAllUsers} from "../../../state/users/user.selectors";
+import {MatSort} from "@angular/material/sort";
 
 
 @Component({
@@ -15,11 +16,11 @@ import {selectAllUsers} from "../../../state/users/user.selectors";
   styleUrl: './user-list.component.scss'
 })
 
-export class UserListComponent implements OnInit, AfterViewInit {
+export class UserListComponent implements OnInit {
 
   constructor(private store: Store<IAppState>) {
+    this.users$ = this.store.pipe(select(selectAllUsers));
   }
-
 
   columns = [
     {
@@ -31,6 +32,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
       columnDef: 'userName',
       header: 'UserName',
       cell: (user: IUser) => user.userName,
+    },
+    {
+      columnDef: 'name',
+      header: 'Full Name ',
+      cell: (user: IUser) => user.name,
     },
     {
       columnDef: 'userRoles',
@@ -47,37 +53,27 @@ export class UserListComponent implements OnInit, AfterViewInit {
   displayedColumns = this.columns.map(c => c.columnDef);
 
 
-  dataSource = new MatTableDataSource<IUser>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  users$: Observable<IUser[]> | undefined;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<IUser>([]);
+  users$: Observable<IUser[]>;
 
 
   ngOnInit(): void {
     this.init();
   }
 
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
-
   init() {
-
     this.store.dispatch(UsersPageActions.opened());
-    this.users$ = this.store.pipe(select(selectAllUsers));
 
-    this.users$.subscribe(users => {
-      this.dataSource.data = users;
-    });
-
-    // this.usersSource$ = this.store.pipe(
-    //   select(selectAllUsers),
-    //   map(users => {
-    //     const dataSource = this.dataSource;
-    //     dataSource.data = users;
-    //     dataSource.paginator = this.paginator;
-    //     return dataSource;
-    //   }));
+    this.users$.pipe(
+      map(users => {
+        this.dataSource.data = users;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        return this.dataSource;
+      })
+    ).subscribe();
   }
 
   applyFilter(event: Event) {
