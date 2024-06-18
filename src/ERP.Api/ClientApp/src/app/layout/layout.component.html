@@ -1,34 +1,13 @@
-<div>
+<app-header (toggleSidenav)="toggleMenu()"></app-header>
 
-  <app-header (toggleSidenav)="toggleMenu()"></app-header>
+<app-sidebar></app-sidebar>
 
-  <app-sidebar></app-sidebar>
+<div class="main-content">
+  <div class="page-content">
 
-  <div class="main-content">
-    <div class="page-content">
-
-      <main class="container-fluid">
-        <router-outlet></router-outlet>
-      </main>
-    </div>
+    <main class="container-fluid">
+      <router-outlet></router-outlet>
+    </main>
   </div>
 </div>
 
-<!-- [ngClass]="{'sidebar-mini': appOptions.isSideBarMini}"
-  <mat-sidenav-container autosize autofocus>
-
-  <mat-sidenav mode="side" opened >
-     [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'"
-<h2>hola</h2>
-
-<h2>hola</h2>
-  <app-sidebar></app-sidebar>
-
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <h2>Content</h2>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-
-</mat-sidenav-container> -->

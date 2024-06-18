@@ -1,4 +1,8 @@
 @use 'helpers/variables' as *;
+@use 'layout';
+@use 'icons';
+@use 'material/material-themes';
+
 
 .container-wrap {
   height: 100%;
@@ -16,6 +20,7 @@
   padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
 }
 
+// Custom scrollbar styles
 .simplebar-track.simplebar-vertical .simplebar-scrollbar::before {
   background: linear-gradient(135deg, #8039BF, #6700F4);
 }

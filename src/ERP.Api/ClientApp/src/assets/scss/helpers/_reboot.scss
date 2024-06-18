@@ -7,13 +7,14 @@ body {
   text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  background: #fcfcfc;
 }
 
 html,
 body {
-  position: relative; // 1
+  position: relative;
   height: 100%;
-  overflow: auto; // 2
+  overflow: auto;
 }
 
 *,

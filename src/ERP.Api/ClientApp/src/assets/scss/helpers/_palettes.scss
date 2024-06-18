@@ -1,3 +1,109 @@
+//500 es el color para botones
+/* For use in src/lib/core/theming/_palette.scss */
+$my-purple: (
+  50 : #eee7f4,
+  100 : #d4c3e4,
+  200 : #b79bd3,
+  300 : #9a73c1,
+  400 : #8455b3,
+  500 : #6e37a6,
+  600 : #66319e,
+  700 : #5b2a95,
+  800 : #51238b,
+  900 : #3f167b,
+  A100 : #ceb2ff,
+  A200 : #ae7fff,
+  A400 : #8e4cff,
+  A700 : #7e32ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+/* For use in src/lib/core/theming/_palette.scss */
+$my-purplePrimary: (
+  50 : #f1f1f9,
+  100 : #dddcf1,
+  200 : #c6c4e8,
+  300 : #afacde,
+  400 : #9d9bd7,
+  500 : #8c89d0,
+  600 : #8481cb,
+  700 : #7976c4,
+  800 : #6f6cbe,
+  900 : #5c59b3,
+  A100 : #ffffff,
+  A200 : #e8e7ff,
+  A400 : #b7b4ff,
+  A700 : #9e9bff,
+  contrast: (
+    50 : #ffffff,
+    100 : #ffffff,
+    200 : #ffffff,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+
+
+/* For use in src/lib/core/theming/_palette.scss */
+$my-accent: (
+  50 : #ecedf1,
+  100 : #d1d1dd,
+  200 : #b2b3c6,
+  300 : #9394af,
+  400 : #7b7d9d,
+  500 : #64668c,
+  600 : #5c5e84,
+  700 : #525379,
+  800 : #48496f,
+  900 : #36385c,
+  A100 : #aeb0ff,
+  A200 : #7b7fff,
+  A400 : #484dff,
+  A700 : #2f34ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+
 $my-softblue: (
   50 : #eef2ff,
   100 : #d4defe,
@@ -163,4 +269,104 @@ $my-darkpurple: (
   )
 );
 
+$my-darkblue: (
+  50 : #e3e4e8,
+  100 : #b9bcc5,
+  200 : #8a909e,
+  300 : #5b6477,
+  400 : #37425a,
+  500 : #14213d,
+  600 : #121d37,
+  700 : #0e182f,
+  800 : #0b1427,
+  900 : #060b1a,
+  A100 : #597eff,
+  A200 : #2656ff,
+  A400 : #0035f2,
+  A700 : #0030d9,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
 
+
+
+
+$my-darkinfo: (
+  50 : #ffffff,
+  100 : #c5dbf0,
+  200 : #99c0e4,
+  300 : #609dd5,
+  400 : #488ece,
+  500 : #347fc4,
+  600 : #2e6fac,
+  700 : #276094,
+  800 : #21507b,
+  900 : #1a4063,
+  A100 : #f8fcff,
+  A200 : #98caf8,
+  A400 : #4899e3,
+  A700 : #3e8cd3,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #ffffff,
+  )
+);
+
+$my-darksucces: (
+  50 : #def7f5,
+  100 : #a0e9e2,
+  200 : #72dfd4,
+  300 : #38d1c3,
+  400 : #2cbfb1,
+  500 : #26a69a,
+  600 : #208d83,
+  700 : #1b746c,
+  800 : #155b55,
+  900 : #0f423e,
+  A100 : #cefdf9,
+  A200 : #6cf9ec,
+  A400 : #1ce3d0,
+  A700 : #25c0b2,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);

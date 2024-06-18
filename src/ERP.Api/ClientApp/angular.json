@@ -27,7 +27,8 @@
               "oidc-client",   "can-use-dom"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

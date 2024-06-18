@@ -52,7 +52,6 @@ export class UserListComponent implements OnInit {
 
   displayedColumns = this.columns.map(c => c.columnDef);
 
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<IUser>([]);
@@ -78,6 +77,7 @@ export class UserListComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

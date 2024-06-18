@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+@use '../helpers/palettes';
+
+@include mat.core();
+
+// Light palettes
+$my-light-primary: mat.define-palette(palettes.$my-purplePrimary);
+$my-light-accent: mat.define-palette(palettes.$my-accent);
+$angular-warn: mat.define-palette(palettes.$my-kindaPink);
+
+
+
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $my-light-primary,
+    accent: $my-light-accent,
+    warn: $angular-warn,
+  )
+));
+
+
+// Apply core and component themes
+@include mat.core-theme($light-theme);
+
+@include mat.button-theme($light-theme);
+//@include mat.icon-button-theme($light-theme);
+//@include mat.fab-theme($light-theme);
+
+
+
