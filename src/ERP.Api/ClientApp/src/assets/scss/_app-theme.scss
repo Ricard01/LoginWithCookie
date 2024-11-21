@@ -1,8 +1,8 @@
 @use 'helpers/variables' as *;
+@use 'helpers/tailwind';
 @use 'layout';
 @use 'icons';
 @use 'material/material-themes';
-
 
 .container-wrap {
   height: 100%;

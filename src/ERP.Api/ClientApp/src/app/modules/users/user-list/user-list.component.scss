@@ -1,35 +1,5 @@
-.user-table-container {
-  padding: 20px;
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.search-container {
-  width: 300px;
-}
-
 .mat-elevation-z8 {
   border-radius: 15px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   overflow: hidden;
-}
-
-.mat-table {
-  background-color: white;
-}
-
-.header-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header-controls mat-form-field {
-  width: 300px;
-  margin-left: auto;
 }

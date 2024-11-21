@@ -1,7 +1,5 @@
 @use '../helpers/variables' as *;
 
-// Ayuda a ocultar el sidebar en base al width
-// comprobado igual al ejemplo
 .app-menu {
   .row {
     margin: 0;
@@ -12,6 +10,7 @@
     }
   }
 
+  // Ayuda a ocultar el sidebar en base al width
   @media (max-width: 767.98px) {
     margin-left: -100%;
     padding: 10px 0 20px 0;
@@ -29,7 +28,7 @@
   margin-top: 0;
   position: fixed;
   top: 0;
-  padding: 0 0 calc(#{$header-height} + 25px) 0;
+  padding: 0 0 calc(#{$header-height} + 1.5rem) 0;
   transition: all .1s ease-out;
 
   .navbar-nav {
@@ -40,22 +39,17 @@
       color: $sidenav-font-color;
       font-size: $sidenav-font-size;
       font-family: $sidenav-font-family;
-      margin: 4px 12px;
+      margin: 0.25rem 0.75rem;
       font-weight: $sidenav-font-weight;
+      position: relative; // added 2024
 
       &.active {
-        //font-weight: 500;
-        //color: $sidenav-active-color;
-        //filter: brightness($hover-brightness);
-
+        font-weight: 500;
         background-color: $sidenav-active-bg;
       }
 
       &:hover {
-
-        color: $sidenav-hover-color; // $sidenav-item-hover-color;
-        //background-color: red;
-        //background: rgba(0, 0, 0, 0.08);
+        color: $sidenav-hover-color;
       }
 
       i {
@@ -71,16 +65,14 @@
         z-index: 1;
       }
 
-      &[data-bs-toggle=collapse] {
-        &:after {
-          display: block;
+      &[data-bs-toggle=collapse]::after {
           content: "\F0142";
           font-family: 'Material Design Icons';
           margin-left: auto;
           transition: transform .2s;
           font-size: 1.05rem;
           position: absolute;
-          right: 20px;
+          right: 1.25rem;
           color:$sidenav-title-color;
         }
 
@@ -88,25 +80,13 @@
           color: $sidenav-active-color;
           background-color: $sidenav-active-bg;
 
-          &:after {
+          &::after {
             transform: rotate(90deg);
             color: $sidenav-active-color;
           }
-
-          &:before {
-            opacity: 1;
-            background-color: $sidenav-active-color; // $sidenav-item-active-color;
-          }
         }
-      }
 
-      &.collapsed {
-        &.active {
-          &::after {
-            transform: rotate(90deg);
-          }
-        }
-      }
+
     }
 
     .nav-sm {
@@ -115,21 +95,20 @@
       .nav-link {
         padding: $sidenav-sub-item-padding-y $sidenav-sub-item-padding-x;
         color: $sidenav-font-color;
-        // white-space: none;
         position: relative;
         font-size: $sidenav-font-size;
         font-family: $sidenav-font-family;
         font-weight: $sidenav-font-weight;
         margin: 0;
 
-        &:before {
+        &::before {
           content: '';
-          width: 3.5px;
-          height: 3.5px;
+          width: 0.21875rem;
+          height: 0.21875rem;
           background-color: $sidenav-sub-item-color;
           position: absolute;
-          left: 5px;
-          top: 17.5px;
+          left: 0.3125rem;
+          top: 1.09375rem;
           transition: all .4s ease-in-out;
           opacity: 0.5;
           border-radius: 50%;
@@ -141,7 +120,6 @@
 
         &:hover {
           color: $sidenav-hover-color;
-          //color: $sidenav-sub-item-hover-color;
 
           &:before {
             opacity: 1;
@@ -150,7 +128,7 @@
 
         &.active {
           font-weight: $font-weight-semibold;
-          color: $sidenav-sub-item-active-color; //#8c89d0;//$sidenav-active-bg;
+          color: $sidenav-sub-item-active-color;
           background-color: transparent;
 
           &:before {
@@ -160,19 +138,17 @@
       }
 
       .nav-sm {
-        padding-left: 15px;
+        padding-left: 0.9375rem;
 
-        .nav-link {
+        .nav-link::before {
+          height: 0.3125rem;
+          width: 0.3125rem;
+          left: 0.75rem;
+          border-radius: 50%;
+          background-color: transparent;
+          border: 1px solid;
+          top: 1rem;
 
-          &:before {
-            height: 5px;
-            width: 5px;
-            left: 12px;
-            border-radius: 50%;
-            background-color: transparent;
-            border: 1px solid;
-            top: 16px;
-          }
         }
       }
     }
@@ -180,10 +156,6 @@
 
   }
 
-  .btn-vertical-sm-hover {
-    color: red;
-    display: none;
-  }
 
   .container-fluid {
     padding: 0;

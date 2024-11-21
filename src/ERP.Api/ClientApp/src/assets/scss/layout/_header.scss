@@ -1,16 +1,16 @@
 @use '../helpers/variables' as *;
 
-#page-topbar {
-
-  z-index: 1//calc(#{$sidenav-z-index} + 1); se modifico porque no se veia las notificaciones (snackbar)
-}
+//#page-topbar {
+//
+//  z-index: 1//calc(#{$sidenav-z-index} + 1); se modifico porque no se veia las notificaciones (snackbar)
+//}
 
 #page-topbar {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  //z-index: 1002;
+  z-index: 1002;
   background-color: white;
   transition: all 0.1s ease-out;
   border-bottom: 1px solid $border-color;
@@ -24,30 +24,6 @@
   }
 }
 
-//mat-toolbar {
-//  // position: fixed;
-//  // top: 0;
-//  // z-index: 1;
-//
-//  position: fixed;
-//  top: 0;
-//  right: 0;
-//  left: 0;
-//  z-index: 1002;
-//  // background-color: $header-bg;
-//  transition: all 0.1s ease-out;
-//  border-bottom: 1px solid $border-color;
-//
-//  &.topbar-shadow {
-//    box-shadow: rgba(0, 0, 0, 0.18) 0 1px 3px;
-//  }
-//
-//  @media (min-width: 768px) {
-//    left: $sidenav-width;
-//  }
-//
-//
-//}
 
 //header
 .navbar-header {
@@ -57,7 +33,7 @@
   margin: 0 auto;
   height: $header-height;
   padding: 0 $grid-gutter-width 0 calc(#{$grid-gutter-width} * 0.5)
-  /*rtl: 0 0 0 calc(#{$grid-gutter-width} / 2) */
+
   ;
 
   @media (max-width: 767.98px) {
