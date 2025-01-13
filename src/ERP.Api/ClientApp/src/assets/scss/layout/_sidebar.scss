@@ -177,7 +177,7 @@
 //&[data-sidebar-size="sm"]
 .sidebar-mini {
   @media (min-width: 768px) {
-    min-height: 1750px;
+    min-height: 100%;
 
     .main-content {
       margin-left: $sidenav-width-sm;
@@ -213,7 +213,7 @@
 
   // Side menu
   .navbar-menu {
-    position: absolute;
+    //position: absolute;
     width: $sidenav-width-sm !important;
     padding-top: $header-height;
 

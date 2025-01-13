@@ -22,6 +22,9 @@
   content: "\F0142";
 }
 
+.mdi-home:before {
+  content: "\F0142"; /* Código unicode del ícono */
+}
 
 .mdi-blank::before {
   content: "\F68C";

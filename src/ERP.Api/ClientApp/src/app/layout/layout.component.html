@@ -1,14 +1,16 @@
-<app-header (toggleSidenav)="toggleMenu()"></app-header>
+<div class="container-wrap">
+  <app-header (toggleSidenav)="toggleMenu()"></app-header>
 
-<app-sidebar></app-sidebar>
+  <app-sidebar></app-sidebar>
 
-<div class="main-content">
-  <div class="page-content">
+  <div class="main-content">
+    <div class="page-content">
 
-    <main class="container-fluid">
-      <router-outlet></router-outlet>
-    </main>
-    
+      <main class="container-fluid">
+        <router-outlet></router-outlet>
+      </main>
+
+    </div>
   </div>
-</div>
 
+</div>
