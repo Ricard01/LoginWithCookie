@@ -7,6 +7,7 @@ using ERP.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERP.Api;
 
@@ -25,7 +26,11 @@ internal static class Extensions
         builder.Services.AddMyIdentity();
 
         // Configuración del contexto de datos
-        builder.Services.AddMyDbContext(builder.Configuration);
+        //builder.Services.AddMyDbContext(builder.Configuration);
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+       options.UseSqlServer(configuration.GetConnectionString("Sql"),
+           b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();

@@ -28,12 +28,6 @@
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ClientApp\.angular\cache\17.0.0\babel-webpack\" />
-      <Folder Include="ClientApp\src\app\core\" />
-      <Folder Include="ClientApp\src\app\layout\" />
-      <Folder Include="ClientApp\src\app\modules\" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ERP.Infrastructure\ERP.Infrastructure.csproj" />
