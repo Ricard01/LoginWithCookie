@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250116163645_Initial")]
+    [Migration("20250118004914_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,7 @@ namespace ERP.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
 
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationRole", b =>
                 {

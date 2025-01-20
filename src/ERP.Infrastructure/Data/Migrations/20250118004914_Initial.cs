@@ -11,6 +11,8 @@ namespace ERP.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+        
+
             migrationBuilder.CreateTable(
                 name: "ANY.Roles",
                 columns: table => new
@@ -203,6 +205,9 @@ namespace ERP.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AdmDocumentos");
+
             migrationBuilder.DropTable(
                 name: "ANY.UserRoles");
 

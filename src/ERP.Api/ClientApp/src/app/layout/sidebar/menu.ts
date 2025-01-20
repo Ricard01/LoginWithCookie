@@ -14,6 +14,13 @@ export const MENU: MenuItem[] = [
       link: '/',
 
     },
+    {
+        id: 4,
+        label: 'Facturas',
+        icon: 'ph-gauge',
+      link: '/doctos',
+
+    },
 
     {
         id: 3,

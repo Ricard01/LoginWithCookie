@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Reflection.Emit;
 using ERP.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,8 +17,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
+
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
         base.OnModelCreating(builder);
 
+        builder.Entity<ApplicationUser>(entity =>
+        {
+            entity.ToTable("ANY.Users");
+        });
+
+        // Configuración personalizada para otras tablas de Identity si es necesario
+        builder.Entity<ApplicationRole>(entity =>
+        {
+            entity.ToTable("ANY.Roles");
+        });
+
+        builder.Entity<ApplicationUserRole>(entity =>
+        {
+            entity.ToTable("ANY.UserRoles");
+            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+        });
         // builder.Ignore<IdentityUserToken<Guid>>();
         // builder.Ignore<IdentityUserLogin<Guid>>();
         // builder.Ignore<IdentityUserClaim<Guid>>(); // Needed by Ef
@@ -39,8 +59,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
         });
+        builder.Entity<ApplicationRole>(b =>
+        {
+            // Each Role can have many entries in the UserRole join table
+            b.HasMany(e => e.UserRoles)
+                .WithOne(e => e.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
 
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        });
+
+        //builder.Entity<ApplicationUserRole>(b =>
+        //{
+        //    b.HasKey(ur => new { ur.UserId, ur.RoleId });
+        //});
+
+        //builder.Ignore<ApplicationUserRole>();
+        //builder.Entity<ApplicationUserRole>().HasNoKey();
+
     }
 
 }

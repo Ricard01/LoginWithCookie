@@ -1,7 +1,9 @@
 using System.Reflection;
 using ERP.Infrastructure.AuthFeatures.Policy;
+using ERP.Infrastructure.Common.Interfaces;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
+using ERP.Infrastructure.Repositories.Doctos;
 using ERP.Infrastructure.Repositories.Roles;
 using ERP.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Antiforgery;
@@ -22,19 +24,22 @@ internal static class Extensions
         builder.Services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
         builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
+
+
         // Servicios de identidad
         builder.Services.AddMyIdentity();
 
         // Configuración del contexto de datos
-        //builder.Services.AddMyDbContext(builder.Configuration);
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-       options.UseSqlServer(configuration.GetConnectionString("Sql"),
-           b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        builder.Services.AddMainDbContext(builder.Configuration);
+        builder.Services.AddCompacDbContext(builder.Configuration);
+
+        builder.Services.AddScoped<ICompacDbContext, CompacDbContext>();
 
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+        builder.Services.AddScoped<IDoctosRepository, DoctosRepository>();
 
         builder.Services.AddAuthorization();
 

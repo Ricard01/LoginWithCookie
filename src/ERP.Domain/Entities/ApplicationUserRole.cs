@@ -8,3 +8,4 @@ public class ApplicationUserRole : IdentityUserRole<Guid>
 
     public virtual ApplicationRole Role { get; set; } = null!;
 }
+

@@ -22,6 +22,29 @@ namespace ERP.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ERP.Domain.Entities.AdmDocumentos", b =>
+                {
+                    b.Property<int>("CIDDOCUMENTO")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIDDOCUMENTO"));
+
+                    b.Property<DateTime>("CFECHA")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("CFOLIO")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CRAZONSOCIAL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CIDDOCUMENTO");
+
+                    b.ToTable("AdmDocumentos");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
