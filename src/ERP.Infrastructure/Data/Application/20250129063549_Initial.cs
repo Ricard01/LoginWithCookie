@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ERP.Infrastructure.Data.Migrations
+namespace ERP.Infrastructure.Data.Application
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -11,7 +11,20 @@ namespace ERP.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-        
+       
+
+            migrationBuilder.CreateTable(
+                name: "Agentes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agentes", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "ANY.Roles",
@@ -56,6 +69,31 @@ namespace ERP.Infrastructure.Data.Migrations
                     table.PrimaryKey("PK_ANY.Users", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Facturas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdComercial = table.Column<int>(type: "int", nullable: false),
+                    Concepto = table.Column<int>(type: "int", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Folio = table.Column<double>(type: "float", nullable: false),
+                    Cliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Neto = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    Descuento = table.Column<double>(type: "float", nullable: false),
+                    Pendiente = table.Column<double>(type: "float", nullable: false),
+                    Cancelado = table.Column<int>(type: "int", nullable: false),
+                    FechaCancelacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Agente = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Facturas", x => x.Id);
+                });
+
+          
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
@@ -162,6 +200,50 @@ namespace ERP.Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Movimientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdDocumento = table.Column<int>(type: "int", nullable: false),
+                    IdMovimiento = table.Column<int>(type: "int", nullable: false),
+                    IdProducto = table.Column<int>(type: "int", nullable: false),
+                    Neto = table.Column<double>(type: "float", nullable: false),
+                    Descuento = table.Column<double>(type: "float", nullable: false),
+                    Impuesto = table.Column<double>(type: "float", nullable: false),
+                    Retencion = table.Column<double>(type: "float", nullable: false),
+                    codigoProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NombreProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comision = table.Column<double>(type: "float", nullable: false),
+                    Utilidad = table.Column<double>(type: "float", nullable: false),
+                    IdAgente = table.Column<int>(type: "int", nullable: false),
+                    UtilidadRicardo = table.Column<double>(type: "float", nullable: false),
+                    UtilidadAngie = table.Column<double>(type: "float", nullable: false),
+                    IvaRicardo = table.Column<double>(type: "float", nullable: false),
+                    IvaAngie = table.Column<double>(type: "float", nullable: false),
+                    IsrRicardo = table.Column<double>(type: "float", nullable: false),
+                    IsrAngie = table.Column<double>(type: "float", nullable: false),
+                    AgentesId = table.Column<int>(type: "int", nullable: false),
+                    FacturaId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Movimientos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Movimientos_Agentes_AgentesId",
+                        column: x => x.AgentesId,
+                        principalTable: "Agentes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Movimientos_Facturas_FacturaId",
+                        column: x => x.FacturaId,
+                        principalTable: "Facturas",
+                        principalColumn: "Id");
+                });
+
+
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "ANY.Roles",
@@ -200,13 +282,22 @@ namespace ERP.Infrastructure.Data.Migrations
                 name: "IX_AspNetUserLogins_UserId",
                 table: "AspNetUserLogins",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movimientos_AgentesId",
+                table: "Movimientos",
+                column: "AgentesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movimientos_FacturaId",
+                table: "Movimientos",
+                column: "FacturaId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AdmDocumentos");
+           
 
             migrationBuilder.DropTable(
                 name: "ANY.UserRoles");
@@ -224,10 +315,21 @@ namespace ERP.Infrastructure.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Movimientos");
+
+
+            migrationBuilder.DropTable(
                 name: "ANY.Roles");
 
             migrationBuilder.DropTable(
                 name: "ANY.Users");
+
+            migrationBuilder.DropTable(
+                name: "Agentes");
+
+            migrationBuilder.DropTable(
+                name: "Facturas");
+
         }
     }
 }

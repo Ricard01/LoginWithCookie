@@ -88,8 +88,8 @@ public class ApplicationDbContextInitialiser
         var admin = new ApplicationUser()
         {
             UserName = AdminUser,
-            Name = "John Doe",
-            Email = "admin@gmail.com",
+            Name = "Ricardo",
+            Email = "rickardo.chavez@gmail.com",
             ProfilePictureUrl = "https://avatars.githubusercontent.com/u/20118398?v=4"
         };
 

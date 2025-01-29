@@ -29,6 +29,8 @@ public class CompacDbContext : DbContext, ICompacDbContext
 
     public DbSet<AdmProductos> AdmProductos => Set<AdmProductos>();
 
+    public DbSet<AdmAgentes> AdmAgentes => Set<AdmAgentes>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLoggerFactory(GetLoggerFactory());

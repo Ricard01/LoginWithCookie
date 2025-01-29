@@ -30,4 +30,10 @@ public class AdmDocumentos
     [ForeignKey("CIDDOCUMENTO")]
     public virtual ICollection<AdmMovimientos> AdmMovimientos { get; set; }
 
+
+
+    [ForeignKey("CIDAGENTE")]
+    public virtual required AdmAgentes AdmAgentes { get; set; }
+
+
 }

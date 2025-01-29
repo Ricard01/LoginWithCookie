@@ -20,7 +20,8 @@ public static class AddDbContexts
     {
         services.AddDbContext<CompacDbContext>(options =>
               options.UseSqlServer(configuration.GetConnectionString("SqlCONTPAQ"),
-                  b => b.MigrationsAssembly(typeof(CompacDbContext).Assembly.FullName)));
+                  b => b.MigrationsAssembly(typeof(CompacDbContext).Assembly.FullName)).EnableSensitiveDataLogging(false) // Evita migraciones
+    .EnableDetailedErrors(false));
 
         return services;
     }

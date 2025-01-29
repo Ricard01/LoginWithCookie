@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ERP.Infrastructure.Data.Migrations
+namespace ERP.Infrastructure.Data.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250118004914_Initial")]
+    [Migration("20250129063549_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,6 +25,22 @@ namespace ERP.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+             modelBuilder.Entity("ERP.Domain.Entities.Agente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agentes");
+                });
 
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationRole", b =>
                 {
@@ -157,6 +173,135 @@ namespace ERP.Infrastructure.Data.Migrations
                     b.ToTable("ANY.UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.Factura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Agente")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Cancelado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cliente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Concepto")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Descuento")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaCancelacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Folio")
+                        .HasColumnType("float");
+
+                    b.Property<int>("IdComercial")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Neto")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Pendiente")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Facturas");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Movimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AgentesId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Comision")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Descuento")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("FacturaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdAgente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDocumento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdMovimiento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProducto")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Impuesto")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IsrAngie")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IsrRicardo")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IvaAngie")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IvaRicardo")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Neto")
+                        .HasColumnType("float");
+
+                    b.Property<string>("NombreProducto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Retencion")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Utilidad")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UtilidadAngie")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UtilidadRicardo")
+                        .HasColumnType("float");
+
+                    b.Property<string>("codigoProducto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgentesId");
+
+                    b.HasIndex("FacturaId");
+
+                    b.ToTable("Movimientos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -264,6 +409,21 @@ namespace ERP.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.Movimiento", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.Agente", "Agentes")
+                        .WithMany()
+                        .HasForeignKey("AgentesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Entities.Factura", null)
+                        .WithMany("Movimientos")
+                        .HasForeignKey("FacturaId");
+
+                    b.Navigation("Agentes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.ApplicationRole", null)
@@ -308,6 +468,11 @@ namespace ERP.Infrastructure.Data.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Factura", b =>
+                {
+                    b.Navigation("Movimientos");
                 });
 #pragma warning restore 612, 618
         }

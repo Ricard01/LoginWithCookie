@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using ERP.Domain.Entities;
+using ERP.Infrastructure.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,17 @@ namespace ERP.Infrastructure.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid,
     IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
-    IdentityUserToken<Guid>>
+    IdentityUserToken<Guid>>, IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    {
-    }
-    
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)  { }
+
+    public DbSet<Factura> Facturas => Set<Factura>();
+
+    public DbSet<Movimiento> Movimientos => Set<Movimiento>();
+
+    public DbSet<Agente> Agentes => Set<Agente>();
+
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
 

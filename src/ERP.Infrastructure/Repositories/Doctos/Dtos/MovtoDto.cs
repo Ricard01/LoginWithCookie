@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
@@ -19,7 +14,7 @@ public class MovtoDto
 
     public double CRETENCION1 { get; set; }
 
-    //public required AdmProductos AdmProductos { get; set; }
+    public required AdmProductos AdmProductos { get; set; }
 
 
 }
