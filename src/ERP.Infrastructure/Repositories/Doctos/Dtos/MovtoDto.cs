@@ -19,7 +19,7 @@ public class MovtoDto
 
     public double CRETENCION1 { get; set; }
 
-    public required AdmProductos AdmProductos { get; set; }
+    //public required AdmProductos AdmProductos { get; set; }
 
 
 }

@@ -1,0 +1,17 @@
+.detail-row {
+    display: none;
+  }
+  
+  .detail-row.expanded {
+    display: table-row;
+    background-color: #f5f5f5;
+  }
+  
+  .inner-table {
+    width: 100%;
+  }
+  
+  .inner-table th, .inner-table td {
+    padding: 8px;
+    text-align: left;
+  }

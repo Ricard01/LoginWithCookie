@@ -2,6 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@layer primeng;
+
 @layer base {
   img, svg, video, canvas, audio, iframe, embed, object {
     display: inherit; // me ayuda a centrar el logo cuando el sidenav esta normal

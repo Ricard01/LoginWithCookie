@@ -1,3 +1,11 @@
+<div class="card flex justify-content-center">
+  <p-dropdown 
+      [options]="cities" 
+      [(ngModel)]="selectedCity" 
+      optionLabel="name"
+      placeholder="Select a City" />
+</div>
+
 <button mat-stroked-button (click)="getPermissions()"> GetPermissions</button>
 
 <p>{{ resp | json }}</p>

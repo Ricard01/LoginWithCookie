@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 const routes: Route[] = [
   { path: '', component: DashboardComponent }
@@ -15,6 +17,8 @@ const routes: Route[] = [
   ],
   imports: [
     CommonModule,
+    DropdownModule, 
+    FormsModule,
     SharedModule,
     RouterModule.forChild(routes)
   ]

@@ -1,15 +1,23 @@
-import {Component} from '@angular/core';
-import {AuthService} from "../../core/services/auth.service";
-import {HttpClient} from "@angular/common/http";
-import {UsersService} from "../users/services/users.service";
+import { HttpClient } from "@angular/common/http";
+import { Component } from '@angular/core';
+import { AuthService } from "../../core/services/auth.service";
+import { UsersService } from "../users/services/user.service";
 
 
+interface City {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+
+  cities: City[] | undefined;
+
+  selectedCity: City | undefined;
 
   resp: any;
 
@@ -30,6 +38,14 @@ export class DashboardComponent {
     //   console.log(resp)
     //
     // });
+
+    this.cities = [
+      { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' }
+  ];
 
   }
 

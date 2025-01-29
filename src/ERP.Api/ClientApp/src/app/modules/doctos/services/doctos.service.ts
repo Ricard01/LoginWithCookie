@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs";
-import { IDoctoVm } from '../models/docto.model';
+import {map, Observable} from "rxjs";
+import { IDoctoVm, IFacturas } from '../models/docto.model';
 
 
 @Injectable({
@@ -15,6 +15,6 @@ export class DoctosService {
   }
 
   getAll() {
-    return this.http.get<IDoctoVm>(this.doctossUrl).pipe(map(data => data.doctos));
+    return this.http.get<IDoctoVm>(this.doctossUrl).pipe( map ( resp => resp.doctos));
   }
 }

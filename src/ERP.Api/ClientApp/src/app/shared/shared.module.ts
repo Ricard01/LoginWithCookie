@@ -13,8 +13,10 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
-
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 const myCommonsModule = [
@@ -32,6 +34,14 @@ const myCommonsModule = [
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatSlideToggleModule,
+  MatRadioModule,
+  MatDividerModule,
+  MatExpansionModule,
+
+
 ]
 
 

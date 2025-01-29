@@ -15,8 +15,15 @@ export const MENU: MenuItem[] = [
 
     },
     {
-        id: 4,
+        id: 32,
         label: 'Facturas',
+        icon: 'ph-airplane',
+      link: '/facturas',
+
+    },
+    {
+        id: 4,
+        label: 'Doctos',
         icon: 'ph-gauge',
       link: '/doctos',
 

@@ -1,0 +1,71 @@
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="this.facturas" multiTemplateDataRows class="mat-elevation-z8">
+      <!-- Columnas principales -->
+      <ng-container matColumnDef="folio">
+        <th mat-header-cell *matHeaderCellDef> Folio </th>
+        <td mat-cell *matCellDef="let element"> {{element.cfolio}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="razonSocial">
+        <th mat-header-cell *matHeaderCellDef> Razon Social </th>
+        <td mat-cell *matCellDef="let element"> {{element.crazonsocial}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let element"> {{element.ctotal}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="opciones">
+        <th mat-header-cell *matHeaderCellDef> Opciones </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="expandElement(element)">
+            <mat-icon>{{element.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+  
+      <!-- Columnas de detalles -->
+      <ng-container matColumnDef="detalles">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail" *ngIf="element.expanded">
+            <table mat-table [dataSource]="element.admMovimientos">
+              <ng-container matColumnDef="neto">
+                <th mat-header-cell *matHeaderCellDef> Neto </th>
+                <td mat-cell *matCellDef="let movimiento"> {{movimiento.cneto}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="descuento">
+                <th mat-header-cell *matHeaderCellDef> Descto </th>
+                <td mat-cell *matCellDef="let movimiento"> {{movimiento.cdescuentO1}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="impuesto">
+                <th mat-header-cell *matHeaderCellDef> Impuesto </th>
+                <td mat-cell *matCellDef="let movimiento"> {{movimiento.cimpuestO1}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="retencion">
+                <th mat-header-cell *matHeaderCellDef> Retencion </th>
+                <td mat-cell *matCellDef="let movimiento"> {{movimiento.cretencioN1}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="agente">
+                <th mat-header-cell *matHeaderCellDef> Agente </th>
+                <td mat-cell *matCellDef="let movimiento"> Ricardo </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="['neto', 'descuento', 'impuesto', 'retencion', 'agente']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['neto', 'descuento', 'impuesto', 'retencion', 'agente'];"></tr>
+            </table>
+          </div>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+        [class.example-expanded-row]="element.expanded">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['detalles']" class="example-detail-row"></tr>
+    </table>
+  </div>

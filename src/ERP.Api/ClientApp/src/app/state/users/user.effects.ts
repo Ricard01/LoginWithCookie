@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {UsersService} from "../../modules/users/services/users.service";
+import {UsersService} from "../../modules/users/services/user.service";
 import {IAppState} from "../app.state";
 import {Store} from "@ngrx/store";
 import {UsersApiActions, UsersPageActions} from "./user.actions";
