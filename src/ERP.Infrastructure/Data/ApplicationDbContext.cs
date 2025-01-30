@@ -1,10 +1,9 @@
-using System.Reflection;
-using System.Reflection.Emit;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ERP.Infrastructure.Data;
 
@@ -20,11 +19,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<Agente> Agentes => Set<Agente>();
 
-
+    public Task<int> SaveChangesAsync()
+    {
+        return base.SaveChangesAsync();
+    }
     protected override void OnModelCreating(ModelBuilder builder)
     {
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        // Configuración de la relación entre Factura y Movimiento
+        builder.Entity<Factura>()
+            .HasMany(f => f.Movimientos) // Una Factura tiene muchos Movimientos
+            .WithOne(m => m.Factura) // Un Movimiento pertenece a una Factura
+            .HasForeignKey(m => m.IdComercial) // Clave foránea en Movimiento que apunta a IdComercial en Factura
+            .HasPrincipalKey(f => f.IdComercial);
+
+        builder.Entity<Movimiento>()
+    .HasOne(m => m.Agente) // Un Movimiento puede tener un Agente
+    .WithMany(a => a.Movimientos) // Un Agente puede estar en muchos Movimientos
+    .HasForeignKey(m => m.IdAgente); // Clave foránea en Movimiento que apunta a Id en Agente
+
 
         base.OnModelCreating(builder);
 

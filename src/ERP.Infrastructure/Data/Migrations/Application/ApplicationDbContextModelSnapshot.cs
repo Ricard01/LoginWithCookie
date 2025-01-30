@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ERP.Infrastructure.Data.Application
+namespace ERP.Infrastructure.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -21,124 +21,6 @@ namespace ERP.Infrastructure.Data.Application
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ERP.Domain.Entities.AdmAgentes", b =>
-                {
-                    b.Property<int>("CIDAGENTE")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIDAGENTE"));
-
-                    b.HasKey("CIDAGENTE");
-
-                    b.ToTable("AdmAgentes");
-                });
-
-            modelBuilder.Entity("ERP.Domain.Entities.AdmDocumentos", b =>
-                {
-                    b.Property<int>("CIDDOCUMENTO")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIDDOCUMENTO"));
-
-                    b.Property<int>("CCANCELADO")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CDESCUENTOMOV")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CFECHA")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("CFOLIO")
-                        .HasColumnType("float");
-
-                    b.Property<int>("CIDAGENTE")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CIDCONCEPTODOCUMENTO")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CNETO")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CPENDIENTE")
-                        .HasColumnType("float");
-
-                    b.Property<string>("CRAZONSOCIAL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("CTOTAL")
-                        .HasColumnType("float");
-
-                    b.HasKey("CIDDOCUMENTO");
-
-                    b.HasIndex("CIDAGENTE");
-
-                    b.ToTable("AdmDocumentos");
-                });
-
-            modelBuilder.Entity("ERP.Domain.Entities.AdmMovimientos", b =>
-                {
-                    b.Property<int>("CIDMOVIMIENTO")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIDMOVIMIENTO"));
-
-                    b.Property<double>("CDESCUENTO1")
-                        .HasColumnType("float");
-
-                    b.Property<int>("CIDDOCUMENTO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CIDPRODUCTO")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CIMPUESTO1")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CNETO")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CRETENCION1")
-                        .HasColumnType("float");
-
-                    b.HasKey("CIDMOVIMIENTO");
-
-                    b.HasIndex("CIDDOCUMENTO");
-
-                    b.HasIndex("CIDPRODUCTO");
-
-                    b.ToTable("AdmMovimientos");
-                });
-
-            modelBuilder.Entity("ERP.Domain.Entities.AdmProductos", b =>
-                {
-                    b.Property<int>("CIDPRODUCTO")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIDPRODUCTO"));
-
-                    b.Property<string>("CCODIGOPRODUCTO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("CIMPORTEEXTRA1")
-                        .HasColumnType("float");
-
-                    b.Property<string>("CNOMBREPRODUCTO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CIDPRODUCTO");
-
-                    b.ToTable("AdmProductos");
-                });
 
             modelBuilder.Entity("ERP.Domain.Entities.Agente", b =>
                 {
@@ -315,7 +197,7 @@ namespace ERP.Infrastructure.Data.Application
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("FechaCancelacion")
+                    b.Property<DateTime?>("FechaCancelacion")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("Folio")
@@ -346,22 +228,19 @@ namespace ERP.Infrastructure.Data.Application
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AgentesId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Comision")
                         .HasColumnType("float");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Descuento")
                         .HasColumnType("float");
 
-                    b.Property<int?>("FacturaId")
+                    b.Property<int?>("IdAgente")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdAgente")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdDocumento")
+                    b.Property<int>("IdComercial")
                         .HasColumnType("int");
 
                     b.Property<int>("IdMovimiento")
@@ -410,9 +289,9 @@ namespace ERP.Infrastructure.Data.Application
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AgentesId");
+                    b.HasIndex("IdAgente");
 
-                    b.HasIndex("FacturaId");
+                    b.HasIndex("IdComercial");
 
                     b.ToTable("Movimientos");
                 });
@@ -505,34 +384,6 @@ namespace ERP.Infrastructure.Data.Application
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Domain.Entities.AdmDocumentos", b =>
-                {
-                    b.HasOne("ERP.Domain.Entities.AdmAgentes", "AdmAgentes")
-                        .WithMany()
-                        .HasForeignKey("CIDAGENTE")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AdmAgentes");
-                });
-
-            modelBuilder.Entity("ERP.Domain.Entities.AdmMovimientos", b =>
-                {
-                    b.HasOne("ERP.Domain.Entities.AdmDocumentos", null)
-                        .WithMany("AdmMovimientos")
-                        .HasForeignKey("CIDDOCUMENTO")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Domain.Entities.AdmProductos", "AdmProductos")
-                        .WithMany()
-                        .HasForeignKey("CIDPRODUCTO")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AdmProductos");
-                });
-
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationUserRole", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.ApplicationRole", "Role")
@@ -554,17 +405,20 @@ namespace ERP.Infrastructure.Data.Application
 
             modelBuilder.Entity("ERP.Domain.Entities.Movimiento", b =>
                 {
-                    b.HasOne("ERP.Domain.Entities.Agente", "Agentes")
-                        .WithMany()
-                        .HasForeignKey("AgentesId")
+                    b.HasOne("ERP.Domain.Entities.Agente", "Agente")
+                        .WithMany("Movimientos")
+                        .HasForeignKey("IdAgente");
+
+                    b.HasOne("ERP.Domain.Entities.Factura", "Factura")
+                        .WithMany("Movimientos")
+                        .HasForeignKey("IdComercial")
+                        .HasPrincipalKey("IdComercial")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Domain.Entities.Factura", null)
-                        .WithMany("Movimientos")
-                        .HasForeignKey("FacturaId");
+                    b.Navigation("Agente");
 
-                    b.Navigation("Agentes");
+                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -603,9 +457,9 @@ namespace ERP.Infrastructure.Data.Application
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ERP.Domain.Entities.AdmDocumentos", b =>
+            modelBuilder.Entity("ERP.Domain.Entities.Agente", b =>
                 {
-                    b.Navigation("AdmMovimientos");
+                    b.Navigation("Movimientos");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.ApplicationRole", b =>

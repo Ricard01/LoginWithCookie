@@ -28,15 +28,12 @@ public class Factura
 
     public int Cancelado { get; set; }
 
-    public DateTime FechaCancelacion { get; set; }
+    public DateTime? FechaCancelacion { get; set; }
 
     public string?  Agente  { get; set; }
 
 
     public virtual ICollection<Movimiento> Movimientos { get; set; }
-
-
-
 
 
 }

@@ -1,15 +1,18 @@
-﻿using System;
+﻿using AutoMapper;
+using ERP.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.Domain.Entities;
+namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
-public class AdmAgentes
+
+[AutoMap(typeof(AdmAgentes))]
+public class AgenteDto 
 {
-
     [Key]
     public int CIDAGENTE { get; set; }
 

@@ -13,6 +13,8 @@ public class DoctoDto
     }
     public int CIDDOCUMENTO { get; set; }
 
+    public int CIDCONCEPTODOCUMENTO { get; set; }
+
     public DateTime CFECHA { get; set; }
 
     public double CFOLIO { get; set; }
@@ -29,12 +31,15 @@ public class DoctoDto
 
     public int CCANCELADO { get; set; }
 
+
     public List<MovtoDto> AdmMovimientos { get; set; } = new List<MovtoDto>();
+
+    public  AgenteDto AdmAgentes { get; set; }
 
 
     //public void Mapping(Profile profile)
     //{
-    //    profile.CreateMap<ApplicationDoctosRole, DoctosDto>()
-    //        .ForMember(dto => dto.Id, opt => opt.MapFrom(ur => _DoctosId ));
+    //    profile.CreateMap<AdmAgentes, AgenteDto>()
+    //        .ForMember(dto => dto.CNOMBREAGENTE, opt => opt.MapFrom(ur => Agente));
     //}
 }

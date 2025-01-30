@@ -10,4 +10,6 @@ public interface IApplicationDbContext
     DbSet<Movimiento> Movimientos { get; }
 
     DbSet<Agente> Agentes { get; }
+
+    Task<int> SaveChangesAsync();
 }

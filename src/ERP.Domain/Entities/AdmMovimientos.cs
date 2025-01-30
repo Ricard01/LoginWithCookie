@@ -18,6 +18,8 @@ public class AdmMovimientos
 
     public double CRETENCION1 { get; set; }
 
+    public string COBSERVAMOV { get; set; }
+
     [ForeignKey("CIDPRODUCTO")]
     public virtual required AdmProductos AdmProductos { get; set; }
 

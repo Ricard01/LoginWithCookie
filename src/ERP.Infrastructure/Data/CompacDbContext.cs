@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Xml;
 
 namespace ERP.Infrastructure.Data;
 
@@ -37,8 +39,14 @@ public class CompacDbContext : DbContext, ICompacDbContext
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
+
+        // Excluir todas las entidades de las migraciones
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            entityType.SetIsTableExcludedFromMigrations(true);
+        }
+
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(typeof(CompacDbContext).Assembly);
-     
+
     }
 }
