@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
-using ERP.Infrastructure.Repositories.Users.Dtos;
 
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 

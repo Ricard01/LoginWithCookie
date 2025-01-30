@@ -5,6 +5,7 @@ using AutoMapper.QueryableExtensions;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
+using ERP.Infrastructure.Common.Exceptions;
 
 
 namespace ERP.Infrastructure.Repositories.Doctos;
@@ -25,50 +26,58 @@ public class DoctosRepository : IDoctosRepository
 
     public ApplicationDbContext AppContext { get; }
 
-    public async Task<DoctosVm> Get()
+    public async Task<FacturasVm> Get(DateTime periodo)
     {
 
-        var fecha = DateTime.Now;
 
-        var query = _context.AdmDocumentos
-                  .AsNoTracking()
-                  .Where(d => d.CFECHA.Year == fecha.Year && d.CFECHA.Month == fecha.Month && d.CCANCELADO == 0 && d.CIDCONCEPTODOCUMENTO == 5)
-                  //.OrderByDescending(d => d.CFOLIO)
-                  .ProjectTo<DoctoDto>(_mapper.ConfigurationProvider);
+        // 1.- Obtengo los registros de Compac, Copio  registros nuevos y actualizo estatus de cancelacion. 
 
+        await SincronizarFacturas( periodo);
 
-        var sql = query.ToQueryString();
-        Console.WriteLine(sql);
+     
+        // 2.- Obtengo los registros :) 
+        var facturas = await _appContext.Facturas
+            .AsNoTracking()
+            .Where(d => d.Fecha.Year == periodo.Year && d.Fecha.Month == periodo.Month && d.Cancelado == 0)
+            .OrderByDescending(d => d.Fecha)
+             .ProjectTo<FacturaDto>(_mapper.ConfigurationProvider).ToListAsync();
 
-
-        var doctos = await query.ToListAsync();
-
-        await CopiarFacturasToDb(doctos, fecha);
-
-        return new DoctosVm
+        return new FacturasVm
         {
-            Doctos = doctos
+            Facturas = facturas
         };
 
     }
 
-    private async Task CopiarFacturasToDb(IList<DoctoDto> doctos, DateTime fecha )
+
+    private async Task SincronizarFacturas(DateTime periodo)
     {
+        // 1. Obtengo todas las facturas de COMPAC del periodo incluso las canceladas por que en caso de que se cancelen se debe ajustar en la otra BD
+        var doctos = await _context.AdmDocumentos
+                  .AsNoTracking()
+                  .Where(d => d.CFECHA.Year == periodo.Year && d.CFECHA.Month == periodo.Month && d.CIDDOCUMENTODE == 4)
+                   .OrderBy(d => d.CFECHA)
+                  .ProjectTo<DoctoDto>(_mapper.ConfigurationProvider).ToListAsync();
 
-      var facturasinDb = await   _appContext.Facturas.Where( f => f.Fecha.Year == fecha.Year && f.Fecha.Month == fecha.Month).ToListAsync();
+        // 2. Obtengo los IdComercial de las facturas que tengo en Bd
+        var currentsIds = await _appContext.Facturas
+            .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month)
+            .Select(f => f.IdComercial)
+            .ToListAsync();
 
-        var facturasToAdd = doctos.Where( d => facturasinDb.All(doc => doc.IdComercial != d.CIDDOCUMENTO)).ToList();
+        // 3. Excluyo las facturas que ya existen en mi Bd
+        var newFacturas = doctos.Where(d => !currentsIds.Contains(d.CIDDOCUMENTO)).ToList();
 
 
-
-
-        foreach (var fac in facturasToAdd)
+        // 4. Agrego las facturas nuevas. 
+        foreach (var fac in newFacturas)
         {
             var factura = new Factura
             {
                 IdComercial = fac.CIDDOCUMENTO,
                 Concepto = fac.CIDCONCEPTODOCUMENTO,
                 Fecha = fac.CFECHA,
+                Serie = fac.CSERIEDOCUMENTO,
                 Folio = fac.CFOLIO,
                 Cliente = fac.CRAZONSOCIAL,
                 Neto = fac.CNETO,
@@ -95,8 +104,10 @@ public class DoctosRepository : IDoctosRepository
                     Retencion = movto.CRETENCION1,
                     codigoProducto = movto.AdmProductos.CCODIGOPRODUCTO,
                     NombreProducto = movto.AdmProductos.CNOMBREPRODUCTO,
-                    Descripcion = movto.COBSERVAMOV
-                   
+                    Descripcion = movto.COBSERVAMOV,
+                    Comision = movto.AdmProductos.CIMPORTEEXTRA1
+                
+
 
                 };
 
@@ -105,8 +116,54 @@ public class DoctosRepository : IDoctosRepository
             }
 
         }
+        // 5. Obtengo las facturas del periodo de mi Bd.
+        var facturasInDb = await _appContext.Facturas
+            .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month)
+            .ToListAsync();
+
+        // 6. Comparo y actualiza las facturas canceladas
+        foreach (var docto in doctos)
+        {
+            var facturaExistente = facturasInDb
+                .FirstOrDefault(f => f.IdComercial == docto.CIDDOCUMENTO);
+
+            if (facturaExistente != null)
+            {
+                // Si la factura está cancelada en COMPAC pero no en BD, actualiza
+                if (docto.CCANCELADO == 1 && facturaExistente.Cancelado == 0)
+                {
+                    facturaExistente.Cancelado = 1;
+                    _appContext.Facturas.Update(facturaExistente);
+                }
+            }
+        }
+
 
         await _appContext.SaveChangesAsync();
+    }
+
+    public async Task<MovimientoDto> UpdateMovtoAsync(int Id, MovimientoDto movto )
+    {
+
+
+        var mov = await _appContext.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
+        if (mov == null)
+        {
+            throw new NotFoundException(nameof(ApplicationUser), Id);
+        }
+
+        mov.Comision = movto.Comision;
+        mov.Utilidad = movto.Utilidad;
+        mov.UtilidadRicardo = movto.UtilidadRicardo;
+        mov.UtilidadAngie = movto.UtilidadAngie;
+        mov.IsrAngie = movto.IsrAngie;
+        mov.IsrRicardo = movto.IsrRicardo;
+        mov.IvaRicardo  = mov.IvaRicardo;
+        mov.IvaAngie = movto.IvaAngie;
+
+        var result = await _appContext.SaveChangesAsync();
+
+        return movto;
     }
 
 

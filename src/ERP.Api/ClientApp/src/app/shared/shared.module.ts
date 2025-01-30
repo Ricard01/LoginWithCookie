@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,10 +17,12 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 
 
 const myCommonsModule = [
   CommonModule,
+  ReactiveFormsModule,
   FormsModule,
   MatIconModule,
   MatMenuModule,
@@ -28,6 +30,7 @@ const myCommonsModule = [
   MatToolbarModule,
   MatSidenavModule,
   MatListModule,
+  MatSelectModule,
   MatFormFieldModule,
   MatInputModule,
   MatSnackBarModule,

@@ -7,6 +7,6 @@ export const facturasResolver: ResolveFn<IFactura[]> = (route, state) => {
 
   const facturaService = inject(FacturaService);
  
-  return facturaService.getAll();
+  return facturaService.get(new Date('01-01-2025'));
 
 };

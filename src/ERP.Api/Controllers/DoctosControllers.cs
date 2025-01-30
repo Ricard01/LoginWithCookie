@@ -1,4 +1,5 @@
 
+using ERP.Domain.Entities;
 using ERP.Infrastructure.Repositories.Doctos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -7,54 +8,66 @@ namespace ERP.Api.Controllers;
 
 public class DoctosController : ApiControllerBase
 {
-    private readonly IDoctosRepository _DoctosRepository;
+    private readonly IDoctosRepository _doctosRepository;
 
-    public DoctosController(IDoctosRepository DoctosRepository)
+    public DoctosController(IDoctosRepository doctosRepository)
     {
-        _DoctosRepository = DoctosRepository;
+        _doctosRepository = doctosRepository;
     }
 
 
-    [HttpGet]
+
+    [HttpGet("{periodo}")]
     // [Requires(Permissions.DoctosAllAccess)]>
-    public async Task<ActionResult<DoctosVm>> Get()
+    public async Task<ActionResult<FacturasVm>> Get(DateTime periodo)
     {
-        
-        
-        var Doctos = await _DoctosRepository.Get();
-        
-        return Ok(Doctos);
+
+
+        var facturas = await _doctosRepository.Get(periodo);
+
+        return Ok(facturas);
     }
 
-//    // [Requires(PermissionOperator.Or, Permissions.DoctosAllAccess, Permissions.DoctosRead)]
-//    [HttpGet("{DoctosId}")]
-//    public async Task<ActionResult<DoctosDto>> Get(Guid DoctosId)
-//    {
-//        // var id = new Guid(DoctosId);
-//        var Doctos = await _DoctosRepository.Get(DoctosId);
-
-//        return Ok(Doctos);
-//    }
-
-//    [HttpPost]
-//    // [Requires(PermissionOperator.And, Permissions.DoctosAllAccess, Permissions.OrderAllAccess)]
-//    public async Task<ActionResult> Post([FromBody] CreateDoctos DoctosRequest)
-//    {
-//        var result = await _DoctosRepository.CreateAsync(DoctosRequest);
+    [HttpPatch("{IdMovimiento}")]
+    // [Requires(Permissions.DoctosAllAccess)]>
+    public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)
+    {
 
 
-//        return Ok(result);
-//    }
+        var mov = await _doctosRepository.UpdateMovtoAsync(IdMovimiento, Movto);
 
-//// Nota: Si no se envian todos las propiedades el sistema las toma por null asi que es neceario enviarlas en el request. 
-//    [HttpPatch("{DoctosId}")]
-//    // [Requires(Permissions.DoctosAllAccess)]
-//    public async Task<IActionResult> Patch(Guid DoctosId, [FromBody] UpdateDoctos DoctosRequest)
-//    {
-//        var result = await _DoctosRepository.UpdateAsync(DoctosId, DoctosRequest);
+        return Ok(mov);
+    }
 
-//        return Ok(result);
-//    }
+    //    // [Requires(PermissionOperator.Or, Permissions.DoctosAllAccess, Permissions.DoctosRead)]
+    //    [HttpGet("{DoctosId}")]
+    //    public async Task<ActionResult<DoctosDto>> Get(Guid DoctosId)
+    //    {
+    //        // var id = new Guid(DoctosId);
+    //        var Doctos = await _DoctosRepository.Get(DoctosId);
+
+    //        return Ok(Doctos);
+    //    }
+
+    //    [HttpPost]
+    //    // [Requires(PermissionOperator.And, Permissions.DoctosAllAccess, Permissions.OrderAllAccess)]
+    //    public async Task<ActionResult> Post([FromBody] CreateDoctos DoctosRequest)
+    //    {
+    //        var result = await _DoctosRepository.CreateAsync(DoctosRequest);
+
+
+    //        return Ok(result);
+    //    }
+
+    //// Nota: Si no se envian todos las propiedades el sistema las toma por null asi que es neceario enviarlas en el request. 
+    //    [HttpPatch("{DoctosId}")]
+    //    // [Requires(Permissions.DoctosAllAccess)]
+    //    public async Task<IActionResult> Patch(Guid DoctosId, [FromBody] UpdateDoctos DoctosRequest)
+    //    {
+    //        var result = await _DoctosRepository.UpdateAsync(DoctosId, DoctosRequest);
+
+    //        return Ok(result);
+    //    }
 
 
     //[HttpDelete("{DoctosId}")]

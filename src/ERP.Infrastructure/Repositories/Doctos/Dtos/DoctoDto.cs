@@ -15,7 +15,11 @@ public class DoctoDto
 
     public int CIDCONCEPTODOCUMENTO { get; set; }
 
+    public int CIDDOCUMENTODE { get; set; }
+
     public DateTime CFECHA { get; set; }
+
+    public string?  CSERIEDOCUMENTO { get; set; }
 
     public double CFOLIO { get; set; }
 

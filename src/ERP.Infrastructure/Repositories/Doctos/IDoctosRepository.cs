@@ -1,4 +1,5 @@
 
+using ERP.Domain.Entities;
 using ERP.Infrastructure.Common.Models;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 
@@ -8,12 +9,12 @@ public interface IDoctosRepository
 {
  
     /// <summary>
-    /// List of Doctos with roles
+    /// Lista de Facturas
     /// </summary>
-    /// <returns>List of all the Doctos with roles.</returns>
-    Task<DoctosVm> Get();
+    /// <returns>Obtiene la lista de facturas de mi Bd (primero se extraen de la Bd de Compac) .</returns>
+    Task<FacturasVm> Get(DateTime periodo);
 
-    
+
     ///<summary> Get a single Doctos by Id </summary>
     ///<remarks> Gets a single Doctos by Id with his specific role</remarks>
     ///<returns>Single Doctos with role</returns>
@@ -26,18 +27,18 @@ public interface IDoctosRepository
     /// <returns>The result from and identityResult operation </returns>
     //Task<Result> CreateAsync(CreateDoctos DoctosRequest);
 
-    
+
     /// <summary>
-    /// Updates the Doctos information with role
+    /// Updates the Movto information 
     /// </summary>
     /// <returns>The result from and identityResult operation </returns>
-    //Task<Result> UpdateAsync(Guid DoctosId, UpdateDoctos DoctosRequest);
+    Task<MovimientoDto> UpdateMovtoAsync(int MovtoId, MovimientoDto movto);
 
-    
+
     /// <summary>
     /// Deletes the Doctos by id
     /// </summary>
     /// <returns>The result from and identityResult operation </returns>
     //Task<Result> DeleteAsync(Guid DoctosId);
-    
+
 }

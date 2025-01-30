@@ -14,6 +14,8 @@ public class Factura
 
     public DateTime Fecha { get; set; }
 
+    public string? Serie {  get; set; }
+
     public double Folio { get; set; }
 
     public required string Cliente { get; set; }
@@ -31,6 +33,8 @@ public class Factura
     public DateTime? FechaCancelacion { get; set; }
 
     public string?  Agente  { get; set; }
+
+    public double Utilidad { get; set; }
 
 
     public virtual ICollection<Movimiento> Movimientos { get; set; }

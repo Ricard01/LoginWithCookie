@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Infrastructure.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250129213708_Initial")]
+    [Migration("20250130203927_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -215,7 +215,13 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<double>("Pendiente")
                         .HasColumnType("float");
 
+                    b.Property<string>("Serie")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Utilidad")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -272,6 +278,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<string>("NombreProducto")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Retencion")

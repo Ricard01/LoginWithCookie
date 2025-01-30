@@ -76,6 +76,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     IdComercial = table.Column<int>(type: "int", nullable: false),
                     Concepto = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Serie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Folio = table.Column<double>(type: "float", nullable: false),
                     Cliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Neto = table.Column<double>(type: "float", nullable: false),
@@ -84,7 +85,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     Pendiente = table.Column<double>(type: "float", nullable: false),
                     Cancelado = table.Column<int>(type: "int", nullable: false),
                     FechaCancelacion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Agente = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Agente = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Utilidad = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,7 +224,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     IvaRicardo = table.Column<double>(type: "float", nullable: false),
                     IvaAngie = table.Column<double>(type: "float", nullable: false),
                     IsrRicardo = table.Column<double>(type: "float", nullable: false),
-                    IsrAngie = table.Column<double>(type: "float", nullable: false)
+                    IsrAngie = table.Column<double>(type: "float", nullable: false),
+                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

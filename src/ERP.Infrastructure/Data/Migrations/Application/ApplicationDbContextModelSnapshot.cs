@@ -212,7 +212,13 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<double>("Pendiente")
                         .HasColumnType("float");
 
+                    b.Property<string>("Serie")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Utilidad")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -269,6 +275,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<string>("NombreProducto")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Retencion")

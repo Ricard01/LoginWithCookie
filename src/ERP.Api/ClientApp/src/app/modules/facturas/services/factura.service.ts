@@ -15,13 +15,18 @@ export class FacturaService {
   constructor(private http: HttpClient) {
   }
 
-  getAll(): Observable<IFactura[]> {
-    return this.http.get<IFacturaVm>(this.doctossUrl).pipe(
+  get(periodo: Date) {
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IFacturaVm>(`${this.doctossUrl}/${formattedPeriodo}`).pipe(
       tap(resp => {
-        this.facturas = resp.doctos;
-        console.log('serv',this.facturas) 
+   
+        console.log('serv',resp.facturas) 
 
       }),
-       map(resp => resp.doctos));
+       map(resp => resp.facturas));
+  }
+
+  updateMovimiento(movimiento: any): Observable<any> {
+    return this.http.patch(`${this.doctossUrl}/${movimiento.idMovimiento}`, movimiento);
   }
 }

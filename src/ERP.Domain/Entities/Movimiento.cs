@@ -45,6 +45,8 @@ public class Movimiento
 
     public double IsrAngie { get; set; }
 
+    public string? Observaciones { get; set; }
+
 
     public virtual Factura Factura { get; set; } // Relación con Factura
     public virtual Agente Agente { get; set; } // Relación opcional con Agente
