@@ -49,7 +49,7 @@
           </button>
         </td>
       </ng-container>
-  
+
       <!-- Columnas de detalles -->
       <ng-container matColumnDef="detalles">
         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
@@ -97,51 +97,60 @@
                 <th mat-header-cell *matHeaderCellDef> ISR </th>
                 <td mat-cell *matCellDef="let movimiento"> {{movimiento.retencion  | currency}} </td>
               </ng-container>
+
+              <!-- El orden que importa esta en Tr estos container no indican orden-->
+              <ng-container matColumnDef="Agente">
+                <th mat-header-cell *matHeaderCellDef> Agente </th>
+                <td mat-cell *matCellDef="let movimiento"><input class="short-input" [formControl]="$any(movimientoForm).get('idAgente')" maxlength="1"/> </td>
+              </ng-container>
+  
   
               <ng-container matColumnDef="Com">
                 <th mat-header-cell *matHeaderCellDef>% Comision </th>
-                <td mat-cell *matCellDef="let movimiento"> <input [formControl]="$any(movimientoForm).get('comision')" (blur)="updateMovimiento()" />  </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input"  [formControl]="$any(movimientoForm).get('comision')"  maxlength="3"  /></td>
               </ng-container>
 
               <ng-container matColumnDef="Uti">
                 <th mat-header-cell *matHeaderCellDef> Utilidad </th>
-                <td mat-cell *matCellDef="let movimiento">  <input [formControl]="$any(movimientoForm).get('utilidad')" (blur)="updateMovimiento()" />  </td>
+                <td mat-cell *matCellDef="let movimiento">  <input class="utilidad-input" [formControl]="$any(movimientoForm).get('utilidad')"/>  </td>
               </ng-container>
-  <!--  -->
-              <ng-container matColumnDef="Agente">
-                <th mat-header-cell *matHeaderCellDef> Agente </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.agente}} </td>
-              </ng-container>
-  
+ 
+         
               <ng-container matColumnDef="U.Ric">
                 <th mat-header-cell *matHeaderCellDef> U Ric </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.utilidadRicardo}} </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input" [formControl]="$any(movimientoForm).get('utilidadRicardo')"/> </td>
               </ng-container>
 
               <ng-container matColumnDef="U.Ang">
                 <th mat-header-cell *matHeaderCellDef> U Angie </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.utilidadAngie}} </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input" [formControl]="$any(movimientoForm).get('utilidadAngie')"/></td>
               </ng-container>
 
               <ng-container matColumnDef="IvaR">
                 <th mat-header-cell *matHeaderCellDef> IVA Ric </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.ivaRicardo}} </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input"  [formControl]="$any(movimientoForm).get('ivaRicardo')"/> </td>
               </ng-container>
 
               <ng-container matColumnDef="IvaA">
                 <th mat-header-cell *matHeaderCellDef> IVA Angie </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.ivaAngie}} </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input"  [formControl]="$any(movimientoForm).get('ivaAngie')"/> </td>
               </ng-container>
 
               <ng-container matColumnDef="IsrR">
                 <th mat-header-cell *matHeaderCellDef> ISR Ric </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.isrRicardo}} </td>
+                <td mat-cell *matCellDef="let movimiento"> <input class="short-input"  [formControl]="$any(movimientoForm).get('isrRicardo')"/></td>
               </ng-container>
 
               <ng-container matColumnDef="IsrA">
                 <th mat-header-cell *matHeaderCellDef> ISR Angie </th>
-                <td mat-cell *matCellDef="let movimiento"> {{movimiento.isrAngie}} </td>
+                <td mat-cell *matCellDef="let movimiento"><input class="short-input"  [formControl]="$any(movimientoForm).get('isrAngie')"/> </td>
               </ng-container>
+
+              <ng-container matColumnDef="Observa">
+                <th mat-header-cell *matHeaderCellDef> Observa. </th>
+                <td mat-cell *matCellDef="let movimiento"><input class="medium-input"  [formControl]="$any(movimientoForm).get('observaciones')"/> </td>
+              </ng-container>
+
 
               
               <ng-container matColumnDef="save">
@@ -149,14 +158,14 @@
                 <td mat-cell *matCellDef="let movimiento">  <mat-icon>save</mat-icon></td>
               </ng-container>
            
-              <tr mat-header-row *matHeaderRowDef="['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','save']"></tr>
-              <tr mat-row *matRowDef="let row; columns: ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','save'];"></tr>
+              <tr mat-header-row *matHeaderRowDef="['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];"></tr>
             </table>
           </div>
         </td>
       </ng-container>
 
-      
+   
   
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"

@@ -4,6 +4,7 @@ import { IFactura, IPeriodo } from '../models/factura.model';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FacturaService } from '../services/factura.service';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 interface Column {
   field: string;
@@ -13,7 +14,7 @@ interface Column {
 @Component({
   selector: 'app-facturas-list',
   standalone: true,
-  imports: [SharedModule ],
+  imports: [SharedModule, InputNumberModule ],
   templateUrl: './facturas-list.component.html',
   styleUrl: './facturas-list.component.scss'
 })
