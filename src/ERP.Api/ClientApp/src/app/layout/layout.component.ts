@@ -56,8 +56,8 @@ export class LayoutComponent implements OnDestroy {
 
           this.htmlElement.classList.add('sidebar-mini');
         }
-        console.log('isMobile', this.isMobileScreen);
-        console.log('sidebarmini', this.appOptions.isSideBarMini)
+        // console.log('isMobile', this.isMobileScreen);
+        // console.log('sidebarmini', this.appOptions.isSideBarMini)
         //  sidebarmini default es falso no necesito hacer nada
 
         // this.appOptions.isSideBarMini = state.breakpoints[TABLET_MEDIA];

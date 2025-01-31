@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export interface IFacturaVm {
   facturas: IFactura[]
 }
@@ -39,7 +41,9 @@ export interface IMovimientos {
   isrAngie?: number;
   observaciones?: string;
 }
-
+export interface IMovimientosConForm extends IMovimientos {
+  form: FormGroup;
+}
 export interface IPeriodo {
   value?: Date;
   viewValue?: string;

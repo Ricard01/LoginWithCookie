@@ -19,6 +19,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -43,7 +44,8 @@ export const SHARED_IMPORTS = [
   MatRadioModule,
   MatDividerModule,
   MatExpansionModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCheckboxModule
 ]
 
 
