@@ -36,7 +36,8 @@ export class FacturasListComponent implements OnInit {
   facturas: IFactura[] = [];
 
   columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
-  expandedStates: Map<IFactura, boolean> = new Map(); // Mapa para manejar la expansión
+  columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
+  expandedStates: Map<IFactura, boolean> = new Map(); 
 
   constructor(private fb: FormBuilder, private facturaService: FacturaService) { }
 
