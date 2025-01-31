@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { IFactura, IPeriodo } from '../models/factura.model';
+import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
+import { IFactura, IMovimientos, IPeriodo } from '../models/factura.model';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FacturaService } from '../services/factura.service';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
+
 
 interface Column {
   field: string;
@@ -14,11 +15,15 @@ interface Column {
 @Component({
   selector: 'app-facturas-list',
   standalone: true,
-  imports: [SharedModule, InputNumberModule ],
+  imports: [SHARED_IMPORTS,  CurrencyInputComponent ],
   templateUrl: './facturas-list.component.html',
   styleUrl: './facturas-list.component.scss'
 })
 export class FacturasListComponent implements OnInit{
+calcularImportes() {
+throw new Error('Method not implemented.');
+}
+
   
   facturas: IFactura[] = [];
 
@@ -39,9 +44,8 @@ export class FacturasListComponent implements OnInit{
 
   form = new FormGroup({
     periodo: this.periodoControl,
-   
   });
-
+  expandedStates: Map<IFactura, boolean> = new Map(); // Mapa para manejar la expansión
   movimientoForm!: FormGroup; 
 
   constructor( private fb: FormBuilder,private facturaService: FacturaService, private activatedRoute: ActivatedRoute) 
@@ -65,14 +69,14 @@ export class FacturasListComponent implements OnInit{
         codigoProducto: ['', Validators.required],
         nombreProducto: ['', Validators.required],
         descripcion: ['', Validators.required],
-        comision: ['', [Validators.required, Validators.min(0)]],
-        utilidad: ['', [ Validators.min(0)]],
-        utilidadRicardo: ['', [ Validators.min(0)]],
-        utilidadAngie: ['', [ Validators.min(0)]],
-        ivaRicardo: ['', [ Validators.min(0)]],
-        ivaAngie: ['', [ Validators.min(0)]],
-        isrRicardo: ['', [ Validators.min(0)]],
-        isrAngie: ['', [ Validators.min(0)]],
+        comision: [''],
+        utilidad: [''],
+        utilidadRicardo: [''],
+        utilidadAngie: [''],
+        ivaRicardo: [''],
+        ivaAngie: [''],
+        isrRicardo: [''],
+        isrAngie: [''],
         observaciones: ['']
       });
     }
@@ -82,20 +86,50 @@ export class FacturasListComponent implements OnInit{
       this.movimientoForm.patchValue(movimiento);
     }
   
-    updateMovimiento(): void {
+    // updateMovimiento(): void {
+    //   if (this.movimientoForm.invalid) {
+    //     console.error('El formulario no es válido');
+    //     return;
+    //   }
+  
+    //   const movimiento = this.movimientoForm.value;
+
+    //   console.log('movimiento',movimiento)
+  
+    //   this.facturaService.updateMovimiento(movimiento).subscribe(
+    //     (response) => {
+    //       console.log('Movimiento actualizado:', response);
+  
+    //       // Actualiza el estado local del movimiento
+    //       const index = this.facturas.findIndex(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
+    //       if (index !== -1) {
+    //         const movimientoIndex = this.facturas[index].movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
+    //         if (movimientoIndex !== -1) {
+    //           this.facturas[index].movimientos[movimientoIndex] = { ...this.facturas[index].movimientos[movimientoIndex], ...movimiento };
+    //         }
+    //       }
+    //     },
+    //     (error) => {
+    //       console.error('Error al actualizar el movimiento:', error);
+    //     }
+    //   );
+    // }
+
+   
+    updateMovimiento(movto: any): void {
       if (this.movimientoForm.invalid) {
         console.error('El formulario no es válido');
         return;
       }
-  
-      const movimiento = this.movimientoForm.value;
+    
+      // const movimiento = this.movimientoForm.value;
 
-      console.log('movimiento',movimiento)
-  
-      this.facturaService.updateMovimiento(movimiento).subscribe(
+      const movimiento = {...this.movimientoForm.value as IMovimientos};
+      console.log('Movimiento :', movimiento);
+      this.facturaService.updateMovimiento( movimiento ).subscribe(
         (response) => {
           console.log('Movimiento actualizado:', response);
-  
+    
           // Actualiza el estado local del movimiento
           const index = this.facturas.findIndex(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
           if (index !== -1) {
@@ -110,7 +144,6 @@ export class FacturasListComponent implements OnInit{
         }
       );
     }
-  
   onPeriodoChange(event: any): void {
     this.facturaService.get(event.value).subscribe((data: IFactura[]) => {
       this.facturas = data;
@@ -118,14 +151,24 @@ export class FacturasListComponent implements OnInit{
     );
   }
 
-  expandElement(element: any): void {
-    element.expanded = !element.expanded;
 
+  expandElement(element: IFactura): void {
+    // Colapsar todas las filas expandidas
+    this.facturas.forEach(factura => {
+      if (factura !== element) {
+        factura.expanded = false; // Colapsar otras filas
+      }
+    });
+  
+    // Expandir o colapsar la fila seleccionada
+    element.expanded = !element.expanded;
+  
     if (element.expanded) {
-      this.loadMovimientoData(element.movimientos[0]); // Carga el primer movimiento (ajusta según tu lógica)
+      this.loadMovimientoData(element.movimientos[0]); // Cargar datos del movimiento
+    } else {
+      this.movimientoForm.reset(); // Limpiar el formulario si la fila se colapsa
     }
   }
-
   // toggleRow(element: any): void {
   //   console.log('toggleRow facturas',this.facturas)
   //   this.expandedElement = this.expandedElement === element ? null : element;

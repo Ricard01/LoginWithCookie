@@ -8,10 +8,14 @@ import {MatPaginator} from "@angular/material/paginator";
 import {map, Observable} from "rxjs";
 import {selectAllUsers} from "../../../state/users/user.selectors";
 import {MatSort} from "@angular/material/sort";
+import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
+import { UserStateModule } from 'src/app/state/users/user.state.module';
 
 
 @Component({
   selector: 'app-user-list',
+  standalone: true,
+  imports: [SHARED_IMPORTS, UserStateModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })

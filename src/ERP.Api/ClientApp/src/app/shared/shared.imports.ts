@@ -18,9 +18,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-
-const myCommonsModule = [
+export const SHARED_IMPORTS = [
   CommonModule,
   ReactiveFormsModule,
   FormsModule,
@@ -43,15 +43,8 @@ const myCommonsModule = [
   MatRadioModule,
   MatDividerModule,
   MatExpansionModule,
-
-
+  MatTooltipModule
 ]
 
 
 
-@NgModule({
-  declarations: [],
-  imports: [...myCommonsModule],
-  exports: [...myCommonsModule ]
-})
-export class SharedModule { }

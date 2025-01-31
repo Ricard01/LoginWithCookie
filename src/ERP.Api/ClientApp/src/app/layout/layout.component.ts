@@ -30,7 +30,7 @@ export class LayoutComponent implements OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private appSettings: AppSettingsService,
     @Inject(DOCUMENT) private document: Document) {
-
+ 
     this.htmlElement = this.document.querySelector('html')!;
 
     this.layoutChangesSubscription = this.breakpointObserver

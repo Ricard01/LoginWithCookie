@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Component } from '@angular/core';
 import { AuthService } from "../../core/services/auth.service";
 import { UsersService } from "../users/services/user.service";
+import { CommonModule } from '@angular/common';
 
 
 interface City {
@@ -9,7 +10,9 @@ interface City {
   code: string;
 }
 @Component({
+standalone: true,
   selector: 'app-dashboard',
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -39,13 +42,13 @@ export class DashboardComponent {
     //
     // });
 
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-  ];
+  //   this.cities = [
+  //     { name: 'New York', code: 'NY' },
+  //     { name: 'Rome', code: 'RM' },
+  //     { name: 'London', code: 'LDN' },
+  //     { name: 'Istanbul', code: 'IST' },
+  //     { name: 'Paris', code: 'PRS' }
+  // ];
 
   }
 

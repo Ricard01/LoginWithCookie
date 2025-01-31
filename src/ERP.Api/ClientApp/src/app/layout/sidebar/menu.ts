@@ -15,22 +15,16 @@ export const MENU: MenuItem[] = [
 
     },
     {
-        id: 32,
+        id: 3,
         label: 'Facturas',
         icon: 'ph-airplane',
       link: '/facturas',
 
     },
+ 
+
     {
         id: 4,
-        label: 'Doctos',
-        icon: 'ph-gauge',
-      link: '/doctos',
-
-    },
-
-    {
-        id: 3,
         label: 'Settings',
         icon: 'ph-wrench',
         parentId: 8,

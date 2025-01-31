@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map, Observable, tap, } from "rxjs";
-import { IFactura, IFacturaVm } from '../models/factura.model';
+import { IFactura, IFacturaVm, IMovimientos } from '../models/factura.model';
+
 
 
 @Injectable({
@@ -26,7 +27,7 @@ export class FacturaService {
        map(resp => resp.facturas));
   }
 
-  updateMovimiento(movimiento: any): Observable<any> {
+  updateMovimiento(movimiento: IMovimientos): Observable<any> {
     return this.http.patch(`${this.doctossUrl}/${movimiento.idMovimiento}`, movimiento);
   }
 }

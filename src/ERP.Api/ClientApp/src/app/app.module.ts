@@ -6,7 +6,6 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LayoutModule} from "./layout/layout.module";
-import {SharedModule} from "./shared/shared.module";
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {EffectsModule} from '@ngrx/effects';
@@ -27,7 +26,7 @@ import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
     AppRoutingModule,
     CoreModule,
     LayoutModule,
-    SharedModule,
+    // SharedModule,
     StoreModule.forRoot({}, {
       // metaReducers: [loggingMetaReducer],
       runtimeChecks: {

@@ -1,16 +1,20 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, Validators} from "@angular/forms";
-import {IAppState} from "../../state/app.state";
-import {Store} from "@ngrx/store";
-import {ICredentials} from "../../core/models/auth-model";
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { IAppState } from "../../state/app.state";
+import { Store } from "@ngrx/store";
+import { ICredentials } from "../../core/models/auth-model";
 import * as AuthActions from "../../state/auth/auth.actions";
-import {selectIsLoggedIn, selectUserError} from "../../state/auth/auth.selectors";
-import {Observable, tap} from "rxjs";
+import { selectIsLoggedIn, selectUserError } from "../../state/auth/auth.selectors";
+import { Observable, tap } from "rxjs";
+import { CommonModule } from '@angular/common';
+import { AuthStateModule } from 'src/app/state/auth/auth.state.module';
 
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [ReactiveFormsModule, AuthStateModule, CommonModule],
   templateUrl: './login.component.html',
   styles: []
 })
@@ -18,13 +22,9 @@ import {Observable, tap} from "rxjs";
 export class LoginComponent {
 
   returnUrl: string = '/';
-  credentials: ICredentials = {email: '', password: ''};
+  credentials: ICredentials = { email: '', password: '' };
   errorMessage$: Observable<string | null>;
-
-  loginForm = this.formBuilder.group({
-    email: ['', [Validators.required]],//[Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
-    password: ['', [Validators.required]]
-  });
+  loginForm: FormGroup;
 
 
   constructor(
@@ -34,6 +34,12 @@ export class LoginComponent {
     private router: Router
   ) {
     this.errorMessage$ = this.store.select(selectUserError);
+
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required]],//[Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+      password: ['', [Validators.required]]
+    });
+
   }
 
 
@@ -59,9 +65,9 @@ export class LoginComponent {
 
     if (this.loginForm.valid) {
 
-      const credentials: ICredentials = {...this.loginForm.value as ICredentials};
+      const credentials: ICredentials = { ...this.loginForm.value as ICredentials };
 
-      this.store.dispatch(AuthActions.login({credentials, returnUrl: this.returnUrl}));
+      this.store.dispatch(AuthActions.login({ credentials, returnUrl: this.returnUrl }));
 
     }
 

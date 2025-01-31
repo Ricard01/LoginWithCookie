@@ -152,6 +152,7 @@ public class DoctosRepository : IDoctosRepository
             throw new NotFoundException(nameof(ApplicationUser), Id);
         }
 
+        mov.IdAgente = movto.IdAgente;
         mov.Comision = movto.Comision;
         mov.Utilidad = movto.Utilidad;
         mov.UtilidadRicardo = movto.UtilidadRicardo;
