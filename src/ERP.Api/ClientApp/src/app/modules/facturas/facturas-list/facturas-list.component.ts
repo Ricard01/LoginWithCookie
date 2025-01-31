@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
 import { IFactura, IMovimientos, IPeriodo } from '../models/factura.model';
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FacturaService } from '../services/factura.service';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
@@ -20,9 +19,7 @@ interface Column {
   styleUrl: './facturas-list.component.scss'
 })
 export class FacturasListComponent implements OnInit {
-onSelect(index: any) {
-console.log('index', index)
-}
+
 
   periodos: IPeriodo[] = [
     { value: new Date('2025-01-01'), viewValue: 'Enero' },
@@ -41,14 +38,12 @@ console.log('index', index)
   columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
   expandedStates: Map<IFactura, boolean> = new Map(); // Mapa para manejar la expansión
 
-
   constructor(private fb: FormBuilder, private facturaService: FacturaService) { }
-hola  (){
 
-}
   ngOnInit() {
     this.initMovimientoForm();
   }
+
 
   initMovimientoForm(): void {
     this.movimientoForm = this.fb.group({
@@ -73,38 +68,6 @@ hola  (){
     });
   }
 
-  // ngOnInit(): void {
-  //   this.initMovimientoForm();
-  //   this.facturas.forEach(factura => {
-  //     factura.movimientos.forEach(movimiento => {
-  //       movimiento.form = this.createMovimientoForm(movimiento); // Crear un formulario por movimiento
-  //     });
-  //   });
-  // }
-  
-  // Método para crear un formulario para un movimiento
-  // createMovimientoForm(movimiento: any): FormGroup {
-  //   return this.fb.group({
-  //     idMovimiento: [movimiento.idMovimiento],
-  //     idAgente: [movimiento.idAgente],
-  //     neto: [movimiento.neto, [Validators.required, Validators.min(0)]],
-  //     descuento: [movimiento.descuento, [Validators.required, Validators.min(0)]],
-  //     impuesto: [movimiento.impuesto, [Validators.required, Validators.min(0)]],
-  //     retencion: [movimiento.retencion, [Validators.required, Validators.min(0)]],
-  //     codigoProducto: [movimiento.codigoProducto, Validators.required],
-  //     nombreProducto: [movimiento.nombreProducto, Validators.required],
-  //     descripcion: [movimiento.descripcion, Validators.required],
-  //     comision: [movimiento.comision, [Validators.required, Validators.min(0)]],
-  //     utilidad: [movimiento.utilidad, [Validators.min(0)]],
-  //     utilidadRicardo: [movimiento.utilidadRicardo, [Validators.min(0)]],
-  //     utilidadAngie: [movimiento.utilidadAngie, [Validators.min(0)]],
-  //     ivaRicardo: [movimiento.ivaRicardo, [Validators.min(0)]],
-  //     ivaAngie: [movimiento.ivaAngie, [Validators.min(0)]],
-  //     isrRicardo: [movimiento.isrRicardo, [Validators.min(0)]],
-  //     isrAngie: [movimiento.isrAngie, [Validators.min(0)]],
-  //     observaciones: [movimiento.observaciones]
-  //   });
-  // }
 
   calcComisiones(movimiento: any): void {
     // Obtener los valores necesarios del formulario y del movimiento
@@ -121,19 +84,15 @@ hola  (){
     const isr = movimiento.retencion || 0;
     const comision = this.movimientoForm.get('comision')?.value || 0;
 
-
-  
     // Calcular la utilidad base
     const utilidadBase = (neto - descuento) * (comision / 100) - isr;
-
-    
   
     // Asignar la utilidad base al campo correspondiente
     this.movimientoForm.get('utilidad')?.setValue(utilidadBase);
   
-    // Calcular la utilidad de Ricardo y Angie según el idAgente
-    if (idAgente === 1) {
       // Si el agente es Ricardo (idAgente = 1)
+    if (idAgente === 1) {
+   
       this.movimientoForm.get('utilidadRicardo')?.setValue(utilidadBase);
       this.movimientoForm.get('utilidadAngie')?.setValue(0);
 
@@ -170,30 +129,10 @@ hola  (){
   
   }
 
-  // Carga los datos del movimiento en el formulario
+
   loadMovimientoData(movimiento: any): void {
     this.movimientoForm.patchValue(movimiento);
   }
-
-  // updateMovimiento(movimiento: any): void {
-  //   if (movimiento.form.invalid) {
-  //     console.error('El formulario no es válido');
-  //     return;
-  //   }
-  
-  //   const updatedMovimiento = movimiento.form.value;
-  
-  //   this.facturaService.updateMovimiento(updatedMovimiento).subscribe(
-  //     (response) => {
-  //       console.log('Movimiento actualizado:', response);
-  //       // Actualizar el movimiento en la lista
-  //       Object.assign(movimiento, updatedMovimiento);
-  //     },
-  //     (error) => {
-  //       console.error('Error al actualizar el movimiento:', error);
-  //     }
-  //   );
-  // }
 
 
   updateMovimiento(movto: any): void {
@@ -232,17 +171,6 @@ hola  (){
     );
   }
 
-  // expandElement(element: any): void {
-  //   // Colapsar todas las filas expandidas
-  //   this.facturas.forEach(factura => {
-  //     if (factura !== element) {
-  //       factura.expanded = false;
-  //     }
-  //   });
-  
-  //   // Expandir o colapsar la fila seleccionada
-  //   element.expanded = !element.expanded;
-  // }
 
   expandElement(element: IFactura): void {
     // Colapsar todas las filas expandidas
