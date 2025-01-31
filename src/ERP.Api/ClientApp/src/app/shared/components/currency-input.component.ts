@@ -28,7 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, AbstractControl } from '@angul
   ],
 })
 export class CurrencyInputComponent implements ControlValueAccessor, OnInit {
-  @Input() control: AbstractControl | null = null; // Acepta AbstractControl o null
+  @Input() control: AbstractControl | null | undefined= null; // Acepta AbstractControl o null
   displayValue: string = ''; // Valor mostrado en el input
   private numericValue: number | null = null; // Valor numérico real
 

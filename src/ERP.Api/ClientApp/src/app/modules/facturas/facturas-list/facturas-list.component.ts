@@ -32,7 +32,8 @@ export class FacturasListComponent implements OnInit {
     periodo: this.periodoControl,
   });
 
-  movimientoForm!: FormGroup;
+ 
+  movimientoForms: Map<number, FormGroup> = new Map();
   facturas: IFactura[] = [];
 
   columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
@@ -42,119 +43,103 @@ export class FacturasListComponent implements OnInit {
   constructor(private fb: FormBuilder, private facturaService: FacturaService) { }
 
   ngOnInit() {
-    this.initMovimientoForm();
+    this.onPeriodoChange({ value: this.periodos[0].value });
   }
 
 
-  initMovimientoForm(): void {
-    this.movimientoForm = this.fb.group({
-      idMovimiento: [''],
-      idAgente: ['',],
-      neto: ['', [Validators.required, Validators.min(0)]],
-      descuento: ['', [Validators.required, Validators.min(0)]],
-      impuesto: ['', [Validators.required, Validators.min(0)]],
-      retencion: ['', [Validators.required, Validators.min(0)]],
-      codigoProducto: ['', Validators.required],
-      nombreProducto: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      comision: [''],
-      utilidad: [''],
-      utilidadRicardo: [''],
-      utilidadAngie: [''],
-      ivaRicardo: [''],
-      ivaAngie: [''],
-      isrRicardo: [''],
-      isrAngie: [''],
-      observaciones: ['']
+  initMovimientoForm(movimiento: IMovimientos): FormGroup {
+    return this.fb.group({
+      idMovimiento: [movimiento.idMovimiento],
+      idAgente: [movimiento.idAgente || '', Validators.required],
+      neto: [movimiento.neto || 0, [Validators.required, Validators.min(0)]],
+      descuento: [movimiento.descuento || 0, [Validators.required, Validators.min(0)]],
+      impuesto: [movimiento.impuesto || 0, [Validators.required, Validators.min(0)]],
+      retencion: [movimiento.retencion || 0, [Validators.required, Validators.min(0)]],
+      codigoProducto: [movimiento.codigoProducto || '', Validators.required],
+      nombreProducto: [movimiento.nombreProducto || '', Validators.required],
+      descripcion: [movimiento.descripcion || '', Validators.required],
+      comision: [movimiento.comision || 0],
+      utilidad: [movimiento.utilidad || 0],
+      utilidadRicardo: [movimiento.utilidadRicardo || 0],
+      utilidadAngie: [movimiento.utilidadAngie || 0],
+      ivaRicardo: [movimiento.ivaRicardo || 0],
+      ivaAngie: [movimiento.ivaAngie || 0],
+      isrRicardo: [movimiento.isrRicardo || 0],
+      isrAngie: [movimiento.isrAngie || 0],
+      observaciones: [movimiento.observaciones || '']
     });
   }
 
 
-  calcComisiones(movimiento: any): void {
-    // Obtener los valores necesarios del formulario y del movimiento
-    const idAgente = this.movimientoForm.get('idAgente')?.value || 0;
+  calcComisiones(movimiento: IMovimientos): void {
+    const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
+    if (!movimientoForm) return;
 
+    const idAgente = movimientoForm.get('idAgente')?.value || 0;
     if (idAgente === 0) {
       console.error('El agente no puede ser 0');
       return;
     }
-  
-    const neto = movimiento.neto || 0;
-    const descuento = movimiento.descuento || 0;
-    const iva = movimiento.impuesto || 0;
-    const isr = movimiento.retencion || 0;
-    const comision = this.movimientoForm.get('comision')?.value || 0;
+
+    const neto = movimientoForm.get('neto')?.value || 0;
+    const descuento = movimientoForm.get('descuento')?.value || 0;
+    const iva = movimientoForm.get('impuesto')?.value || 0;
+    const isr = movimientoForm.get('retencion')?.value || 0;
+    const comision = movimientoForm.get('comision')?.value || 0;
 
     // Calcular la utilidad base
     const utilidadBase = (neto - descuento) * (comision / 100) - isr;
-  
+
     // Asignar la utilidad base al campo correspondiente
-    this.movimientoForm.get('utilidad')?.setValue(utilidadBase);
-  
-      // Si el agente es Ricardo (idAgente = 1)
+    movimientoForm.get('utilidad')?.setValue(utilidadBase);
+
+    // Si el agente es Ricardo (idAgente = 1)
     if (idAgente === 1) {
-   
-      this.movimientoForm.get('utilidadRicardo')?.setValue(utilidadBase);
-      this.movimientoForm.get('utilidadAngie')?.setValue(0);
-
-      this.movimientoForm.get('ivaRicardo')?.setValue(iva);
-      this.movimientoForm.get('ivaAngie')?.setValue(0);
-
-      this.movimientoForm.get('IsrRicardo')?.setValue(isr);
-      this.movimientoForm.get('IsrAngie')?.setValue(0);
+      movimientoForm.get('utilidadRicardo')?.setValue(utilidadBase);
+      movimientoForm.get('utilidadAngie')?.setValue(0);
+      movimientoForm.get('ivaRicardo')?.setValue(iva);
+      movimientoForm.get('ivaAngie')?.setValue(0);
+      movimientoForm.get('isrRicardo')?.setValue(isr);
+      movimientoForm.get('isrAngie')?.setValue(0);
     } else if (idAgente === 2) {
       // Si el agente es Angie (idAgente = 2)
-      this.movimientoForm.get('utilidadRicardo')?.setValue(0);
-      this.movimientoForm.get('utilidadAngie')?.setValue(utilidadBase);
-
-      this.movimientoForm.get('ivaRicardo')?.setValue(0);
-      this.movimientoForm.get('ivaAngie')?.setValue(iva);
-
-      this.movimientoForm.get('IsrRicardo')?.setValue(0);
-      this.movimientoForm.get('IsrAngie')?.setValue(isr);
+      movimientoForm.get('utilidadRicardo')?.setValue(0);
+      movimientoForm.get('utilidadAngie')?.setValue(utilidadBase);
+      movimientoForm.get('ivaRicardo')?.setValue(0);
+      movimientoForm.get('ivaAngie')?.setValue(iva);
+      movimientoForm.get('isrRicardo')?.setValue(0);
+      movimientoForm.get('isrAngie')?.setValue(isr);
     } else if (idAgente === 3) {
       // Si el agente es ambos (idAgente = 3)
       const utilidadDividida = utilidadBase / 2;
-      this.movimientoForm.get('utilidadRicardo')?.setValue(utilidadDividida);
-      this.movimientoForm.get('utilidadAngie')?.setValue(utilidadDividida);
-
+      movimientoForm.get('utilidadRicardo')?.setValue(utilidadDividida);
+      movimientoForm.get('utilidadAngie')?.setValue(utilidadDividida);
       const ivaDividido = iva / 2;
-      this.movimientoForm.get('ivaRicardo')?.setValue(ivaDividido);
-      this.movimientoForm.get('ivaAngie')?.setValue(ivaDividido);
-
-      const isrDividido = iva / 2;
-      this.movimientoForm.get('IsrRicardo')?.setValue(isrDividido);
-      this.movimientoForm.get('IsrAngie')?.setValue(isrDividido);
+      movimientoForm.get('ivaRicardo')?.setValue(ivaDividido);
+      movimientoForm.get('ivaAngie')?.setValue(ivaDividido);
+      const isrDividido = isr / 2;
+      movimientoForm.get('isrRicardo')?.setValue(isrDividido);
+      movimientoForm.get('isrAngie')?.setValue(isrDividido);
     }
-  
-  
   }
 
-
-  loadMovimientoData(movimiento: any): void {
-    this.movimientoForm.patchValue(movimiento);
-  }
-
-
-  updateMovimiento(movto: any): void {
-
-    if (this.movimientoForm.invalid) {
+  updateMovimiento(movimiento: IMovimientos): void {
+    const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
+    if (!movimientoForm || movimientoForm.invalid) {
       console.error('El formulario no es válido');
       return;
     }
 
-    const movimiento = { ...this.movimientoForm.value as IMovimientos };
-    console.log('Movimiento :', movimiento);
-    this.facturaService.updateMovimiento(movimiento).subscribe(
+    const updatedMovimiento = { ...movimiento, ...movimientoForm.value };
+    this.facturaService.updateMovimiento(updatedMovimiento).subscribe(
       (response) => {
         console.log('Movimiento actualizado:', response);
-
         // Actualiza el estado local del movimiento
-        const index = this.facturas.findIndex(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
-        if (index !== -1) {
-          const movimientoIndex = this.facturas[index].movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
+        const factura = this.facturas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
+        if (factura) {
+          const movimientoIndex = factura.movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
           if (movimientoIndex !== -1) {
-            this.facturas[index].movimientos[movimientoIndex] = { ...this.facturas[index].movimientos[movimientoIndex], ...movimiento };
+            factura.movimientos[movimientoIndex] = updatedMovimiento;
           }
         }
       },
@@ -164,12 +149,22 @@ export class FacturasListComponent implements OnInit {
     );
   }
 
+  // loadMovimientoData(movimiento: any): void {
+  //   this.movimientoForm.patchValue(movimiento);
+  // }
+
+
+
 
   onPeriodoChange(event: any): void {
     this.facturaService.get(event.value).subscribe((data: IFactura[]) => {
       this.facturas = data;
-    }
-    );
+      this.facturas.forEach(factura => {
+        factura.movimientos.forEach(movimiento => {
+          this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+        });
+      });
+    });
   }
 
 
@@ -177,7 +172,7 @@ export class FacturasListComponent implements OnInit {
     // Colapsar todas las filas expandidas
     this.facturas.forEach(factura => {
       if (factura !== element) {
-        factura.expanded = false; // Colapsar otras filas
+        factura.expanded = false;
       }
     });
 
@@ -185,11 +180,13 @@ export class FacturasListComponent implements OnInit {
     element.expanded = !element.expanded;
 
     if (element.expanded) {
-      this.loadMovimientoData(element.movimientos[0]); // Cargar datos del movimiento
-    } else {
-      this.movimientoForm.reset(); // Limpiar el formulario si la fila se colapsa
+      // Cargar datos del primer movimiento
+      const movimiento = element.movimientos[0];
+      const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
+      if (movimientoForm) {
+        movimientoForm.patchValue(movimiento);
+      }
     }
   }
-
 
 }
