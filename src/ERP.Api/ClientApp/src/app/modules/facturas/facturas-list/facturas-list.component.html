@@ -20,34 +20,34 @@
     <!-- #region Columnas Factura -->
     <ng-container matColumnDef="folio">
       <th mat-header-cell *matHeaderCellDef> Folio </th>
-      <td mat-cell *matCellDef="let element"> {{element.serie }} {{element.folio}} </td>
+      <td mat-cell *matCellDef="let factura"> {{factura.serie }} {{factura.folio}} </td>
     </ng-container>
 
     <ng-container matColumnDef="fecha">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
-      <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
+      <td mat-cell *matCellDef="let factura">{{ factura.fecha | date: 'dd/MM/yyyy' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="cliente">
       <th mat-header-cell *matHeaderCellDef> Cliente </th>
-      <td mat-cell *matCellDef="let element"> {{element.cliente}} </td>
+      <td mat-cell *matCellDef="let factura"> {{factura.cliente}} </td>
     </ng-container>
 
     <ng-container matColumnDef="total">
       <th mat-header-cell *matHeaderCellDef> Total </th>
-      <td mat-cell *matCellDef="let element"> {{element.total | currency }} </td>
+      <td mat-cell *matCellDef="let factura"> {{factura.total | currency }} </td>
     </ng-container>
 
     <ng-container matColumnDef="agente">
       <th mat-header-cell *matHeaderCellDef> Agente </th>
-      <td mat-cell *matCellDef="let element"> {{element.agente}} </td>
+      <td mat-cell *matCellDef="let factura"> {{factura.agente}} </td>
     </ng-container>
 
     <ng-container matColumnDef="opciones">
       <th mat-header-cell *matHeaderCellDef> Opciones </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="expandElement(element)">
-          <mat-icon>{{element.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+      <td mat-cell *matCellDef="let factura">
+        <button mat-icon-button (click)="expandElement(factura)">
+          <mat-icon>{{factura.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
         </button>
       </td>
     </ng-container>
