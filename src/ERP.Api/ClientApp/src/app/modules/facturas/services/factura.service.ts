@@ -27,6 +27,17 @@ export class FacturaService {
        map(resp => resp.facturas));
   }
 
+  getComisionesR() {
+    
+    return this.http.get(`${this.doctossUrl}`).pipe(
+      tap(resp => {
+   
+        console.log('comisionesR',resp) 
+
+      }),
+       map(resp => resp));
+  }
+
   updateMovimiento(movimiento: IMovimientos): Observable<any> {
     return this.http.patch(`${this.doctossUrl}/${movimiento.idMovimiento}`, movimiento);
   }

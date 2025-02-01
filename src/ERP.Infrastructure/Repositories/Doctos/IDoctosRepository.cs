@@ -36,6 +36,20 @@ public interface IDoctosRepository
 
 
     /// <summary>
+    /// Obtiene la lista de Comisiones de Angelica
+    /// </summary>
+    /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
+    Task<ComisionAVm> GetComisionesA();
+
+
+    /// <summary>
+    /// Obtiene la lista de Comisiones de Ricardo
+    /// </summary>
+    /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
+    Task<List<ComisionRDto>> GetComisionesR();
+
+
+    /// <summary>
     /// Deletes the Doctos by id
     /// </summary>
     /// <returns>The result from and identityResult operation </returns>

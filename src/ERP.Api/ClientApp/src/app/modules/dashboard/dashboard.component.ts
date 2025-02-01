@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AuthService } from "../../core/services/auth.service";
 import { UsersService } from "../users/services/user.service";
 import { CommonModule } from '@angular/common';
+import { FacturaService } from '../facturas/services/factura.service';
 
 
 interface City {
@@ -34,7 +35,7 @@ export class DashboardComponent {
 
   UnprotectedData: any
 
-  constructor(private usersService: UsersService, private authService: AuthService, private http: HttpClient) {
+  constructor(private facturaS: FacturaService, private usersService: UsersService, private authService: AuthService, private http: HttpClient) {
     // this.authService.getUserSession().subscribe(resp => {
     //   this.authUser = resp;
     //   console.log('authUser', this.authUser)
@@ -49,6 +50,8 @@ export class DashboardComponent {
   //     { name: 'Istanbul', code: 'IST' },
   //     { name: 'Paris', code: 'PRS' }
   // ];
+  this.facturaS.getComisionesR().subscribe(resp => {
+    console.log(resp);  });
 
   }
 

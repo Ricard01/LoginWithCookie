@@ -14,6 +14,7 @@ public class Movimiento
     public int IdProducto { get; set; }
 
     public int? IdAgente { get; set; }
+
     public double Neto { get; set; }
 
     public double Descuento { get; set; }

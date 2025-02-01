@@ -28,6 +28,17 @@ public class DoctosController : ApiControllerBase
         return Ok(facturas);
     }
 
+    [HttpGet]
+    // [Requires(Permissions.DoctosAllAccess)]>
+    public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR()
+    {
+
+
+        var facturas = await _doctosRepository.GetComisionesR();
+
+        return Ok(facturas);
+    }
+
     [HttpPatch("{IdMovimiento}")]
     // [Requires(Permissions.DoctosAllAccess)]>
     public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)

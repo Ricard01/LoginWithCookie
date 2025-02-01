@@ -49,6 +49,58 @@ public class DoctosRepository : IDoctosRepository
 
     }
 
+    public async Task<List<ComisionRDto>> GetComisionesR()
+    {
+
+        var comisiones = await _appContext.Facturas
+              .Where(f => f.Cancelado == 0)
+              .Join(
+                  _appContext.Movimientos,
+                  f => f.IdComercial,
+                  m => m.IdComercial,
+                  (f, m) => new { Factura = f, Movimiento = m }
+              )
+              .Where(x => x.Movimiento.IdAgente != 2)
+              .OrderByDescending(x => x.Factura.Fecha)
+              .Select(x => new ComisionRDto
+              {
+                  Fecha = x.Factura.Fecha,
+                  Serie = (x.Factura.Serie ?? ""),
+                  Folio = x.Factura.Folio,
+                  Cliente = x.Factura.Cliente,
+                  IdMovimiento = x.Movimiento.IdMovimiento,
+                  IdAgente = x.Movimiento.IdAgente,
+                  NombreProducto = x.Movimiento.NombreProducto,
+                  Descripcion = x.Movimiento.Descripcion,
+                  Neto = x.Movimiento.Neto,
+                  Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
+                  Utilidad = x.Movimiento.Utilidad,
+                  UtilidadRicardo = x.Movimiento.UtilidadRicardo,
+                  IvaRicardo = x.Movimiento.IvaRicardo,
+                  IsrRicardo = x.Movimiento.IsrRicardo,
+                  Observaciones = x.Movimiento.Observaciones
+              })
+              .ToListAsync();
+
+        return comisiones;
+
+    }
+    public async Task<ComisionAVm> GetComisionesA()
+    {
+
+        var comisionesA = await _appContext.Facturas
+            .AsNoTracking()
+            .Where(d => d.Cancelado == 0)
+            .OrderByDescending(d => d.Fecha)
+             .ProjectTo<ComisionADto>(_mapper.ConfigurationProvider).ToListAsync();
+
+        return new ComisionAVm
+        {
+            Comisiones = comisionesA
+        };
+
+    }
+
 
     private async Task SincronizarFacturas(DateTime periodo)
     {
