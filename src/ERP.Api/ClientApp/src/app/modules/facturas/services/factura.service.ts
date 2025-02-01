@@ -21,7 +21,7 @@ export class FacturaService {
     return this.http.get<IFacturaVm>(`${this.doctossUrl}/${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        console.log('serv',resp.facturas) 
+        // console.log('serv',resp.facturas) 
 
       }),
        map(resp => resp.facturas));

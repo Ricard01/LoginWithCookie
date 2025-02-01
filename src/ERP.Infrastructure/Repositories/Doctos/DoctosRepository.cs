@@ -159,8 +159,9 @@ public class DoctosRepository : IDoctosRepository
         mov.UtilidadAngie = movto.UtilidadAngie;
         mov.IsrAngie = movto.IsrAngie;
         mov.IsrRicardo = movto.IsrRicardo;
-        mov.IvaRicardo  = mov.IvaRicardo;
+        mov.IvaRicardo  = movto.IvaRicardo;
         mov.IvaAngie = movto.IvaAngie;
+        mov.Observaciones = movto.Observaciones;
 
         var result = await _appContext.SaveChangesAsync();
 

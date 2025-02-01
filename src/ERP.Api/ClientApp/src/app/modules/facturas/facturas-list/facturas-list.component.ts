@@ -122,18 +122,49 @@ export class FacturasListComponent implements OnInit {
       movimientoForm.get('isrAngie')?.setValue(isrDividido);
     }
   }
-
+  onInputChange(movimientoId: number, field: string, event: Event): void {
+    const movimientoForm = this.movimientoForms.get(movimientoId);
+    if (!movimientoForm) return;
+  
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+  
+    // Actualiza el valor en el formulario
+    movimientoForm.get(field)?.setValue(value, { emitEvent: false });
+  }
   updateMovimiento(movimiento: IMovimientos): void {
+ 
+    console.log('iva R:', movimiento.ivaRicardo);
     const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
     if (!movimientoForm || movimientoForm.invalid) {
       console.error('El formulario no es válido');
       return;
     }
 
+    const updatedValues = {
+      // impuesto: movimientoForm.get('impuesto')?.value,
+      idAgente: movimientoForm.get('idAgente')?.value,
+      comision: movimientoForm.get('comision')?.value,
+      utilidad: movimientoForm.get('utilidad')?.value,
+      utilidadRicardo: movimientoForm.get('utilidadRicardo')?.value,
+      utilidadAngie: movimientoForm.get('utilidadAngie')?.value,
+      ivaRicardo: movimientoForm.get('ivaRicardo')?.value,
+      ivaAngie: movimientoForm.get('ivaAngie')?.value,
+      isrRicardo: movimientoForm.get('isrRicardo')?.value,
+      isrAngie: movimientoForm.get('isrAngie')?.value,
+      observaciones: movimientoForm.get('observaciones')?.value,
+      // Agrega aquí los demás campos que necesitas actualizar
+    };
+  
+    // Actualizar el formulario con los valores actuales
+    movimientoForm.patchValue(updatedValues);
+
+    movimientoForm.updateValueAndValidity();
+
     const updatedMovimiento = { ...movimiento, ...movimientoForm.value };
     this.facturaService.updateMovimiento(updatedMovimiento).subscribe(
       (response) => {
-        console.log('Movimiento actualizado:', response);
+        console.log(' actualizado:', response.nombreProducto);
         // Actualiza el estado local del movimiento
         const factura = this.facturas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
         if (factura) {
