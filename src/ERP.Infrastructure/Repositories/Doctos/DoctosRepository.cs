@@ -85,19 +85,40 @@ public class DoctosRepository : IDoctosRepository
         return comisiones;
 
     }
-    public async Task<ComisionAVm> GetComisionesA()
+    public async Task<List<ComisionADto>> GetComisionesA()
     {
 
-        var comisionesA = await _appContext.Facturas
-            .AsNoTracking()
-            .Where(d => d.Cancelado == 0)
-            .OrderByDescending(d => d.Fecha)
-             .ProjectTo<ComisionADto>(_mapper.ConfigurationProvider).ToListAsync();
+        var comisiones = await _appContext.Facturas
+                  .Where(f => f.Cancelado == 0)
+                  .Join(
+                      _appContext.Movimientos,
+                      f => f.IdComercial,
+                      m => m.IdComercial,
+                      (f, m) => new { Factura = f, Movimiento = m }
+                  )
+                  .Where(x => x.Movimiento.IdAgente != 1)
+                  .OrderByDescending(x => x.Factura.Fecha)
+                  .Select(x => new ComisionADto
+                  {
+                      Fecha = x.Factura.Fecha,
+                      Serie = (x.Factura.Serie ?? ""),
+                      Folio = x.Factura.Folio,
+                      Cliente = x.Factura.Cliente,
+                      IdMovimiento = x.Movimiento.IdMovimiento,
+                      IdAgente = x.Movimiento.IdAgente,
+                      NombreProducto = x.Movimiento.NombreProducto,
+                      Descripcion = x.Movimiento.Descripcion,
+                      Neto = x.Movimiento.Neto,
+                      Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
+                      Utilidad = x.Movimiento.Utilidad,
+                      UtilidadAngie = x.Movimiento.UtilidadAngie,
+                      IvaAngie = x.Movimiento.IvaAngie,
+                      IsrAngie = x.Movimiento.IsrAngie,
+                      Observaciones = x.Movimiento.Observaciones
+                  })
+                  .ToListAsync();
 
-        return new ComisionAVm
-        {
-            Comisiones = comisionesA
-        };
+        return comisiones;
 
     }
 

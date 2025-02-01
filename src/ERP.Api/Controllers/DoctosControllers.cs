@@ -34,9 +34,20 @@ public class DoctosController : ApiControllerBase
     {
 
 
-        var facturas = await _doctosRepository.GetComisionesR();
+        var comisiones = await _doctosRepository.GetComisionesR();
 
-        return Ok(facturas);
+        return Ok(comisiones);
+    }
+
+    [HttpGet("angie")]
+    // [Requires(Permissions.DoctosAllAccess)]>
+    public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA()
+    {
+
+
+        var comisiones = await _doctosRepository.GetComisionesA();
+
+        return Ok(comisiones);
     }
 
     [HttpPatch("{IdMovimiento}")]

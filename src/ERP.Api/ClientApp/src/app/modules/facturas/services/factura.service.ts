@@ -32,11 +32,24 @@ export class FacturaService {
     return this.http.get(`${this.doctossUrl}`).pipe(
       tap(resp => {
    
-        console.log('comisionesR',resp) 
+        // console.log('comisionesR',resp) 
 
       }),
        map(resp => resp));
   }
+
+  
+  getComisionesA() {
+    
+    return this.http.get(`${this.doctossUrl}/angie`).pipe(
+      tap(resp => {
+   
+        // console.log('comisionesA',resp) 
+
+      }),
+       map(resp => resp));
+  }
+
 
   updateMovimiento(movimiento: IMovimientos): Observable<any> {
     return this.http.patch(`${this.doctossUrl}/${movimiento.idMovimiento}`, movimiento);

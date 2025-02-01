@@ -51,10 +51,13 @@ export class DashboardComponent {
   //     { name: 'Paris', code: 'PRS' }
   // ];
   this.facturaS.getComisionesR().subscribe(resp => {
-    console.log(resp);  });
+    console.log('Ric',resp);  });
 
+    this.facturaS.getComisionesA().subscribe(resp => {
+      console.log('Angie',resp);  });
   }
 
+  
 
   getClaims() {
     return this.http.get("api/auth/getClaims")

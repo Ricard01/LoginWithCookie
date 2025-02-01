@@ -39,7 +39,7 @@ public interface IDoctosRepository
     /// Obtiene la lista de Comisiones de Angelica
     /// </summary>
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
-    Task<ComisionAVm> GetComisionesA();
+    Task<List<ComisionADto>> GetComisionesA();
 
 
     /// <summary>
