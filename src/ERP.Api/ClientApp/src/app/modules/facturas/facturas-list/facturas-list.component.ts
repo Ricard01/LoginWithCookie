@@ -57,7 +57,7 @@ export class FacturasListComponent implements OnInit {
       retencion: [movimiento.retencion || 0, [Validators.required, Validators.min(0)]],
       codigoProducto: [movimiento.codigoProducto || '', Validators.required],
       nombreProducto: [movimiento.nombreProducto || '', Validators.required],
-      descripcion: [movimiento.descripcion || '', Validators.required],
+      descripcion: [movimiento.descripcion || '', ],
       comision: [movimiento.comision || 0],
       utilidad: [movimiento.utilidad || 0],
       utilidadRicardo: [movimiento.utilidadRicardo || 0],
