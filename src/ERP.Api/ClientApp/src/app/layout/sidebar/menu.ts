@@ -1,6 +1,6 @@
 import { MenuItem } from "./menu.model";
 // *** ICONS Phosphor https://phosphoricons.com/
-// El id no afecta el orden.
+// El id no afecta el orden
 export const MENU: MenuItem[] = [
     {
         id: 1,
@@ -10,14 +10,28 @@ export const MENU: MenuItem[] = [
     {
         id: 2,
         label: 'Dashboard',
-        icon: 'ph-gauge',
+        icon: 'ph-duotone ph-gauge',
       link: '/',
 
     },
     {
         id: 3,
+        label: 'Comisiones',
+        icon: 'ph-duotone ph-tip-jar',
+      link: '/comisiones',
+
+    },
+    {
+        id: 3,
+        label: 'Gastos',
+        icon: 'ph-duotone ph-coins',
+      link: '/gastos',
+
+    },
+    {
+        id: 3,
         label: 'Facturas',
-        icon: 'ph-airplane',
+        icon: 'ph-duotone ph-invoice',
       link: '/facturas',
 
     },
@@ -26,7 +40,7 @@ export const MENU: MenuItem[] = [
     {
         id: 4,
         label: 'Settings',
-        icon: 'ph-wrench',
+        icon: 'ph-duotone ph-wrench',
         parentId: 8,
         subItems: [
             {
@@ -46,7 +60,7 @@ export const MENU: MenuItem[] = [
     {
         id: 46,
         label: 'REALESTATE',
-        icon: 'ph-buildings',
+        icon: 'ph-duotone ph-buildings',
         parentId: 8,
         subItems: [
             {

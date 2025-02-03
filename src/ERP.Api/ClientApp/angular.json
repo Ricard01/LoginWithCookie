@@ -31,8 +31,7 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/phosphor-icons/src/css/icons.css",
+              "node_modules/@phosphor-icons/web/src/duotone/style.css",
               "src/styles.scss"
             ],
             "scripts": ["node_modules/preline/preline.js"]
