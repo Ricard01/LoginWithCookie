@@ -46,6 +46,14 @@ public interface IDoctosRepository
     Task<List<ComisionRDto>> GetComisionesR(DateTime periodo);
 
 
+
+    /// <summary>
+    /// Obtiene la lista de Comisiones de Ricardo
+    /// </summary>
+    /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
+    Task<List<ComisionDto>> GetComisiones(DateTime periodo);
+
+
     /// <summary>
     /// Deletes the Doctos by id
     /// </summary>

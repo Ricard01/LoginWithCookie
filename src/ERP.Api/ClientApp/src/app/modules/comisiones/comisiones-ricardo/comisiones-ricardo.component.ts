@@ -14,75 +14,27 @@ import { ComisionService } from '../services/comision.service';
   styleUrl: './comisiones-ricardo.component.scss'
 })
 export class ComisionesRicardoComponent {
-  
+
   periodos = this.periodoService.getPeriodos();
   defaultPeriodo: Date | null = null;
 
-  columnsToDisplayAngie = ['folio', 'fecha', 'cliente', 'descripcion', 'utilidad', 'iva', 'isr'];
-
-  columns = [
-    {
-      columnDef: 'folio',
-      header: 'Folio',
-      cell: (element: IComisionRicardo) => `${element.folio}`,
-    },
-    {
-      columnDef: 'fecha',
-      header: 'Fecha',
-      cell: (element: IComisionRicardo) => `${element.fecha}`,
-      isDate: true,
-    width: '120px',
-    },
-    {
-      columnDef: 'cliente',
-      header: 'Cliente',
-      cell: (element: IComisionRicardo) => `${element.cliente}`,
-    },
-    {
-      columnDef: 'descripcion',
-      header: 'Descripcion',
-      cell: (element: IComisionRicardo) => `${element.descripcion}`,
-    },
-    {
-      columnDef: 'utilidadRicardo',
-      header: 'utilidad',
-      cell: (element: IComisionRicardo) => `${element.utilidadRicardo}`,
-      isCurrency: true,
-      width: '120px',
-    },
-    {
-      columnDef: 'ivaRicardo',
-      header: 'iva',
-      cell: (element: IComisionRicardo) => `${element.ivaRicardo}`,
-      isCurrency: true,
-      width: '120px',
-    },
-    {
-      columnDef: 'isrRicardo',
-      header: 'isrRicardo',
-      cell: (element: IComisionRicardo) => `${element.isrRicardo}`,
-      isCurrency: true,
-      width: '120px',
-    },
-  ];
+  displayedColumns = ['folio', 'fecha', 'cliente', 'descripcion', 'utilidad', 'iva', 'isr'];
 
   totalUtilidad: number = 0;
   totalIva: number = 0;
   totalIsr: number = 0;
-  
-  displayedColumns = this.columns.map(c => c.columnDef);
 
   comisionesAngie: IComisionAngie[] = [];
   comisionesRicardo: IComisionRicardo[] = [];
- dataSourceRicardo = new MatTableDataSource<IComisionRicardo>([]);
+  dataSourceRicardo = new MatTableDataSource<IComisionRicardo>([]);
 
   constructor(private comisionService: ComisionService, private periodoService: PeriodoService) { }
 
   onPeriodoChange(selectedValue: Date): void {
 
     this.comisionService.getComisionRicardo(selectedValue).subscribe((comisiones) => {
-    
-      this.dataSourceRicardo.data = comisiones; 
+
+      this.dataSourceRicardo.data = comisiones;
       this.totalUtilidad = comisiones.reduce((sum, item) => sum + item.utilidadRicardo, 0);
       this.totalIva = comisiones.reduce((sum, item) => sum + item.ivaRicardo, 0);
       this.totalIsr = comisiones.reduce((sum, item) => sum + item.isrRicardo, 0);
@@ -90,14 +42,13 @@ export class ComisionesRicardoComponent {
 
   }
 
-  // this.getComisionesA(selectedValue);    this.ref.detectChanges();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceRicardo.filter = filterValue.trim().toLowerCase();
 
- 
-
-  getComisionesA(periodo: Date) {
-    this.comisionService.getComisionesAngie(periodo).subscribe((comisiones) => {
-      this.comisionesAngie = comisiones
-    });
+    if (this.dataSourceRicardo.paginator) {
+        this.dataSourceRicardo.paginator.firstPage();
+    }
   }
 
 }

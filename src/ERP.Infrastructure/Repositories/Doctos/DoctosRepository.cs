@@ -49,6 +49,46 @@ public class DoctosRepository : IDoctosRepository
 
     }
 
+    public async Task<List<ComisionDto>> GetComisiones(DateTime periodo)
+    {
+
+        var comisiones = await _appContext.Facturas
+              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0)
+              .Join(
+                  _appContext.Movimientos,
+                  f => f.IdComercial,
+                  m => m.IdComercial,
+                  (f, m) => new { Factura = f, Movimiento = m }
+              )
+              .OrderByDescending(x => x.Factura.Fecha)
+              .Select(x => new ComisionDto
+              {
+                  Fecha = x.Factura.Fecha,
+                  Serie = (x.Factura.Serie ?? ""),
+                  Folio = x.Factura.Folio,
+                  Cliente = x.Factura.Cliente,
+                  IdMovimiento = x.Movimiento.IdMovimiento,
+                  IdAgente = x.Movimiento.IdAgente,
+                  NombreProducto = x.Movimiento.NombreProducto,
+                  Descripcion = x.Movimiento.Descripcion,
+                  Neto = x.Movimiento.Neto,
+                  Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
+                  Utilidad = x.Movimiento.Utilidad,
+                  UtilidadRicardo = x.Movimiento.UtilidadRicardo,
+                  IvaRicardo = x.Movimiento.IvaRicardo,
+                  IsrRicardo = x.Movimiento.IsrRicardo,
+                  UtilidadAngie = x.Movimiento.UtilidadAngie,
+                  IvaAngie = x.Movimiento.IvaAngie,
+                  IsrAngie = x.Movimiento.IsrAngie,
+                  Observaciones = x.Movimiento.Observaciones
+              })
+              .ToListAsync();
+
+        return comisiones;
+
+    }
+
+
     public async Task<List<ComisionRDto>> GetComisionesR(DateTime periodo)
     {
 
@@ -85,6 +125,8 @@ public class DoctosRepository : IDoctosRepository
         return comisiones;
 
     }
+  
+    
     public async Task<List<ComisionADto>> GetComisionesA(DateTime periodo)
     {
 

@@ -1,31 +1,33 @@
-.table-container:first-child {
-    border-right: 1px solid #ccc;
-  }
+.title {
+  margin-bottom: 16px; /* Ajusta el margen del título */
+  background-color:  #e0f7fa ;
+}
+.table-container {
+  overflow-x: auto; /* Habilita el scroll horizontal */
+}
 
-  table.mat-table {
-    font-size: 12px; /* Ajusta el tamaño de la fuente */
-  }
-  
-  th.mat-header-cell, td.mat-cell {
-    padding: 8px; /* Reduce el padding para ahorrar espacio */
-  }
+table.mat-table {
+  font-size: 12px; 
+  width: 100%; 
+}
 
-  table.mat-table {
-    width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
-    overflow-x: auto; /* Habilita el scroll horizontal */
-  }
-  
-  .mat-table-wrapper {
-    overflow-x: auto; /* Contenedor para el scroll */
-  }
+th.mat-header-cell, td.mat-cell {
+  padding: 4px; 
+  white-space: nowrap; 
+}
 
-  .sum-row {
-    background-color: #f5f5f5; /* Color de fondo */
-    font-weight: bold; /* Texto en negrita */
-  }
-  
-  .sum-container {
-    display: flex;
-    justify-content: space-around; /* Distribuye los elementos horizontalmente */
-    padding: 8px;
-  }
+.utilidadR, .ivaR, .isrR {
+  background-color: #e0f7fa;
+}
+
+.utilidadA, .ivaA, .isrA {
+  background-color: #fce4ec; 
+}
+
+.sum-container {
+  display: flex;
+  justify-content: space-around; /* Distribuye los elementos horizontalmente */
+  padding: 8px;
+  background-color: #f5f5f5; /* Color de fondo */
+  font-weight: bold; /* Texto en negrita */
+}

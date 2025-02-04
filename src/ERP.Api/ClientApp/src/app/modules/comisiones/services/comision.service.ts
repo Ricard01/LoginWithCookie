@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { IComisionAngie, IComisionRicardo } from '../models/comision.model';
-import { tap } from 'rxjs';
-
-
+import { IComisionAngie, IComisiones, IComisionRicardo } from '../models/comision.model';
 
 
 @Injectable({
@@ -14,28 +11,25 @@ export class ComisionService {
   private doctossUrl = 'api/doctos';
   comisionR!: IComisionRicardo[];
   comisionA!: IComisionAngie[];
+  comisiones!: IComisiones[];
 
   constructor(private http: HttpClient) {
   }
 
-  getComisionRicardo(periodo: Date) {
+  getDetalleComisiones(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IComisionRicardo[]>(`${this.doctossUrl}/ricardo/${formattedPeriodo}`).pipe(
-      tap(resp => { 
-        console.log('Servicio R',resp)
-      })
-    );
+    return this.http.get<IComisiones[]>(`${this.doctossUrl}/comisiones/${formattedPeriodo}`);
   }
 
+  getComisionRicardo(periodo: Date) {
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IComisionRicardo[]>(`${this.doctossUrl}/ricardo/${formattedPeriodo}`); 
+  }
 
   
   getComisionesAngie(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IComisionAngie[]>(`${this.doctossUrl}/angie/${formattedPeriodo}`).pipe(
-      tap(resp => { 
-        console.log('comisionesAngie',resp)
-      })
-    );
+    return this.http.get<IComisionAngie[]>(`${this.doctossUrl}/angie/${formattedPeriodo}`);
   }
 
 

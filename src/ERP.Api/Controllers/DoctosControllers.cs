@@ -24,6 +24,13 @@ public class DoctosController : ApiControllerBase
         return Ok(await _doctosRepository.Get(periodo));
     }
 
+    [HttpGet("comisiones/{periodo}")]
+    public async Task<ActionResult<List<ComisionDto>>> GetComisiones(DateTime periodo)
+    {
+
+        return Ok(await _doctosRepository.GetComisiones(periodo));
+    }
+
     [HttpGet("ricardo/{periodo}")]
     // [Requires(Permissions.DoctosAllAccess)]>
     public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR(DateTime periodo)
