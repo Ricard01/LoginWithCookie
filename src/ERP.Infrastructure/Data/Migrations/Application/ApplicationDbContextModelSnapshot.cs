@@ -170,7 +170,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.ToTable("ANY.UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Domain.Entities.Factura", b =>
+            modelBuilder.Entity("ERP.Domain.Entities.Documentos", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -206,6 +206,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<int>("IdComercial")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdDocumentoDe")
+                        .HasColumnType("int");
+
                     b.Property<double>("Neto")
                         .HasColumnType("float");
 
@@ -223,7 +226,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("Facturas");
+                    b.ToTable("Documentos");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.Movimiento", b =>
@@ -418,7 +421,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .WithMany("Movimientos")
                         .HasForeignKey("IdAgente");
 
-                    b.HasOne("ERP.Domain.Entities.Factura", "Factura")
+                    b.HasOne("ERP.Domain.Entities.Documentos", "Factura")
                         .WithMany("Movimientos")
                         .HasForeignKey("IdComercial")
                         .HasPrincipalKey("IdComercial")
@@ -481,7 +484,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("ERP.Domain.Entities.Factura", b =>
+            modelBuilder.Entity("ERP.Domain.Entities.Documentos", b =>
                 {
                     b.Navigation("Movimientos");
                 });

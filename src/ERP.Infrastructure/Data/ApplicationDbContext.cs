@@ -13,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)  { }
 
-    public DbSet<Factura> Facturas => Set<Factura>();
+    public DbSet<Documentos> Documentos => Set<Documentos>();
 
     public DbSet<Movimiento> Movimientos => Set<Movimiento>();
 
@@ -29,7 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         // Configuración de la relación entre Factura y Movimiento
-        builder.Entity<Factura>()
+        builder.Entity<Documentos>()
             .HasMany(f => f.Movimientos) // Una Factura tiene muchos Movimientos
             .WithOne(m => m.Factura) // Un Movimiento pertenece a una Factura
             .HasForeignKey(m => m.IdComercial) // Clave foránea en Movimiento que apunta a IdComercial en Factura

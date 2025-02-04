@@ -1,5 +1,4 @@
 
-using ERP.Domain.Entities;
 using ERP.Infrastructure.Repositories.Doctos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +17,18 @@ public class DoctosController : ApiControllerBase
 
 
     [HttpGet("{periodo}")]
-    public async Task<ActionResult<FacturasVm>> Get(DateTime periodo)
+    public async Task<ActionResult<FacturasVm>> GetFacturas(DateTime periodo)
+    {
+        var facturas = await _doctosRepository.GetFacturas(periodo);
+        return Ok(facturas);
+    }
+
+
+    [HttpGet("Gastos/{periodo}")]
+    public async Task<ActionResult<ComprasVm>> GetCompras(DateTime periodo)
     {
 
-        return Ok(await _doctosRepository.Get(periodo));
+        return Ok(await _doctosRepository.GetCompras(periodo));
     }
 
     [HttpGet("comisiones/{periodo}")]

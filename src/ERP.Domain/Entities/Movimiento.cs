@@ -49,7 +49,7 @@ public class Movimiento
     public string? Observaciones { get; set; }
 
 
-    public virtual Factura Factura { get; set; } // Relación con Factura
+    public virtual Documentos Factura { get; set; } // Relación con Factura
     public virtual Agente Agente { get; set; } // Relación opcional con Agente
 
 

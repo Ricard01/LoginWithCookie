@@ -68,12 +68,13 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Facturas",
+                name: "Documentos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdComercial = table.Column<int>(type: "int", nullable: false),
+                    IdDocumentoDe = table.Column<int>(type: "int", nullable: false),
                     Concepto = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Serie = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -90,8 +91,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facturas", x => x.Id);
-                    table.UniqueConstraint("AK_Facturas_IdComercial", x => x.IdComercial);
+                    table.PrimaryKey("PK_Documentos", x => x.Id);
+                    table.UniqueConstraint("AK_Documentos_IdComercial", x => x.IdComercial);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,9 +237,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         principalTable: "Agentes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Movimientos_Facturas_IdComercial",
+                        name: "FK_Movimientos_Documentos_IdComercial",
                         column: x => x.IdComercial,
-                        principalTable: "Facturas",
+                        principalTable: "Documentos",
                         principalColumn: "IdComercial",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -324,7 +325,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                 name: "Agentes");
 
             migrationBuilder.DropTable(
-                name: "Facturas");
+                name: "Documentos");
         }
     }
 }

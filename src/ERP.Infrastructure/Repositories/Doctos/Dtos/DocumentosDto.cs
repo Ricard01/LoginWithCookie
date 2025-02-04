@@ -6,13 +6,17 @@ namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
 public class FacturasVm
 {
-   public IList<FacturaDto> Facturas { get; set; } = new List<FacturaDto>();
+   public IList<DocumentosDto> Facturas { get; set; } = new List<DocumentosDto>();
+}
+
+public class ComprasVm
+{
+    public IList<DocumentosDto> Compras { get; set; } = new List<DocumentosDto>();
 }
 
 
-[AutoMap(typeof(Factura))]
-
-public class FacturaDto 
+[AutoMap(typeof(Documentos))]
+public class DocumentosDto 
 {
 
     public int Id { get; set; }

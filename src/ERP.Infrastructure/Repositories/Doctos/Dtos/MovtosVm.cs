@@ -8,6 +8,6 @@ namespace ERP.Infrastructure.Repositories.Doctos.Dtos
 {
     public class MovtosVm
     {
-        public IList<MovtoDto> Movimientos { get; set; }   = new List<MovtoDto>();
+        public IList<AdmMovimientosDto> Movimientos { get; set; }   = new List<AdmMovimientosDto>();
     }
 }

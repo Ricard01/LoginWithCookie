@@ -4,12 +4,14 @@ using ERP.Domain.Entities;
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
 [AutoMap(typeof(AdmMovimientos))]
-public class MovtoDto
+public class AdmMovimientosDto
 {
 
     public int CIDMOVIMIENTO { get; set; }
 
     public int CIDDOCUMENTO { get; set; }
+
+    public int CIDDOCUMENTODE { get; set; }
 
     public int CIDPRODUCTO { get; set; }
 
@@ -21,10 +23,9 @@ public class MovtoDto
 
     public double CRETENCION1 { get; set; }
 
-    public string COBSERVAMOV { get; set; }
+    public string? COBSERVAMOV { get; set; }
 
     public required AdmProductos AdmProductos { get; set; }
-
 
 
 }

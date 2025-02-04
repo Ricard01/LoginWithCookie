@@ -2,13 +2,15 @@
 
 namespace ERP.Domain.Entities;
 
-public class Factura
+public class Documentos
 {
 
     [Key]
     public int Id { get; set; }
 
     public int IdComercial { get; set; }
+
+    public int IdDocumentoDe { get; set; }
 
     public int Concepto  { get; set; }
 

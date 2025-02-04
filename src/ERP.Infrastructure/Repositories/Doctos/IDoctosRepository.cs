@@ -9,7 +9,15 @@ public interface IDoctosRepository
     /// Lista de Facturas
     /// </summary>
     /// <returns>Obtiene la lista de facturas de mi Bd (primero se extraen de la Bd de Compac) .</returns>
-    Task<FacturasVm> Get(DateTime periodo);
+    Task<FacturasVm> GetFacturas(DateTime periodo);
+
+
+    /// <summary>
+    /// Lista de compras
+    /// </summary>
+    /// <returns>Obtiene la lista de facturas(gastos) de mi Bd (primero se extraen de la Bd de Compac) .</returns>
+    Task<ComprasVm> GetCompras(DateTime periodo);
+
 
 
     ///<summary> Get a single Doctos by Id </summary>

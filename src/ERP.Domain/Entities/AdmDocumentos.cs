@@ -12,7 +12,6 @@ public class AdmDocumentos
 
     public int CIDDOCUMENTODE { get; set; }
 
-
     public DateTime CFECHA { get; set; }
 
     public string? CSERIEDOCUMENTO { get; set; }

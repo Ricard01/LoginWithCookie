@@ -3,18 +3,27 @@ using AutoMapper;
 
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
+public class DoctosVm
+{
+    public IList<AdmDocumentosDto> Doctos { get; set; } = new List<AdmDocumentosDto>();
+}
+
+
 [AutoMap(typeof(AdmDocumentos))]
-public class DoctoDto
+public class AdmDocumentosDto
 {
 
-    public DoctoDto()
+    public AdmDocumentosDto()
     {
-        AdmMovimientos = new List<MovtoDto>();
+        AdmMovimientos = Array.Empty<AdmMovimientosDto>();
     }
+
     public int CIDDOCUMENTO { get; set; }
 
     public int CIDCONCEPTODOCUMENTO { get; set; }
 
+
+    // Id 4:Facturas | Id 19: Compras
     public int CIDDOCUMENTODE { get; set; }
 
     public DateTime CFECHA { get; set; }
@@ -35,15 +44,10 @@ public class DoctoDto
 
     public int CCANCELADO { get; set; }
 
+    public IReadOnlyCollection<AdmMovimientosDto> AdmMovimientos { get; init; } = Array.Empty<AdmMovimientosDto>();
 
-    public List<MovtoDto> AdmMovimientos { get; set; } = new List<MovtoDto>();
-
-    public  AgenteDto AdmAgentes { get; set; }
+    public  AdmAgenteDto AdmAgentes { get; set; }
 
 
-    //public void Mapping(Profile profile)
-    //{
-    //    profile.CreateMap<AdmAgentes, AgenteDto>()
-    //        .ForMember(dto => dto.CNOMBREAGENTE, opt => opt.MapFrom(ur => Agente));
-    //}
+ 
 }
