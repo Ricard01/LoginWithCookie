@@ -1,26 +1,16 @@
 /* Contenedor principal */
-.container {
-    display: flex; /* Activa Flexbox */
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-  }
+// .container {
+//     display: flex; /* Activa Flexbox */
+//     height: 100vh; /* Ocupa toda la altura de la pantalla */
+//   }
   
-  /* Contenedor de cada tabla */
-  .table-container {
-    flex: 1; /* Cada contenedor ocupa el mismo espacio */
-    padding: 16px; /* Espaciado interno */
-    box-sizing: border-box; /* Incluye el padding en el tamaño total */
-    overflow: auto; /* Agrega scroll si el contenido es muy grande */
-  }
+//   /* Contenedor de cada tabla */
+//   .table-container {
+//     flex: 1; /* Cada contenedor ocupa el mismo espacio */
+//     padding: 16px; /* Espaciado interno */
+//     box-sizing: border-box; /* Incluye el padding en el tamaño total */
+//     overflow: auto; /* Agrega scroll si el contenido es muy grande */
+//   }
   
   /* Opcional: Agrega un borde para separar visualmente las tablas */
-  .table-container:first-child {
-    border-right: 1px solid #ccc;
-  }
-
-  table.mat-table {
-    font-size: 12px; /* Ajusta el tamaño de la fuente */
-  }
-  
-  th.mat-header-cell, td.mat-cell {
-    padding: 8px; /* Reduce el padding para ahorrar espacio */
-  }
+ 
