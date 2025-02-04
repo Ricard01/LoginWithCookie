@@ -22,7 +22,7 @@ export class ComisionService {
     const formattedPeriodo = periodo.toISOString();
     return this.http.get<IComisionRicardo[]>(`${this.doctossUrl}/ricardo/${formattedPeriodo}`).pipe(
       tap(resp => { 
-        console.log('comisiones R',resp)
+        console.log('Servicio R',resp)
       })
     );
   }
