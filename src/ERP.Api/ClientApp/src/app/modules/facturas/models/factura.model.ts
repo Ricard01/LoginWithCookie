@@ -44,10 +44,7 @@ export interface IMovimientos {
 export interface IMovimientosConForm extends IMovimientos {
   form: FormGroup;
 }
-export interface IPeriodo {
-  value?: Date;
-  viewValue?: string;
-}
+
 
 
 

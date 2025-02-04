@@ -49,11 +49,11 @@ public class DoctosRepository : IDoctosRepository
 
     }
 
-    public async Task<List<ComisionRDto>> GetComisionesR()
+    public async Task<List<ComisionRDto>> GetComisionesR(DateTime periodo)
     {
 
         var comisiones = await _appContext.Facturas
-              .Where(f => f.Cancelado == 0)
+              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0)
               .Join(
                   _appContext.Movimientos,
                   f => f.IdComercial,
@@ -85,11 +85,11 @@ public class DoctosRepository : IDoctosRepository
         return comisiones;
 
     }
-    public async Task<List<ComisionADto>> GetComisionesA()
+    public async Task<List<ComisionADto>> GetComisionesA(DateTime periodo)
     {
 
         var comisiones = await _appContext.Facturas
-                  .Where(f => f.Cancelado == 0)
+                  .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0)
                   .Join(
                       _appContext.Movimientos,
                       f => f.IdComercial,

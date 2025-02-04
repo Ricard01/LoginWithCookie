@@ -18,34 +18,30 @@ public class DoctosController : ApiControllerBase
 
 
     [HttpGet("{periodo}")]
-    // [Requires(Permissions.DoctosAllAccess)]>
     public async Task<ActionResult<FacturasVm>> Get(DateTime periodo)
     {
 
-
-        var facturas = await _doctosRepository.Get(periodo);
-
-        return Ok(facturas);
+        return Ok(await _doctosRepository.Get(periodo));
     }
 
-    [HttpGet]
+    [HttpGet("ricardo/{periodo}")]
     // [Requires(Permissions.DoctosAllAccess)]>
-    public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR()
+    public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR(DateTime periodo)
     {
 
 
-        var comisiones = await _doctosRepository.GetComisionesR();
+        var comisiones = await _doctosRepository.GetComisionesR(periodo);
 
         return Ok(comisiones);
     }
 
-    [HttpGet("angie")]
+    [HttpGet("angie/{periodo}")]
     // [Requires(Permissions.DoctosAllAccess)]>
-    public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA()
+    public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA(DateTime periodo)
     {
 
 
-        var comisiones = await _doctosRepository.GetComisionesA();
+        var comisiones = await _doctosRepository.GetComisionesA(periodo);
 
         return Ok(comisiones);
     }

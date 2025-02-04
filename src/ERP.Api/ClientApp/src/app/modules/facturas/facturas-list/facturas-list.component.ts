@@ -1,37 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
-import { IFactura, IMovimientos, IPeriodo } from '../models/factura.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { IFactura, IMovimientos,  } from '../models/factura.model';
+import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { FacturaService } from '../services/factura.service';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
+import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 
+import { PeriodoService } from 'src/app/shared/services/periodo.service';
 
-interface Column {
-  field: string;
-  header: string;
-}
 
 @Component({
   selector: 'app-facturas-list',
   standalone: true,
-  imports: [SHARED_IMPORTS, CurrencyInputComponent],
+  imports: [SHARED_IMPORTS, PeriodoSelectComponent,CurrencyInputComponent],
   templateUrl: './facturas-list.component.html',
   styleUrl: './facturas-list.component.scss'
 })
 export class FacturasListComponent implements OnInit {
 
 
-  periodos: IPeriodo[] = [
-    { value: new Date('2025-01-01'), viewValue: 'Enero' },
-    { value: new Date('2025-02-01'), viewValue: 'Febrero' },
-    { value: new Date('2025-03-01'), viewValue: 'Marzo' },
-  ];
-
-  periodoControl = new FormControl();
-  form = new FormGroup({
-    periodo: this.periodoControl,
-  });
-
+  periodos = this.periodoService.getPeriodos(); 
+  defaultPeriodo: Date | null = null; 
  
   movimientoForms: Map<number, FormGroup> = new Map();
   facturas: IFactura[] = [];
@@ -40,11 +29,12 @@ export class FacturasListComponent implements OnInit {
   columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
   expandedStates: Map<IFactura, boolean> = new Map(); 
 
-  constructor(private fb: FormBuilder, private facturaService: FacturaService) { }
+  constructor(private fb: FormBuilder, private periodoService: PeriodoService, private facturaService: FacturaService) { }
 
   ngOnInit() {
-    this.onPeriodoChange({ value: this.periodos[0].value });
+    this.defaultPeriodo = this.periodoService.getCurrentMonth();
   }
+
 
 
   initMovimientoForm(movimiento: IMovimientos): FormGroup {
@@ -122,6 +112,7 @@ export class FacturasListComponent implements OnInit {
       movimientoForm.get('isrAngie')?.setValue(isrDividido);
     }
   }
+
   onInputChange(movimientoId: number, field: string, event: Event): void {
     const movimientoForm = this.movimientoForms.get(movimientoId);
     if (!movimientoForm) return;
@@ -132,6 +123,7 @@ export class FacturasListComponent implements OnInit {
     // Actualiza el valor en el formulario
     movimientoForm.get(field)?.setValue(value, { emitEvent: false });
   }
+
   updateMovimiento(movimiento: IMovimientos): void {
  
     console.log('iva R:', movimiento.ivaRicardo);
@@ -180,15 +172,13 @@ export class FacturasListComponent implements OnInit {
     );
   }
 
-  // loadMovimientoData(movimiento: any): void {
-  //   this.movimientoForm.patchValue(movimiento);
-  // }
+
+  onPeriodoChange(selectedValue: Date): void {
+
+//  const formattedDate = selectedValue.toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
 
-
-
-  onPeriodoChange(event: any): void {
-    this.facturaService.get(event.value).subscribe((data: IFactura[]) => {
+    this.facturaService.get(selectedValue).subscribe((data: IFactura[]) => {
       this.facturas = data;
       this.facturas.forEach(factura => {
         factura.movimientos.forEach(movimiento => {
@@ -196,6 +186,7 @@ export class FacturasListComponent implements OnInit {
         });
       });
     });
+
   }
 
 

@@ -1,7 +1,12 @@
 <!-- #region   Seleccion de Periodo  -->
-<form [formGroup]="form">
+<!-- <form [formGroup]="form"> -->
   <h4>Facturas</h4>
-  <mat-form-field>
+  <app-periodo-select 
+  [periodos]="periodos" 
+  [defaultValue]="defaultPeriodo" 
+  (periodoChange)="onPeriodoChange($event)"
+></app-periodo-select>
+  <!-- <mat-form-field>
     <mat-label>Seleccionar Periodo</mat-label>
     <mat-select [formControl]="periodoControl" name="periodo" (selectionChange)="onPeriodoChange($event)">
       <mat-option>None</mat-option>
@@ -9,8 +14,8 @@
       <mat-option [value]="periodo.value">{{periodo.viewValue}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
-</form>
+  </mat-form-field> -->
+<!-- </form> -->
 <!-- #endregion  -->
 
 <div class="mat-elevation-z8">

@@ -1,6 +1,3 @@
-
-using ERP.Domain.Entities;
-using ERP.Infrastructure.Common.Models;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 
 namespace ERP.Infrastructure.Repositories.Doctos;
@@ -39,14 +36,14 @@ public interface IDoctosRepository
     /// Obtiene la lista de Comisiones de Angelica
     /// </summary>
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
-    Task<List<ComisionADto>> GetComisionesA();
+    Task<List<ComisionADto>> GetComisionesA(DateTime periodo);
 
 
     /// <summary>
     /// Obtiene la lista de Comisiones de Ricardo
     /// </summary>
     /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
-    Task<List<ComisionRDto>> GetComisionesR();
+    Task<List<ComisionRDto>> GetComisionesR(DateTime periodo);
 
 
     /// <summary>
