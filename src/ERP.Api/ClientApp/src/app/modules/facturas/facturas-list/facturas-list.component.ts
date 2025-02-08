@@ -18,7 +18,6 @@ import { PeriodoService } from 'src/app/shared/services/periodo.service';
 })
 export class FacturasListComponent implements OnInit {
 
-
   periodos = this.periodoService.getPeriodos(); 
   defaultPeriodo: Date | null = null; 
  
@@ -34,8 +33,6 @@ export class FacturasListComponent implements OnInit {
   ngOnInit() {
     this.defaultPeriodo = this.periodoService.getCurrentMonth();
   }
-
-
 
   initMovimientoForm(movimiento: IMovimientos): FormGroup {
     return this.fb.group({
@@ -59,7 +56,6 @@ export class FacturasListComponent implements OnInit {
       observaciones: [movimiento.observaciones || '']
     });
   }
-
 
   calcComisiones(movimiento: IMovimientos): void {
     const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
@@ -172,7 +168,6 @@ export class FacturasListComponent implements OnInit {
     );
   }
 
-
   onPeriodoChange(selectedValue: Date): void {
 
 //  const formattedDate = selectedValue.toISOString().split('T')[0]; // Formato YYYY-MM-DD
@@ -188,7 +183,6 @@ export class FacturasListComponent implements OnInit {
     });
 
   }
-
 
   expandElement(element: IFactura): void {
     // Colapsar todas las filas expandidas

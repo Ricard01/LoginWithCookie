@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ComisionService } from '../services/comision.service';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
@@ -13,14 +13,12 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './comisiones-list.component.html',
   styleUrl: './comisiones-list.component.scss'
 })
-export class ComisionesListComponent {
-
+export class ComisionesListComponent implements OnInit {
 
   periodos = this.periodoService.getPeriodos();
   defaultPeriodo: Date | null = null;
 
-  displayedColumns = ['folio', 'fecha', 'cliente', 'descripcion', 'utilidadR', 'ivaR', 'isrR','utilidadA', 'ivaA', 'isrA'];
-
+  displayedColumns = ['folio', 'fecha', 'cliente', 'descripcion', 'utilidadR', 'ivaR', 'isrR', 'utilidadA', 'ivaA', 'isrA'];
 
   totalUtilidadR: number = 0;
   totalIvaR: number = 0;
@@ -29,18 +27,21 @@ export class ComisionesListComponent {
   totalIvaA: number = 0;
   totalIsrA: number = 0;
 
-  
   comisiones: IComisiones[] = [];
- dataSource = new MatTableDataSource<IComisiones>([]);
+  dataSource = new MatTableDataSource<IComisiones>([]);
 
   constructor(private comisionService: ComisionService, private periodoService: PeriodoService) { }
+
+  ngOnInit() {
+    this.defaultPeriodo = this.periodoService.getCurrentMonth();
+  }
 
   onPeriodoChange(selectedValue: Date): void {
 
     this.comisionService.getDetalleComisiones(selectedValue).subscribe((comisiones) => {
-      console.log('detalle',comisiones);
-    
-      this.dataSource.data = comisiones; 
+      console.log('detalle', comisiones);
+
+      this.dataSource.data = comisiones;
       this.totalUtilidadR = comisiones.reduce((sum, item) => sum + item.utilidadRicardo, 0);
       this.totalIvaR = comisiones.reduce((sum, item) => sum + item.ivaRicardo, 0);
       this.totalIsrR = comisiones.reduce((sum, item) => sum + item.isrRicardo, 0);
@@ -56,11 +57,8 @@ export class ComisionesListComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
+      this.dataSource.paginator.firstPage();
     }
-}
+  }
 
- 
-
- 
 }
