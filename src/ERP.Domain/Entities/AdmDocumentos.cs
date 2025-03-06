@@ -30,6 +30,8 @@ public class AdmDocumentos
 
     public int CCANCELADO { get; set; }
 
+    public string? CTIMESTAMP { get; set; }
+
 
     [ForeignKey("CIDDOCUMENTO")]
     public virtual ICollection<AdmMovimientos> AdmMovimientos { get; set; }
@@ -38,6 +40,8 @@ public class AdmDocumentos
 
     [ForeignKey("CIDAGENTE")]
     public virtual required AdmAgentes AdmAgentes { get; set; }
+
+    public virtual ICollection<AdmAsocCargosAbonos>? AdmAsocCargosAbonos { get; set; }
 
 
 

@@ -1,36 +1,12 @@
+using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 
-namespace ERP.Infrastructure.Repositories.Doctos;
+namespace ERP.Infrastructure.Repositories.Comisiones;
 
-public interface IDoctosRepository
+public interface IComisionesRepository
 {
  
-    /// <summary>
-    /// Lista de Facturas
-    /// </summary>
-    /// <returns>Obtiene la lista de facturas de mi Bd (primero se extraen de la Bd de Compac) .</returns>
-    Task<FacturasVm> GetFacturas(DateTime periodo);
-
-
-    /// <summary>
-    /// Lista de compras
-    /// </summary>
-    /// <returns>Obtiene la lista de facturas(gastos) de mi Bd (primero se extraen de la Bd de Compac) .</returns>
-    Task<ComprasVm> GetCompras(DateTime periodo);
-
-
-
-    ///<summary> Get a single Doctos by Id </summary>
-    ///<remarks> Gets a single Doctos by Id with his specific role</remarks>
-    ///<returns>Single Doctos with role</returns>
-    //Task<DoctosDto> Get(Guid DoctosId);
-
-
-    /// <summary>
-    /// Creates the Doctos with role
-    /// </summary>
-    /// <returns>The result from and identityResult operation </returns>
-    //Task<Result> CreateAsync(CreateDoctos DoctosRequest);
+    
 
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
 
-namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
+namespace ERP.Infrastructure.Repositories.CompacDtos;
 
 [AutoMap(typeof(AdmProductos))]
 public class AdmProductDto

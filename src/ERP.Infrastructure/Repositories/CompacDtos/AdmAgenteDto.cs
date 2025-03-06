@@ -2,11 +2,11 @@
 using ERP.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
+namespace ERP.Infrastructure.Repositories.CompacDtos;
 
 
 [AutoMap(typeof(AdmAgentes))]
-public class AdmAgenteDto 
+public class AdmAgenteDto
 {
     [Key]
     public int CIDAGENTE { get; set; }

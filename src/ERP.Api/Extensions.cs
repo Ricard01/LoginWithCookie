@@ -3,13 +3,15 @@ using ERP.Infrastructure.AuthFeatures.Policy;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
-using ERP.Infrastructure.Repositories.Doctos;
+using ERP.Infrastructure.Repositories.Comisiones;
+using ERP.Infrastructure.Repositories.Facturas;
+using ERP.Infrastructure.Repositories.Gastos;
 using ERP.Infrastructure.Repositories.Roles;
 using ERP.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace ERP.Api;
 
@@ -17,6 +19,9 @@ internal static class Extensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder, IConfiguration configuration)
     {
+      
+        builder.Services.AddSwaggerConfig();
+
         // Servicios específicos de configuración
         builder.Services.AddScoped<ErpClaimsFactory>();
 
@@ -39,7 +44,9 @@ internal static class Extensions
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-        builder.Services.AddScoped<IDoctosRepository, DoctosRepository>();
+        builder.Services.AddScoped<IFacturasRepository, FacturasRepository>();
+        builder.Services.AddScoped<IGastosRepository, GastosRepository>();
+        builder.Services.AddScoped<IComisionesRepository, ComisionesRepository>();
 
         builder.Services.AddAuthorization();
 
@@ -63,7 +70,20 @@ internal static class Extensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        if (!app.Environment.IsDevelopment()) app.UseHsts();
+    
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
+            });
+        }  else
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

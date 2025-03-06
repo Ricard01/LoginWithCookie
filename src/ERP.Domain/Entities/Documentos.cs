@@ -38,6 +38,10 @@ public class Documentos
 
     public double Utilidad { get; set; }
 
+    public DateTime? FechaPago { get; set; }
+
+    public string? FolioPago { get; set; }
+
 
     public virtual ICollection<Movimiento> Movimientos { get; set; }
 

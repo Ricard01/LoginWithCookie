@@ -48,5 +48,23 @@ public class CompacDbContext : DbContext, ICompacDbContext
 
         base.OnModelCreating(builder);
 
+    
+        builder.Entity<AdmAsocCargosAbonos>()
+            .HasKey(a => a.CIDAUTOINCSQL);
+
+        // Relación de DocumentoCargo (Factura que recibe pagos)
+        builder.Entity<AdmAsocCargosAbonos>()
+            .HasOne(a => a.DocumentoCargo)
+            .WithMany(d => d.AdmAsocCargosAbonos)
+            .HasForeignKey(a => a.CIDDOCUMENTOCARGO)
+            .OnDelete(DeleteBehavior.Restrict); // No eliminar en cascada
+
+        // Relación de DocumentoAbono (Pago realizado)
+        builder.Entity<AdmAsocCargosAbonos>()
+            .HasOne(a => a.DocumentoAbono)
+            .WithMany() // No necesita relación inversa
+            .HasForeignKey(a => a.CIDDOCUMENTOABONO)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 }

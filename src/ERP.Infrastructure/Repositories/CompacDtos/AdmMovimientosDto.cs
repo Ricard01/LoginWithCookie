@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
 
-namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
+namespace ERP.Infrastructure.Repositories.CompacDtos;
+
+public class MovtosVm
+{
+    public IList<AdmMovimientosDto> Movimientos { get; set; } = new List<AdmMovimientosDto>();
+}
 
 [AutoMap(typeof(AdmMovimientos))]
 public class AdmMovimientosDto

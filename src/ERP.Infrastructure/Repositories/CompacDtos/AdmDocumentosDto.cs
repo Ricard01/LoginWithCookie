@@ -1,7 +1,7 @@
 using ERP.Domain.Entities;
 using AutoMapper;
 
-namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
+namespace ERP.Infrastructure.Repositories.CompacDtos;
 
 public class DoctosVm
 {
@@ -28,7 +28,7 @@ public class AdmDocumentosDto
 
     public DateTime CFECHA { get; set; }
 
-    public string?  CSERIEDOCUMENTO { get; set; }
+    public string? CSERIEDOCUMENTO { get; set; }
 
     public double CFOLIO { get; set; }
 
@@ -46,8 +46,8 @@ public class AdmDocumentosDto
 
     public IReadOnlyCollection<AdmMovimientosDto> AdmMovimientos { get; init; } = Array.Empty<AdmMovimientosDto>();
 
-    public  AdmAgenteDto AdmAgentes { get; set; }
+    public AdmAgenteDto AdmAgentes { get; set; }
 
 
- 
+
 }
