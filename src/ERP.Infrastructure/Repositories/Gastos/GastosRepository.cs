@@ -5,7 +5,7 @@ using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Repositories.Gastos.Dtos;
-using ERP.Infrastructure.Repositories.CompacDtos;
+using ERP.Infrastructure.Repositories.Dtos;
 
 
 namespace ERP.Infrastructure.Repositories.Gastos;
@@ -95,7 +95,7 @@ public class GastosRepository : IGastosRepository
     {
         IdComercial = c.CIDDOCUMENTO,
         IdDocumentoDe = c.CIDDOCUMENTODE,
-        Concepto = c.CIDCONCEPTODOCUMENTO,
+        //Concepto = c.CIDCONCEPTODOCUMENTO,
         Fecha = c.CFECHA,
         Serie = c.CSERIEDOCUMENTO,
         Folio = c.CFOLIO,
@@ -114,8 +114,8 @@ public class GastosRepository : IGastosRepository
             IdProducto = movto.CIDPRODUCTO,
             Neto = movto.CNETO,
             Descuento = movto.CDESCUENTO1,
-            Impuesto = movto.CIMPUESTO1,
-            Retencion = movto.CRETENCION1,
+            //Impuesto = movto.CIMPUESTO1,
+            //Retencion = movto.CRETENCION1,
             codigoProducto = movto.AdmProductos.CCODIGOPRODUCTO,
             NombreProducto = movto.AdmProductos.CNOMBREPRODUCTO
         }).ToList()

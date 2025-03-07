@@ -13,4 +13,6 @@ public interface ICompacDbContext
 
     DbSet<AdmAgentes> AdmAgentes { get; }
 
+    DbSet<AdmAsocCargosAbonos> AdmAsocCargosAbonos { get; }
+
 }

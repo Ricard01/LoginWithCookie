@@ -1,7 +1,7 @@
 using ERP.Domain.Entities;
 using AutoMapper;
 
-namespace ERP.Infrastructure.Repositories.CompacDtos;
+namespace ERP.Infrastructure.Repositories.Dtos;
 
 public class DoctosVm
 {
@@ -44,10 +44,17 @@ public class AdmDocumentosDto
 
     public int CCANCELADO { get; set; }
 
+    public string? CTIMESTAMP { get; set; }
+
+    public DateTime? FECHAPAGO { get; set; }
+
+    public string? FOLIOPAGO { get; set; }
+
     public IReadOnlyCollection<AdmMovimientosDto> AdmMovimientos { get; init; } = Array.Empty<AdmMovimientosDto>();
 
-    public AdmAgenteDto AdmAgentes { get; set; }
+    public virtual ICollection<AdmAsocCargosAbonosDto>? AdmAsocCargosAbonos { get; set; }
 
+    public AdmAgenteDto AdmAgentes { get; set; }
 
 
 }

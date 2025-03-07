@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
 
-namespace ERP.Infrastructure.Repositories.CompacDtos;
+namespace ERP.Infrastructure.Repositories.Dtos;
 
 public class MovtosVm
 {

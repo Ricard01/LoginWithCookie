@@ -188,8 +188,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Concepto")
-                        .HasColumnType("int");
+                    b.Property<string>("Concepto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Descuento")
                         .HasColumnType("float");
@@ -200,14 +201,23 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<DateTime?>("FechaCancelacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaPago")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("FechaCreacionPago")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FechaPago")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Folio")
                         .HasColumnType("float");
 
                     b.Property<string>("FolioPago")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ISR")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IVA")
+                        .HasColumnType("float");
 
                     b.Property<int>("IdComercial")
                         .HasColumnType("int");
@@ -217,6 +227,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<double>("Neto")
                         .HasColumnType("float");
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Pendiente")
                         .HasColumnType("float");
@@ -252,6 +265,12 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<double>("Descuento")
                         .HasColumnType("float");
 
+                    b.Property<double>("ISR")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IVA")
+                        .HasColumnType("float");
+
                     b.Property<int?>("IdAgente")
                         .HasColumnType("int");
 
@@ -263,9 +282,6 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<int>("IdProducto")
                         .HasColumnType("int");
-
-                    b.Property<double>("Impuesto")
-                        .HasColumnType("float");
 
                     b.Property<double>("IsrAngie")
                         .HasColumnType("float");
@@ -288,9 +304,6 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Retencion")
-                        .HasColumnType("float");
 
                     b.Property<double>("Utilidad")
                         .HasColumnType("float");

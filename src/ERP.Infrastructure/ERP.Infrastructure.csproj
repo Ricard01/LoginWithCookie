@@ -12,6 +12,7 @@
       <None Remove="Permissions\**" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Dapper" Version="2.1.66" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.12" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.12" />
@@ -27,9 +28,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\ERP.Domain\ERP.Domain.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
 </Project>

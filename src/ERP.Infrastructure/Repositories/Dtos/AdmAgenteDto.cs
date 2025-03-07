@@ -2,7 +2,7 @@
 using ERP.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace ERP.Infrastructure.Repositories.CompacDtos;
+namespace ERP.Infrastructure.Repositories.Dtos;
 
 
 [AutoMap(typeof(AdmAgentes))]

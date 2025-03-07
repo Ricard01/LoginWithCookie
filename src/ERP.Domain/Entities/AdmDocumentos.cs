@@ -33,8 +33,9 @@ public class AdmDocumentos
     public string? CTIMESTAMP { get; set; }
 
 
+
     [ForeignKey("CIDDOCUMENTO")]
-    public virtual ICollection<AdmMovimientos> AdmMovimientos { get; set; }
+    public virtual ICollection<AdmMovimientos>? AdmMovimientos { get; set; }
 
 
 
