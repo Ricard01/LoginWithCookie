@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
     IdentityUserToken<Guid>>, IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)  { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<Documentos> Documentos => Set<Documentos>();
 
@@ -28,12 +28,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
+        builder.Entity<Agente>()
+        .Property(x => x.I    d)
+        .UseIdentityColumn(seed: 0, increment: 1);
+
         // Configuración de la relación entre Factura y Movimiento
         builder.Entity<Documentos>()
             .HasMany(f => f.Movimientos) // Una Factura tiene muchos Movimientos
             .WithOne(m => m.Factura) // Un Movimiento pertenece a una Factura
             .HasForeignKey(m => m.IdComercial) // Clave foránea en Movimiento que apunta a IdComercial en Factura
             .HasPrincipalKey(f => f.IdComercial);
+
 
         builder.Entity<Movimiento>()
     .HasOne(m => m.Agente) // Un Movimiento puede tener un Agente
@@ -88,7 +93,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
 
-        
+
         });
 
         //builder.Entity<ApplicationUserRole>(b =>

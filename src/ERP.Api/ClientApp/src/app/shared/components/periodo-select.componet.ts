@@ -22,19 +22,32 @@ import { IPeriodo } from '../models/periodo.model';
   `,
 })
 export class PeriodoSelectComponent {
-  @Input() periodos: IPeriodo[] = []; // Recibe los periodos desde el componente padre
-  @Input() defaultValue: Date | null = null; // Recibe el valor por defecto
-  @Output() periodoChange = new EventEmitter<Date>(); // Emite el valor seleccionado
+  @Input() periodos: IPeriodo[] = []; 
+  @Input() defaultValue: Date | null = null; 
+  @Output() periodoChange = new EventEmitter<Date>(); 
 
-  periodoControl = new FormControl(); // Control para el select
+  periodoControl = new FormControl(); 
 
   ngOnChanges(): void {
-    if (this.defaultValue) {
-      this.periodoControl.setValue(this.defaultValue); // Establece el valor por defecto
+    if (this.defaultValue && !this.periodoControl.value) {
+      this.periodoControl.setValue(this.defaultValue); // 🔥 Solo si aún no tiene valor
     }
   }
 
+  ngOnInit(): void {
+    if (this.defaultValue && !this.periodoControl.value) {
+      this.periodoControl.setValue(this.defaultValue);
+    }
+
+    // 🔥 Emitir el valor inicial si existe
+    this.periodoControl.valueChanges.subscribe(value => {
+      if (value) {
+        this.periodoChange.emit(value);
+      }
+    });
+  }
+
   onSelectionChange(event: any): void {
-    this.periodoChange.emit(event.value); // Emite el valor seleccionado
+    this.periodoChange.emit(event.value); 
   }
 }

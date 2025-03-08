@@ -92,7 +92,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     Utilidad = table.Column<double>(type: "float", nullable: false),
                     FechaPago = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FolioPago = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaCreacionPago = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaCreacionPago = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -221,7 +221,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     Descuento = table.Column<double>(type: "float", nullable: false),
                     IVA = table.Column<double>(type: "float", nullable: false),
                     ISR = table.Column<double>(type: "float", nullable: false),
-                    codigoProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CodigoProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NombreProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comision = table.Column<double>(type: "float", nullable: false),

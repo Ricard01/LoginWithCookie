@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Infrastructure.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250306220752_Initial")]
+    [Migration("20250308001540_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -204,8 +204,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<DateTime?>("FechaCancelacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FechaCreacionPago")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("FechaCreacionPago")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FechaPago")
                         .HasColumnType("nvarchar(max)");
@@ -258,6 +258,10 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodigoProducto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Comision")
                         .HasColumnType("float");
@@ -316,10 +320,6 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<double>("UtilidadRicardo")
                         .HasColumnType("float");
-
-                    b.Property<string>("codigoProducto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -10,18 +10,29 @@ import { IFactura, IFacturaVm, IMovimientos } from '../models/factura.model';
 })
 export class FacturaService {
 
-  private doctossUrl = 'api/doctos';
+  private facturasUrl = 'api/facturas';
   facturas: IFactura[]|undefined;
 
   constructor(private http: HttpClient) {
   }
 
-  get(periodo: Date) {
+  getFacturasPagadas(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IFacturaVm>(`${this.doctossUrl}/${formattedPeriodo}`).pipe(
+    return this.http.get<IFacturaVm>(`${this.facturasUrl}/pagadas?periodo=${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        // console.log('serv',resp.facturas) 
+        console.log('serv',resp.facturas) 
+
+      }),
+       map(resp => resp.facturas));
+  }
+
+  getFacturasPendientes(periodo: Date) {
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IFacturaVm>(`${this.facturasUrl}/pendientes?periodo=${formattedPeriodo}`).pipe(
+      tap(resp => {
+   
+        console.log('serv',resp.facturas) 
 
       }),
        map(resp => resp.facturas));
@@ -29,7 +40,7 @@ export class FacturaService {
 
   getComisionesR() {
     
-    return this.http.get(`${this.doctossUrl}`).pipe(
+    return this.http.get(`${this.facturasUrl}`).pipe(
       tap(resp => {
    
         // console.log('comisionesR',resp) 
@@ -41,7 +52,7 @@ export class FacturaService {
   
   getComisionesA() {
     
-    return this.http.get(`${this.doctossUrl}/angie`).pipe(
+    return this.http.get(`${this.facturasUrl}/angie`).pipe(
       tap(resp => {
    
         // console.log('comisionesA',resp) 
@@ -52,6 +63,6 @@ export class FacturaService {
 
 
   updateMovimiento(movimiento: IMovimientos): Observable<any> {
-    return this.http.patch(`${this.doctossUrl}/${movimiento.idMovimiento}`, movimiento);
+    return this.http.patch(`${this.facturasUrl}/${movimiento.idMovimiento}`, movimiento);
   }
 }

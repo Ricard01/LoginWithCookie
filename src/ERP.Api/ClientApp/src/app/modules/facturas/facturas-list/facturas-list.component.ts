@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
-import { IFactura, IMovimientos,  } from '../models/factura.model';
-import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
-import { FacturaService } from '../services/factura.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
+import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
+import { IFactura, IMovimientos, } from '../models/factura.model';
+import { FacturaService } from '../services/factura.service';
 
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { forkJoin, switchMap } from 'rxjs';
 
 
 @Component({
@@ -20,18 +22,50 @@ export class FacturasListComponent implements OnInit {
 
   periodos = this.periodoService.getPeriodos(); 
   defaultPeriodo: Date | null = null; 
+  countFacPagadas = 0;
+  countFacPendientes = 0;
  
   movimientoForms: Map<number, FormGroup> = new Map();
-  facturas: IFactura[] = [];
+  facturasPendientes: IFactura[] = [];
+  facturasPagadas: IFactura[] = [];
 
   columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
   columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
   expandedStates: Map<IFactura, boolean> = new Map(); 
 
+  private selectedPeriodo$!: BehaviorSubject<Date>;
+
   constructor(private fb: FormBuilder, private periodoService: PeriodoService, private facturaService: FacturaService) { }
 
   ngOnInit() {
+
     this.defaultPeriodo = this.periodoService.getCurrentMonth();
+  
+    // 🔥 Inicializar selectedPeriodo$ con el período actual
+    this.selectedPeriodo$ = new BehaviorSubject<Date>(this.defaultPeriodo);
+
+    this.selectedPeriodo$
+    .pipe(
+      switchMap(selectedValue => 
+        forkJoin ({
+         facturasPagadas: this.facturaService.getFacturasPagadas(selectedValue),
+          facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue)
+        }) // Cancela si el usuario cambia rápido
+    )
+    )
+    .subscribe(({ facturasPagadas, facturasPendientes }) => {
+      this.facturasPagadas = facturasPagadas;
+      this.countFacPagadas = facturasPagadas.length;
+
+      this.facturasPendientes = facturasPendientes;
+      this.countFacPendientes = facturasPendientes.length;
+      
+      this.facturasPagadas.forEach(factura => {
+        factura.movimientos.forEach(movimiento => {
+          this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+        });
+      });
+    });
   }
 
   initMovimientoForm(movimiento: IMovimientos): FormGroup {
@@ -40,8 +74,8 @@ export class FacturasListComponent implements OnInit {
       idAgente: [movimiento.idAgente || '', Validators.required],
       neto: [movimiento.neto || 0, [Validators.required, Validators.min(0)]],
       descuento: [movimiento.descuento || 0, [Validators.required, Validators.min(0)]],
-      impuesto: [movimiento.impuesto || 0, [Validators.required, Validators.min(0)]],
-      retencion: [movimiento.retencion || 0, [Validators.required, Validators.min(0)]],
+      iva: [movimiento.iva || 0, [Validators.required, Validators.min(0)]],
+      isr: [movimiento.isr || 0, [Validators.required, Validators.min(0)]],
       codigoProducto: [movimiento.codigoProducto || '', Validators.required],
       nombreProducto: [movimiento.nombreProducto || '', Validators.required],
       descripcion: [movimiento.descripcion || '', ],
@@ -154,7 +188,7 @@ export class FacturasListComponent implements OnInit {
       (response) => {
         console.log(' actualizado:', response.nombreProducto);
         // Actualiza el estado local del movimiento
-        const factura = this.facturas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
+        const factura = this.facturasPagadas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
         if (factura) {
           const movimientoIndex = factura.movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
           if (movimientoIndex !== -1) {
@@ -169,24 +203,25 @@ export class FacturasListComponent implements OnInit {
   }
 
   onPeriodoChange(selectedValue: Date): void {
+    this.selectedPeriodo$.next(selectedValue);
 
-//  const formattedDate = selectedValue.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    // this.facturaService.getFacturasPagadas(selectedValue).subscribe((data: IFactura[]) => {
 
+    //   this.facturas = data;
+    //   this.countFacPagadas = data.length;
+      
+    //   this.facturas.forEach(factura => {
+    //     factura.movimientos.forEach(movimiento => {
+    //       this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+    //     });
+    //   });
 
-    this.facturaService.get(selectedValue).subscribe((data: IFactura[]) => {
-      this.facturas = data;
-      this.facturas.forEach(factura => {
-        factura.movimientos.forEach(movimiento => {
-          this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
-        });
-      });
-    });
-
+    // });
   }
 
   expandElement(element: IFactura): void {
     // Colapsar todas las filas expandidas
-    this.facturas.forEach(factura => {
+    this.facturasPagadas.forEach(factura => {
       if (factura !== element) {
         factura.expanded = false;
       }
@@ -206,3 +241,4 @@ export class FacturasListComponent implements OnInit {
   }
 
 }
+

@@ -11,7 +11,7 @@ public class Movimiento
     public double Descuento { get; set; }
     public double IVA { get; set; }
     public double ISR { get; set; }
-     public required string codigoProducto { get; set; }
+     public required string CodigoProducto { get; set; }
     public required string NombreProducto { get; set; }
     public  string? Descripcion { get; set; }
     public double Comision { get; set; }

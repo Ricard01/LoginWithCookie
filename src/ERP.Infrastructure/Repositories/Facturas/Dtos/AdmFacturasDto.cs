@@ -21,7 +21,7 @@ public class AdmFacturasDto
     public int Cancelado { get; set; }
     public string? FechaPago { get; set; }
     public string? FolioPago { get; set; }
-    public string? FechaCreacionPago { get; set; }
+    public DateTime? FechaCreacionPago { get; set; }
     public virtual required ICollection<AdmFacturaMovtos> Movimientos { get; set; }
 }
 

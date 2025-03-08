@@ -24,7 +24,7 @@ public class Documentos
     public double Utilidad { get; set; }
     public string? FechaPago { get; set; }
     public string? FolioPago { get; set; }
-    public string? FechaCreacionPago { get; set; }
+    public DateTime? FechaCreacionPago { get; set; }
     public string? Observaciones { get; set; }
     public virtual ICollection<Movimiento> Movimientos { get; set; }
 }

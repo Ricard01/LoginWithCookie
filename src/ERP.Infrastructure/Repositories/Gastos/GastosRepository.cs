@@ -116,7 +116,7 @@ public class GastosRepository : IGastosRepository
             Descuento = movto.CDESCUENTO1,
             //Impuesto = movto.CIMPUESTO1,
             //Retencion = movto.CRETENCION1,
-            codigoProducto = movto.AdmProductos.CCODIGOPRODUCTO,
+            CodigoProducto = movto.AdmProductos.CCODIGOPRODUCTO,
             NombreProducto = movto.AdmProductos.CNOMBREPRODUCTO
         }).ToList()
     }).ToList();

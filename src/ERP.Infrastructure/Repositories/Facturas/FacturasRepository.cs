@@ -61,10 +61,15 @@ public class FacturasRepository : IFacturasRepository
     private async Task<List<FacturasDto>> GetFacturasPendientesAsync(int idDocumentoDe, DateTime periodo)
     {
         return await _context.Documentos
-          .AsNoTracking()
-         .Where(d => d.Fecha.Year == periodo.Year && d.Fecha.Month == periodo.Month && d.Cancelado == 0 && d.IdDocumentoDe == idDocumentoDe)
-         .OrderByDescending(d => d.Fecha)
-             .ProjectTo<FacturasDto>(_mapper.ConfigurationProvider).ToListAsync();
+     .AsNoTracking()
+     .Where(f =>
+        (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == idDocumentoDe && f.Pendiente > 0)
+        ||
+       (f.Pendiente == 0 && f.Fecha.Month == periodo.Month && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Year == periodo.Year && f.FechaCreacionPago.Value.Month != periodo.Month)
+     )
+     .OrderByDescending(d => d.Fecha)
+     .ProjectTo<FacturasDto>(_mapper.ConfigurationProvider)
+     .ToListAsync();
     }
 
     private async Task ImportarDocumentosDeCompac(int idDocumentoDe, DateTime periodo)
@@ -162,6 +167,8 @@ public class FacturasRepository : IFacturasRepository
                     Folio = f.Folio,
                     Cliente = f.Cliente,
                     Neto = f.Neto,
+                    IVA =   f.IVA,
+                    ISR = f.ISR,
                     Descuento = f.Descuento,
                     Total = f.Total,
                     Pendiente = f.Pendiente,
@@ -169,7 +176,7 @@ public class FacturasRepository : IFacturasRepository
                     Agente = f.Agente,
                     FechaPago = f.FechaPago,
                     FolioPago = f.FolioPago,
-                    FechaCreacionPago = f.FechaCreacionPago
+                    FechaCreacionPago =f.FechaCreacionPago
                 };
 
                 facturasToAdd.Add(newFactura);
@@ -187,9 +194,9 @@ public class FacturasRepository : IFacturasRepository
                         Descuento = m.MovDescto,
                         IVA = m.MovIVA,
                         ISR = m.MovISR,
-                        codigoProducto = m.Codigo,
+                        CodigoProducto = m.Codigo,
                         NombreProducto = m.Nombre,
-                        Observaciones = m.MovObserva,
+                        Descripcion = m.MovObserva,               
                         Comision = m.Comision
                     }));
                 }

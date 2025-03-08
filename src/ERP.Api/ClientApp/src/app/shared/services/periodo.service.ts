@@ -8,26 +8,18 @@ import { IPeriodo, periodos } from '../models/periodo.model';
 
 export class PeriodoService {
  
-  getCurrentMonth(): Date | null {
-  
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth(); // Base 0 (0 = enero, 1 = febrero, etc.)
-    const currentYear = currentDate.getFullYear();
-  
+  getCurrentMonth(): Date {
 
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0); //  Evita problemas con la hora
   
-    // Filtra periodos con valores válidos
-    const periodosValidos = periodos.filter((p) => p.value instanceof Date && !isNaN(p.value.getTime()));
-  
-    const periodo = periodosValidos.find((p) => {
-      console.log('Periodo válido:', p.value.getMonth() + 1, p.value.getFullYear());
-      return (
-        p.value.getMonth() === currentMonth &&
-        p.value.getFullYear() === currentYear
+      //  Buscar el período correspondiente al mes actual
+      const periodo = periodos.find(p => 
+        p.value.getMonth() === currentDate.getMonth() && 
+        p.value.getFullYear() === currentDate.getFullYear()
       );
-    });
   
-    return periodo ? periodo.value : null;
+      return periodo ? periodo.value : periodos[0].value; // 🔥 Si no encuentra, usa el primer período
     
   }
 

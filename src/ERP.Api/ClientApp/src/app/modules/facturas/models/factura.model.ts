@@ -6,17 +6,23 @@ export interface IFacturaVm {
 
 export interface IFactura {
   id: number;
+  concepto: string;
   fecha: Date;
-  serie: string;
+  serie?: string;
   folio: number;
-  agente?: string;
   cliente: string;
-  neto?: number;
-  descuento?: number;
-  total?: number;
-  pendiente?: number;
-  utlidad?: number;
-  movimientos: IMovimientos[]
+  neto: number;
+  total: number;
+  descuento: number;
+  pendiente: number;
+  cancelado: number;
+  url?: string;
+  agente?: string;
+  utilidad: number;
+  fechaPago?: string;
+  folioPago?: string;
+  fechaCreacionPago?: string;
+  movimientos: IMovimientos[];
   expanded?: boolean; // Propiedad opcional para manejar la expansión
 }
 
@@ -26,8 +32,8 @@ export interface IMovimientos {
   idAgente?: number;
   neto: number;
   descuento?: number;
-  impuesto?: number;
-  retencion?: number;
+  iva?: number;
+  isr?: number;
   codigoProducto: string;
   nombreProducto: string;
   descripcion?: string ;
