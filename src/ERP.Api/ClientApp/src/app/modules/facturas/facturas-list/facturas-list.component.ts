@@ -41,47 +41,23 @@ export class FacturasListComponent implements OnInit {
 
     this.defaultPeriodo = this.periodoService.getCurrentMonth();
   
-    //  Inicializar selectedPeriodo$ con el período actual
     this.selectedPeriodo$ = new BehaviorSubject<Date>(this.defaultPeriodo);
-
-    // this.selectedPeriodo$
-    // .pipe(
-    //   switchMap(selectedValue => 
-    //     forkJoin ({
-    //      facturasPagadas: this.facturaService.getFacturasPagadas(selectedValue),
-    //       facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue)
-    //     }) // Cancela si el usuario cambia rápido
-    // )
-    // )
-    // .subscribe(({ facturasPagadas, facturasPendientes }) => {
-    //   this.facturasPagadas = facturasPagadas;
-    //   this.countFacPagadas = facturasPagadas.length;
-
-    //   this.facturasPendientes = facturasPendientes;
-    //   this.countFacPendientes = facturasPendientes.length;
-      
-    //   this.facturasPagadas.forEach(factura => {
-    //     factura.movimientos.forEach(movimiento => {
-    //       this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
-    //     });
-    //   });
-    // });
 
     this.selectedPeriodo$
     .pipe(
       distinctUntilChanged(),
       switchMap(selectedValue => 
-        this.facturaService.sincronizarFacturas(selectedValue).pipe( // Paso 1: Sincronizar
+        this.facturaService.sincronizarFacturas(selectedValue).pipe( 
           switchMap(() => 
             forkJoin({
-              facturasPagadas: this.facturaService.getFacturasPagadas(selectedValue), // Paso 2a
-              facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue) // Paso 2b
+              facturasPagadas: this.facturaService.getFacturasPagadas(selectedValue), 
+              facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue) 
             })
           )
         )
       )
     )
-    .subscribe(({ facturasPagadas, facturasPendientes }) => { // Paso 3: Actualizar UI
+    .subscribe(({ facturasPagadas, facturasPendientes }) => { 
       this.facturasPagadas = facturasPagadas;
       this.countFacPagadas = facturasPagadas.length;
   
@@ -94,8 +70,6 @@ export class FacturasListComponent implements OnInit {
         });
       });
     });
-  
-
 
   }
 
