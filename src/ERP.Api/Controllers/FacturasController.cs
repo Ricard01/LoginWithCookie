@@ -12,6 +12,15 @@ public class FacturasController: ApiControllerBase
         _facRepository = facRepository;
     }
 
+    [HttpPost("Sincronizar")]
+    public async Task<IActionResult> SincronizarFacturas([FromBody] DateTime periodo)
+    {
+        await _facRepository.SincronizarFacturasAsync(periodo);
+        return Ok();
+    }
+
+
+
     [HttpGet("pagadas")]
     public async Task<ActionResult<FacturasVm>> GetFacturasPagadas(DateTime periodo)
     {

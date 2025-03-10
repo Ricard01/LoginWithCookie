@@ -21,4 +21,7 @@ public interface IFacturasRepository
     Task<FacturasVm> GetFacturasPendientes(DateTime periodo);
 
 
+    Task SincronizarFacturasAsync(DateTime periodo);
+
+
 }

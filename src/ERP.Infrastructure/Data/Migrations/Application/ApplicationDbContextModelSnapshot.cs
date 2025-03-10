@@ -28,7 +28,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 0L);
 
                     b.Property<string>("Nombre")
                         .IsRequired()

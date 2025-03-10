@@ -25,10 +25,10 @@ public class FacturasRepository : IFacturasRepository
         _mapper = mapper;
     }
 
+
+ 
     public async Task<FacturasVm> GetFacturasPagadas(DateTime periodo)
     {
-
-        await ImportarDocumentosDeCompac(4, periodo);         // IdDocumentoDe = 4 (Facturas)
 
         var facturas = await GeFacturasPagadasAsync(4, periodo);
 
@@ -51,7 +51,7 @@ public class FacturasRepository : IFacturasRepository
 
     private async Task<List<FacturasDto>> GeFacturasPagadasAsync(int idDocumentoDe, DateTime periodo)
     {
-        return await _context.Documentos
+        return await _context.Documentos.TagWith("FACT PAGADAS")
           .AsNoTracking()
          .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == idDocumentoDe && f.Pendiente ==0 )
          .OrderByDescending(d => d.Fecha)
@@ -60,7 +60,7 @@ public class FacturasRepository : IFacturasRepository
 
     private async Task<List<FacturasDto>> GetFacturasPendientesAsync(int idDocumentoDe, DateTime periodo)
     {
-        return await _context.Documentos
+        return await _context.Documentos.TagWith("FACT PENDIENTES")
      .AsNoTracking()
      .Where(f =>
         (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == idDocumentoDe && f.Pendiente > 0)
@@ -72,7 +72,14 @@ public class FacturasRepository : IFacturasRepository
      .ToListAsync();
     }
 
-    private async Task ImportarDocumentosDeCompac(int idDocumentoDe, DateTime periodo)
+
+    public async Task SincronizarFacturasAsync(DateTime periodo)
+    {
+        await GetAndSetFacturasCompacAsync(4, periodo);
+    }
+
+
+    private async Task GetAndSetFacturasCompacAsync(int idDocumentoDe, DateTime periodo)
     {
         // 1. Obtiene todo los documentos de COMPAC del periodo 
         var facturasCompac = await GetFacturasCompacSP(periodo);
@@ -81,7 +88,7 @@ public class FacturasRepository : IFacturasRepository
         var facturasInDb = await GetFacturasAsync(idDocumentoDe, periodo);
 
         // 3.Sincroniza con mi Bd los cambios y agrega las nuevas facturas. 
-        await SincronizarFacturas(facturasCompac, facturasInDb);
+        await CompareAndSyncChanges(facturasCompac, facturasInDb);
 
     }
 
@@ -133,7 +140,7 @@ public class FacturasRepository : IFacturasRepository
          .ToDictionaryAsync(f => f.IdComercial);
     }
 
-    private async Task SincronizarFacturas(List<AdmFacturasDto> facturasCompac, Dictionary<int, Documentos> facturasInDb)
+    private async Task CompareAndSyncChanges(List<AdmFacturasDto> facturasCompac, Dictionary<int, Documentos> facturasInDb)
     {
         var facturasToAdd = new List<Documentos>();
         var movtosToAdd = new List<Movimiento>();

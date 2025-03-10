@@ -16,12 +16,17 @@ export class FacturaService {
   constructor(private http: HttpClient) {
   }
 
+
+  sincronizarFacturas(periodo: Date) {
+    return this.http.post(`${this.facturasUrl}/sincronizar`, periodo);  
+  }
+
   getFacturasPagadas(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
     return this.http.get<IFacturaVm>(`${this.facturasUrl}/pagadas?periodo=${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        console.log('serv',resp.facturas) 
+        console.log('Pagadas',resp.facturas) 
 
       }),
        map(resp => resp.facturas));
@@ -32,7 +37,7 @@ export class FacturaService {
     return this.http.get<IFacturaVm>(`${this.facturasUrl}/pendientes?periodo=${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        console.log('serv',resp.facturas) 
+        console.log('Pendientes',resp.facturas) 
 
       }),
        map(resp => resp.facturas));

@@ -29,7 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         builder.Entity<Agente>()
-        .Property(x => x.I    d)
+        .Property(x => x.Id)
         .UseIdentityColumn(seed: 0, increment: 1);
 
         // Configuración de la relación entre Factura y Movimiento

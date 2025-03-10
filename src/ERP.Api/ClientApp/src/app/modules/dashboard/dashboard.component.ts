@@ -50,11 +50,11 @@ export class DashboardComponent {
   //     { name: 'Istanbul', code: 'IST' },
   //     { name: 'Paris', code: 'PRS' }
   // ];
-  this.facturaS.getComisionesR().subscribe(resp => {
-    console.log('Ric',resp);  });
+  // this.facturaS.getComisionesR().subscribe(resp => {
+  //   console.log('Ric',resp);  });
 
-    this.facturaS.getComisionesA().subscribe(resp => {
-      console.log('Angie',resp);  });
+  //   this.facturaS.getComisionesA().subscribe(resp => {
+  //     console.log('Angie',resp);  });
   }
 
   
