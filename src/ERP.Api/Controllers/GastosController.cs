@@ -1,4 +1,5 @@
 ﻿using ERP.Api.Models;
+using ERP.Infrastructure.Repositories.Dtos;
 using ERP.Infrastructure.Repositories.Gastos;
 using ERP.Infrastructure.Repositories.Gastos.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -27,5 +28,13 @@ public class GastosController : ApiControllerBase
     public async Task<ActionResult<GastosVm>> GetGastos(DateTime periodo)
     {
         return Ok(await _gastosRepository.GetGastos(periodo));
+    }
+
+    [HttpPatch("{IdMovimiento}")]
+    public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)
+    {
+        var mov = await _gastosRepository.UpdateMovtoGastoAsync(IdMovimiento, Movto);
+
+        return Ok(mov);
     }
 }

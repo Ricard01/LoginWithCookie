@@ -20,7 +20,6 @@ public class ComisionesController : ApiControllerBase
     [HttpGet("{periodo}")]
     public async Task<ActionResult<List<ComisionDto>>> GetComisiones(DateTime periodo)
     {
-
         return Ok(await _comisionesRepository.GetComisiones(periodo));
     }
 
@@ -28,7 +27,6 @@ public class ComisionesController : ApiControllerBase
     public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR(DateTime periodo)
     {
         var comisiones = await _comisionesRepository.GetComisionesR(periodo);
-
         return Ok(comisiones);
     }
 
@@ -36,9 +34,7 @@ public class ComisionesController : ApiControllerBase
     public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA(DateTime periodo)
     {
 
-
         var comisiones = await _comisionesRepository.GetComisionesA(periodo);
-
         return Ok(comisiones);
     }
 
@@ -46,9 +42,7 @@ public class ComisionesController : ApiControllerBase
     public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)
     {
 
-
         var mov = await _comisionesRepository.UpdateMovtoAsync(IdMovimiento, Movto);
-
         return Ok(mov);
     }
 }

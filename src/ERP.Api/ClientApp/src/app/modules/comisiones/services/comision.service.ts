@@ -8,7 +8,7 @@ import { IComisionAngie, IComisiones, IComisionRicardo } from '../models/comisio
 })
 export class ComisionService {
 
-  private doctossUrl = 'api/doctos';
+  private comisionesUrl= 'api/comisiones';
   comisionR!: IComisionRicardo[];
   comisionA!: IComisionAngie[];
   comisiones!: IComisiones[];
@@ -18,18 +18,18 @@ export class ComisionService {
 
   getDetalleComisiones(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IComisiones[]>(`${this.doctossUrl}/comisiones/${formattedPeriodo}`);
+    return this.http.get<IComisiones[]>(`${this.comisionesUrl}/${formattedPeriodo}`);
   }
 
   getComisionRicardo(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IComisionRicardo[]>(`${this.doctossUrl}/ricardo/${formattedPeriodo}`); 
+    return this.http.get<IComisionRicardo[]>(`${this.comisionesUrl}/ricardo/${formattedPeriodo}`); 
   }
 
   
   getComisionesAngie(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
-    return this.http.get<IComisionAngie[]>(`${this.doctossUrl}/angie/${formattedPeriodo}`);
+    return this.http.get<IComisionAngie[]>(`${this.comisionesUrl}/angie/${formattedPeriodo}`);
   }
 
 

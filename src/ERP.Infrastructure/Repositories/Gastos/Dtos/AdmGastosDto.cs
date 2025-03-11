@@ -29,6 +29,7 @@ public class AdmGastoMovtos
 
     public int IdMovimiento { get; set; }
     public int IdComercialMov { get; set; }
+    public int IdDocumentoDe { get; set; }
     public int IdProducto { get; set; }
     public double MovNeto { get; set; }
     public double MovDescto { get; set; }

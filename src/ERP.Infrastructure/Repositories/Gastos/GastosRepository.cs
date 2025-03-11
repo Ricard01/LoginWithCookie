@@ -109,6 +109,9 @@ public class GastosRepository : IGastosRepository
          .ToDictionaryAsync(g => g.IdComercial);
     }
 
+ 
+
+
     private async Task CompareAndSyncChanges(List<AdmGastosDto> gastosCompac, Dictionary<int, Documentos> gastosInDb)
     {
         var gastosToAdd = new List<Documentos>();
@@ -116,19 +119,39 @@ public class GastosRepository : IGastosRepository
 
         foreach (var g in gastosCompac)
         {
-            if (gastosInDb.TryGetValue(g.IdComercial, out var gastInDb))
+            if (gastosInDb.TryGetValue(g.IdComercial, out var gastnDb))
             {
-                // Solo actualizar si hay cambios en estos campos si el pendiente es diferente por ende los campos de pago cambiaron, si hubo cancelacion no necesariamente cambiaron los otros campos pero puede existir que tambien se hayan actualizado los otros campos y no quiero complicar demasiado la logica
-                if (
-                    gastInDb.Cancelado != g.Cancelado ||
-                    gastInDb.Agente != g.Agente)
+                // 🔹 Si la factura se canceló, solo actualizar el estado
+                if (gastnDb.Cancelado != g.Cancelado)
                 {
-                    gastInDb.Pendiente = g.Pendiente;
-                    gastInDb.Cancelado = g.Cancelado;
-                    gastInDb.Agente = g.Agente;
-                    gastInDb.FechaPago = g.FechaPago;
-                    gastInDb.FolioPago = g.FolioPago;
-                    gastInDb.FechaCreacionPago = g.FechaCreacionPago;
+                    gastnDb.Cancelado = g.Cancelado;
+                }
+
+                // 🔹 Si se pagó o cambió el agente, actualizar datos y recalcular comisiones
+                if ((gastnDb.Pendiente != g.Pendiente || gastnDb.Agente != g.Agente) && gastnDb.Cancelado == 0)
+                {
+                    gastnDb.Pendiente = g.Pendiente;
+                    gastnDb.Agente = g.Agente;
+                    gastnDb.FechaPago = g.FechaPago;
+                    gastnDb.FolioPago = g.FolioPago;
+                    gastnDb.FechaCreacionPago = g.FechaCreacionPago;
+
+                    if (g.Movimientos != null)
+                    {
+                        var movimientosCalculados = CalcularImpuestos(g.Movimientos, g.IdAgente, g.IdDocumentoDe);
+                        foreach (var movimiento in movimientosCalculados)
+                        {
+                            var movExistente = _context.Movimientos.FirstOrDefault(m => m.IdMovimiento == movimiento.IdMovimiento);
+                            if (movExistente != null)
+                            {
+                                movExistente.IdAgente = movimiento.IdAgente;                         
+                                movExistente.IvaRicardo = movimiento.IvaRicardo;
+                                movExistente.IvaAngie = movimiento.IvaAngie;
+                                movExistente.IsrRicardo = movimiento.IsrRicardo;
+                                movExistente.IsrAngie = movimiento.IsrRicardo;
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -137,7 +160,7 @@ public class GastosRepository : IGastosRepository
                 {
                     IdComercial = g.IdComercial,
                     IdDocumentoDe = g.IdDocumentoDe,
-                    Concepto = g.Concepto.Trim(),
+                    Concepto = g.Concepto,
                     Fecha = g.Fecha,
                     Serie = g.Serie,
                     Folio = g.Folio,
@@ -150,31 +173,15 @@ public class GastosRepository : IGastosRepository
                     Pendiente = g.Pendiente,
                     Cancelado = g.Cancelado,
                     Agente = g.Agente,
-                    FechaPago = g.FechaPago,
-                    FolioPago = g.FolioPago,
-                    FechaCreacionPago = g.FechaCreacionPago
+              
                 };
 
                 gastosToAdd.Add(newGasto);
 
-                // Por error de usuario pueden existir gastos sin movimientos por eso hay que checar null antes de intentar agregar
                 if (g.Movimientos != null)
                 {
-                    movtosToAdd.AddRange(g.Movimientos.Select(m => new Movimiento
-                    {
-                        IdMovimiento = m.IdMovimiento,
-                        IdComercial = m.IdComercialMov,
-                        IdProducto = m.IdProducto,
-                        IdAgente = g.IdAgente,
-                        Neto = m.MovNeto,
-                        Descuento = m.MovDescto,
-                        IVA = m.MovIVA,
-                        ISR = m.MovISR,
-                        CodigoProducto = m.Codigo,
-                        NombreProducto = m.Nombre,
-                        Descripcion = m.MovObserva,
-                        Comision = m.Comision
-                    }));
+                    var movimientosCalculados = CalcularImpuestos(g.Movimientos, g.IdAgente, g.IdDocumentoDe);
+                    movtosToAdd.AddRange(movimientosCalculados);
                 }
             }
         }
@@ -187,6 +194,93 @@ public class GastosRepository : IGastosRepository
         }
     }
 
+    private List<Movimiento> CalcularImpuestos(ICollection<AdmGastoMovtos> movimientos, int idAgente, int IdDocumentoDe)
+    {
+        var movimientosCalculados = new List<Movimiento>();
+
+
+
+        // 🔹 Si el agente es mayor a 3 hay algun error porque no existe ese agente asi que dejar en ceros 
+        if (idAgente > 3 )
+        {
+            return movimientos.Select(m => new Movimiento
+            {
+             
+                IdAgente = idAgente,
+                IdDocumentoDe = IdDocumentoDe,
+                Neto = m.MovNeto,
+                Descuento = m.MovDescto,
+                IVA = m.MovIVA,
+                ISR = m.MovISR,
+                CodigoProducto = m.Codigo,
+                NombreProducto = m.Nombre,
+                Descripcion = m.MovObserva,                     
+                IvaRicardo = 0,
+                IvaAngie = 0,
+                IsrRicardo = 0,
+                IsrAngie = 0
+            }).ToList();
+        }
+
+        // 🔹 Aplicar cálculos de comisión si el agente no es 3 o si hay solo un movimiento
+        foreach (var m in movimientos)
+        {
+
+
+            var movimientoCalculado = new Movimiento
+            {
+                IdMovimiento = m.IdMovimiento,
+                IdComercial = m.IdComercialMov,
+                IdDocumentoDe = m.IdDocumentoDe,
+                IdProducto = m.IdProducto,
+                IdAgente = idAgente,
+                Neto = m.MovNeto,
+                Descuento = m.MovDescto,
+                IVA = m.MovIVA,
+                ISR = m.MovISR,
+                CodigoProducto = m.Codigo,
+                NombreProducto = m.Nombre,
+                Descripcion = m.MovObserva,
+    
+              
+            };
+
+            // 🔹 Asignar valores según el agente
+            switch (idAgente)
+            {           
+                case 1: // 🔹 Ricardo
+                 
+                    movimientoCalculado.IvaRicardo = m.MovIVA;
+                    movimientoCalculado.IvaAngie = 0;
+                    movimientoCalculado.IsrRicardo = m.MovISR;
+                    movimientoCalculado.IsrAngie = 0;
+                    break;
+                case 2: // 🔹 Angie
+             
+                    movimientoCalculado.IvaRicardo = 0;
+                    movimientoCalculado.IvaAngie = m.MovIVA;
+                    movimientoCalculado.IsrRicardo = 0;
+                    movimientoCalculado.IsrAngie = m.MovISR;
+                    break;
+                case 3: // 🔹 Ambos (50/50)
+              
+                    double ivaMitad = m.MovIVA / 2;
+                    double isrMitad = m.MovISR / 2;              
+                    movimientoCalculado.IvaRicardo = ivaMitad;
+                    movimientoCalculado.IvaAngie = ivaMitad;
+                    movimientoCalculado.IsrRicardo = isrMitad;
+                    movimientoCalculado.IsrAngie = isrMitad;
+                    break;
+
+            }
+
+            movimientosCalculados.Add(movimientoCalculado);
+        }
+
+        return movimientosCalculados;
+    }
+
+
     public async Task<MovimientoDto> UpdateMovtoGastoAsync(int Id, MovimientoDto movto)
     {
 
@@ -198,10 +292,6 @@ public class GastosRepository : IGastosRepository
         }
 
         mov.IdAgente = movto.IdAgente;
-        mov.Comision = movto.Comision;
-        mov.Utilidad = movto.Utilidad;
-        mov.UtilidadRicardo = movto.UtilidadRicardo;
-        mov.UtilidadAngie = movto.UtilidadAngie;
         mov.IsrAngie = movto.IsrAngie;
         mov.IsrRicardo = movto.IsrRicardo;
         mov.IvaRicardo = movto.IvaRicardo;

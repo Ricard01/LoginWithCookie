@@ -85,58 +85,71 @@ export class GastoListComponent {
      });
    }
  
-   calcComisiones(movimiento: IMovimientos): void {
-     const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
-     if (!movimientoForm) return;
- 
-     const idAgente = movimientoForm.get('idAgente')?.value || 0;
-     if (idAgente === 0) {
-       console.error('El agente no puede ser 0');
-       return;
-     }
- 
-     const neto = movimientoForm.get('neto')?.value || 0;
-     const descuento = movimientoForm.get('descuento')?.value || 0;
-     const iva = movimientoForm.get('iva')?.value || 0;
-     const isr = movimientoForm.get('isr')?.value || 0;
-     const comision = movimientoForm.get('comision')?.value || 0;
- 
-     // Calcular la utilidad base
-     const utilidadBase = (neto - descuento) * (comision / 100) - isr;
- 
-     // Asignar la utilidad base al campo correspondiente
-     movimientoForm.get('utilidad')?.setValue(utilidadBase);
- 
-     // Si el agente es Ricardo (idAgente = 1)
-     if (idAgente === 1) {
-       movimientoForm.get('utilidadRicardo')?.setValue(utilidadBase);
-       movimientoForm.get('utilidadAngie')?.setValue(0);
-       movimientoForm.get('ivaRicardo')?.setValue(iva);
-       movimientoForm.get('ivaAngie')?.setValue(0);
-       movimientoForm.get('isrRicardo')?.setValue(isr);
-       movimientoForm.get('isrAngie')?.setValue(0);
-     } else if (idAgente === 2) {
-       // Si el agente es Angie (idAgente = 2)
-       movimientoForm.get('utilidadRicardo')?.setValue(0);
-       movimientoForm.get('utilidadAngie')?.setValue(utilidadBase);
-       movimientoForm.get('ivaRicardo')?.setValue(0);
-       movimientoForm.get('ivaAngie')?.setValue(iva);
-       movimientoForm.get('isrRicardo')?.setValue(0);
-       movimientoForm.get('isrAngie')?.setValue(isr);
-     } else if (idAgente === 3) {
-       // Si el agente es ambos (idAgente = 3)
-       const utilidadDividida = utilidadBase / 2;
-       movimientoForm.get('utilidadRicardo')?.setValue(utilidadDividida);
-       movimientoForm.get('utilidadAngie')?.setValue(utilidadDividida);
-       const ivaDividido = iva / 2;
-       movimientoForm.get('ivaRicardo')?.setValue(ivaDividido);
-       movimientoForm.get('ivaAngie')?.setValue(ivaDividido);
-       const isrDividido = isr / 2;
-       movimientoForm.get('isrRicardo')?.setValue(isrDividido);
-       movimientoForm.get('isrAngie')?.setValue(isrDividido);
-     }
-   }
- 
+  isPending(gasto: any): boolean {
+    // Verifica si existe al menos un movimiento con utilidad = 0
+    return gasto.movimientos?.some((m: { idMovimiento: number; }) => this.movimientoForms.get(m.idMovimiento)?.get('utilidad')?.value === 0);
+  }
+
+  calcComisiones(movimiento: IMovimientos): void {
+    const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
+    if (!movimientoForm) return;
+  
+    const idAgente = movimientoForm.get('idAgente')?.value || 0;
+    const iva = movimientoForm.get('iva')?.value || 0;
+    const isr = movimientoForm.get('isr')?.value || 0;
+
+
+  
+    // ✅ Llamar a la función que asigna valores en función del agente
+    this.asignarComisiones(movimientoForm, idAgente,  iva, isr);
+  }
+  
+  private asignarComisiones(
+    movimientoForm: FormGroup,
+    idAgente: number,
+    iva: number,
+    isr: number
+  ): void {
+
+    let ivaRicardo = 0, ivaAngie = 0;
+    let isrRicardo = 0, isrAngie = 0;
+  
+    switch (idAgente) {
+      case 0: // 🔹 Si el agente es ambos (se divide entre 2)
+      ivaRicardo = iva / 2;
+      ivaAngie = iva / 2;
+      isrRicardo = isr / 2;
+      isrAngie = isr / 2;
+      break;
+      case 1: // 🔹 Si el agente es Ricardo
+        ivaRicardo = iva;
+        isrRicardo = isr;
+        break;
+      case 2: // 🔹 Si el agente es Angie
+        ivaAngie = iva;
+        isrAngie = isr;
+        break;
+   
+    }
+  
+    // ✅ Asignar los valores calculados
+    this.setValues(movimientoForm, ivaRicardo, ivaAngie, isrRicardo, isrAngie);
+  }
+  
+  private setValues(
+    movimientoForm: FormGroup,
+    ivaRicardo: number,
+    ivaAngie: number,
+    isrRicardo: number,
+    isrAngie: number
+  ): void {
+    // 🔹 Asignar valores en los campos correctos
+
+    movimientoForm.get('ivaRicardo')?.setValue(ivaRicardo);
+    movimientoForm.get('ivaAngie')?.setValue(ivaAngie);
+    movimientoForm.get('isrRicardo')?.setValue(isrRicardo);
+    movimientoForm.get('isrAngie')?.setValue(isrAngie);
+  }
    onInputChange(movimientoId: number, field: string, event: Event): void {
      const movimientoForm = this.movimientoForms.get(movimientoId);
      if (!movimientoForm) return;
@@ -178,11 +191,11 @@ export class GastoListComponent {
      movimientoForm.updateValueAndValidity();
  
      const updatedMovimiento = { ...movimiento, ...movimientoForm.value };
-    //  this.facturaService.updateMovimiento(updatedMovimiento).subscribe(
+    //  this.gastoService.updateMovimiento(updatedMovimiento).subscribe(
     //    (response) => {
     //      console.log(' actualizado:', response.nombreProducto);
     //      // Actualiza el estado local del movimiento
-    //      const factura = this.facturasPagadas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
+    //      const gasto = this.gastosPagadas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
     //      if (factura) {
     //        const movimientoIndex = factura.movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
     //        if (movimientoIndex !== -1) {

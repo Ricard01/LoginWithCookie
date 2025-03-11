@@ -327,6 +327,7 @@ public class FacturasRepository : IFacturasRepository
             {
                 IdMovimiento = m.IdMovimiento,
                 IdComercial = m.IdComercialMov,
+                IdDocumentoDe = m.IdDocumentoDe,
                 IdProducto = m.IdProducto,
                 IdAgente = idAgente,
                 Neto = m.MovNeto,
@@ -356,6 +357,7 @@ public class FacturasRepository : IFacturasRepository
             {
                 IdMovimiento = m.IdMovimiento,
                 IdComercial = m.IdComercialMov,
+                IdDocumentoDe = m.IdDocumentoDe,
                 IdProducto = m.IdProducto,
                 IdAgente = idAgente,
                 Neto = m.MovNeto,
@@ -406,9 +408,6 @@ public class FacturasRepository : IFacturasRepository
 
         return movimientosCalculados;
     }
-
-
-
 
     public async Task<MovimientoDto> UpdateMovtoFacturaAsync(int Id, MovimientoDto movto)
     {

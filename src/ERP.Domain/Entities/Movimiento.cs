@@ -5,6 +5,7 @@ public class Movimiento
     public int Id { get; set; }
     public int IdComercial { get; set; }
     public int IdMovimiento { get; set; }
+    public int IdDocumentoDe { get; set; }
     public int IdProducto { get; set; }
     public int? IdAgente { get; set; }
     public double Neto { get; set; }

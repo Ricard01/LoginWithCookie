@@ -17,6 +17,8 @@ public class MovimientoDto
 
     public int IdMovimiento { get; set; }
 
+    public int IdDocumentoDe { get; set; }
+
     public int? IdAgente { get; set; }
 
     public double Neto { get; set; }

@@ -100,11 +100,7 @@ export class FacturasListComponent implements OnInit {
       observaciones: [movimiento.observaciones || '']
     });
 
-   
-
   }
-
-  
 
   isPending(factura: any): boolean {
     // Verifica si existe al menos un movimiento con utilidad = 0
@@ -137,9 +133,6 @@ export class FacturasListComponent implements OnInit {
     this.asignarComisiones(movimientoForm, idAgente, utilidadBase, iva, isr);
   }
   
-  /**
-   * ✅ Asigna los valores de comisiones según el idAgente
-   */
   private asignarComisiones(
     movimientoForm: FormGroup,
     idAgente: number,
@@ -176,9 +169,6 @@ export class FacturasListComponent implements OnInit {
     this.setValues(movimientoForm, utilidadRicardo, utilidadAngie, ivaRicardo, ivaAngie, isrRicardo, isrAngie);
   }
   
-  /**ss
-   * ✅ Método que asigna los valores al formulario del movimiento
-   */
   private setValues(
     movimientoForm: FormGroup,
     utilidadRicardo: number,
