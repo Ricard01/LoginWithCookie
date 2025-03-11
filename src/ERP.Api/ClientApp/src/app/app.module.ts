@@ -12,6 +12,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {CoreModule} from "./core/core.module";
 import {CsrfInterceptor} from "./core/interceptor/csrf.interceptor";
 import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
+import { matSnackBarAnimations, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({

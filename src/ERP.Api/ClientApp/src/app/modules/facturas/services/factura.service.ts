@@ -18,7 +18,8 @@ export class FacturaService {
 
 
   sincronizarFacturas(periodo: Date) {
-    return this.http.post(`${this.facturasUrl}/sincronizar`, periodo);  
+    // const periodoRequest: IPeriodoRequest = { request: periodo };
+    return this.http.post(`${this.facturasUrl}/sincronizar`, {periodo});  
   }
 
   getFacturasPagadas(periodo: Date) {
@@ -42,6 +43,7 @@ export class FacturaService {
       }),
        map(resp => resp.facturas));
   }
+
 
   getComisionesR() {
     

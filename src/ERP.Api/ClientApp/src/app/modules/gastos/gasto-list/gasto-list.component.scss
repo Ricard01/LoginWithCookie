@@ -1,0 +1,96 @@
+table {
+    width: 100%;
+  }
+
+  .save-icon {
+    color:#64668c
+}
+
+.calculate-icon {
+  color:#8c89d0;
+}
+
+
+.custom-badge {
+  background-color: green;
+  color: white;
+}
+
+  .short-input{
+    width:50px !important;
+ }
+
+ .utilidad-input{
+  width:70px !important;
+}
+
+ .medium-input{
+  width:100px !important;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-detail-row {
+  height: 0;
+}
+
+.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+
+/* Título principal */
+.main-title {
+  font-size: 1.2rem; /* 40px */
+  font-weight: bold;
+  // color: #2c3e50; /* Azul oscuro */
+  margin-bottom: 20px;
+  // border-bottom: 3px solid #3498db; /* Línea decorativa debajo del título */
+  padding-bottom: 10px;
+}
+
+/* Contenedor del filtro */
+
+
+/* Subtítulos */
+.subtitle {
+  font-size: 1rem; /* 32px */
+  font-weight: 600;
+  color: #34495e; /* Azul grisáceo */
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  border-left: 5px solid #3498db; /* Línea decorativa a la izquierda */
+}
+
+/* Badge dentro de los subtítulos */
+.subtitle .badge {
+  display: inline-block;
+  background-color: #3498db; /* Azul */
+  color: white;
+  font-size: .7rem;
+  padding: 5px 10px;
+  border-radius: 15px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+/* Estilos adicionales para resaltar */
+.subtitle .badge {
+  background-color: #2ecc71; /* Verde para facturas cobradas */
+}
+
+.subtitle:nth-of-type(2) .badge {
+  background-color: #e74c3c; /* Rojo para facturas pendientes */
+}

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ERP.Domain.Entities;
+using ERP.Infrastructure.Repositories.Dtos;
 
 namespace ERP.Infrastructure.Repositories.Facturas.Dtos;
 

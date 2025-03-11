@@ -2,7 +2,7 @@
 using ERP.Domain.Entities;
 
 
-namespace ERP.Infrastructure.Repositories.Gastos.Dtos;
+namespace ERP.Infrastructure.Repositories.Dtos;
 
 //public class MovtosVm
 //{
@@ -23,9 +23,9 @@ public class MovimientoDto
 
     public double Descuento { get; set; }
 
-    public double Impuesto { get; set; }
+    public double IVA { get; set; }
 
-    public double Retencion { get; set; }
+    public double ISR { get; set; }
 
     public required string CodigoProducto { get; set; }
 

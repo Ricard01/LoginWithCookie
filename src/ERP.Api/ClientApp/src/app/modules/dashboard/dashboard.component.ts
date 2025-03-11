@@ -4,6 +4,9 @@ import { AuthService } from "../../core/services/auth.service";
 import { UsersService } from "../users/services/user.service";
 import { CommonModule } from '@angular/common';
 import { FacturaService } from '../facturas/services/factura.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
 
 
 interface City {
@@ -13,7 +16,7 @@ interface City {
 @Component({
 standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, SHARED_IMPORTS],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -35,11 +38,11 @@ export class DashboardComponent {
 
   UnprotectedData: any
 
-  constructor(private facturaS: FacturaService, private usersService: UsersService, private authService: AuthService, private http: HttpClient) {
+  constructor(private snackBarService: SnackbarService, private usersService: UsersService, private authService: AuthService, private http: HttpClient) {
     // this.authService.getUserSession().subscribe(resp => {
     //   this.authUser = resp;
     //   console.log('authUser', this.authUser)
-    //   console.log(resp)
+    //   console.log(resp)ss
     //
     // });
 
@@ -58,7 +61,16 @@ export class DashboardComponent {
   }
 
   
-
+  snack()
+  {
+    this.snackBarService.success('Hello World');
+  }snackerror()
+  {
+    this.snackBarService.error('Error World');
+  }snackinfo()
+  {
+    this.snackBarService.info('info World');
+  }
   getClaims() {
     return this.http.get("api/auth/getClaims")
       .subscribe(resp => {

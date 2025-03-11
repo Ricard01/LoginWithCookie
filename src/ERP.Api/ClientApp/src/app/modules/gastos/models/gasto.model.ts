@@ -1,7 +1,7 @@
 import { FormGroup } from '@angular/forms';
 
-export interface IGastoaVm {
-  facturas: IGasto[]
+export interface IGastosVm {
+  gastos: IGasto[]
 }
 
 export interface IGasto {

@@ -186,9 +186,10 @@
     </ng-container>
     <!-- #endregion -->
 
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"   ></tr>
     <tr mat-row *matRowDef="let element; columns: columnsToDisplay; let dataIndex = dataIndex"
-      class="example-element-row" [class.example-expanded-row]="element.expanded">
+      class="example-element-row" [class.example-expanded-row]="element.expanded"
+      [ngClass]="{'pending-row': isPending(element)}" >
     </tr>
 
     <tr mat-row *matRowDef="let row; columns: ['detalles']" class="example-detail-row"></tr>

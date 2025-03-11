@@ -5,7 +5,8 @@ using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Common.Exceptions;
-using ERP.Infrastructure.Repositories.Comisiones.Dtos;
+using ERP.Infrastructure.Repositories.Dtos;
+
 
 
 namespace ERP.Infrastructure.Repositories.Comisiones;

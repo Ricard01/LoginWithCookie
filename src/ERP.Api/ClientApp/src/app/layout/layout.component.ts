@@ -11,8 +11,7 @@ const MONITOR_MEDIA = 'screen and (min-width: 992px)';
 
 @Component({
   selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  templateUrl: './layout.component.html'
 })
 export class LayoutComponent implements OnDestroy {
 

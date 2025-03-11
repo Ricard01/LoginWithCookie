@@ -4,6 +4,7 @@ namespace ERP.Infrastructure.Repositories.Gastos;
 
 public interface IGastosRepository
 {
+    Task SincronizarGastosAsync(DateTime periodo);
  
     /// <summary>
     /// Lista de Facturas

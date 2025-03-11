@@ -17,6 +17,26 @@
   }
 }
 
+.snackbar-success {
+  background-color: rgba(84, 186, 74) !important;;
+  border-color: rgba(84, 186, 74, 0.9) !important;;
+  color: #fff !important;
+}
+
+.snackbar-error {
+  color: white !important;
+  background-color: rgba(252, 68, 56)!important;
+  border-color: rgba(252, 68, 56, 0.9) !important;
+}
+
+
+.snackbar-info .mdc-snackbar__label {
+  color: white !important;
+  background-color: rgba(22, 199, 249)!important;
+  border-color: rgba(22, 199, 249, 0.9)!important;
+
+}
+
 .page-content {
   padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
 }

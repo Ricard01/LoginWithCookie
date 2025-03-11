@@ -1,9 +1,14 @@
 
-<button mat-stroked-button (click)="getPermissions()"> GetPermissions</button>
+<button mat-button (click)="getPermissions()"> GetPermissions</button>
 
 <a href="https://localhost:7235/swagger" target="_blank">Swagger</a>
 
 <p>{{ resp | json }}</p>
+<button mat-button type="button" (click)="snack()">snack Bar</button>
+
+<button mat-flat-button type="button" (click)="snackerror()">snack error</button>
+
+<button mat-rised-button type="button" (click)="snackinfo()">snack info</button>
 
 <hr class="mt-5">
 Hola<i class="ph-duotone ph ph-acorn"></i>Hola
