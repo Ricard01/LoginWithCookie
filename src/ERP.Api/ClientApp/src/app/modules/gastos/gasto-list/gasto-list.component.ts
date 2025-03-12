@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
 import { GastoService } from '../services/gasto.service';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, forkJoin, share, switchMap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, switchMap } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
-import { IFactura } from '../../facturas/models/factura.model';
-import { FacturaService } from '../../facturas/services/factura.service';
 import { IGasto, IMovimientos } from '../models/gasto.model';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
-import { MatHeaderRowDef, MatTableModule } from '@angular/material/table';
-import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-gasto-list',

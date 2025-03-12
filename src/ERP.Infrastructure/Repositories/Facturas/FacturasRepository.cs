@@ -233,6 +233,7 @@ public class FacturasRepository : IFacturasRepository
     {
         var facturasToAdd = new List<Documentos>();
         var movtosToAdd = new List<Movimiento>();
+        bool cambiosRealizados = false;
 
         foreach (var f in facturasCompac)
         {
@@ -242,6 +243,8 @@ public class FacturasRepository : IFacturasRepository
                 if (facInDb.Cancelado != f.Cancelado)
                 {
                     facInDb.Cancelado = f.Cancelado;
+                    _context.Entry(facInDb).State = EntityState.Modified; // 🔹 Marcar como modificado
+                    cambiosRealizados = true;
                 }
 
                 // 🔹 Si se pagó o cambió el agente, actualizar datos y recalcular comisiones
@@ -252,6 +255,9 @@ public class FacturasRepository : IFacturasRepository
                     facInDb.FechaPago = f.FechaPago;
                     facInDb.FolioPago = f.FolioPago;
                     facInDb.FechaCreacionPago = f.FechaCreacionPago;
+
+                    _context.Entry(facInDb).State = EntityState.Modified; // 🔹 Marcar como modificado
+                    cambiosRealizados = true;
 
                     if (f.Movimientos != null)
                     {
@@ -269,6 +275,8 @@ public class FacturasRepository : IFacturasRepository
                                 movExistente.IvaAngie = movimiento.IvaAngie;
                                 movExistente.IsrRicardo = movimiento.IsrRicardo;
                                 movExistente.IsrAngie = movimiento.IsrRicardo;
+                                _context.Entry(movExistente).State = EntityState.Modified; // 🔹 Marcar como modificado
+                                cambiosRealizados = true;
                             }
                         }
                     }
@@ -306,6 +314,11 @@ public class FacturasRepository : IFacturasRepository
                     movtosToAdd.AddRange(movimientosCalculados);
                 }
             }
+        }
+
+        if (cambiosRealizados)
+        {
+            await _context.SaveChangesAsync();
         }
 
         if (facturasToAdd.Count > 0 || movtosToAdd.Count > 0)
