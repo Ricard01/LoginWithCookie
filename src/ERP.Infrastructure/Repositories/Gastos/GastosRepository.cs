@@ -116,25 +116,31 @@ public class GastosRepository : IGastosRepository
     {
         var gastosToAdd = new List<Documentos>();
         var movtosToAdd = new List<Movimiento>();
+        bool cambiosRealizados = false;
 
-        foreach (var g in gastosCompac)
+        foreach (var g in gastosCompac)      
         {
+
+           
             if (gastosInDb.TryGetValue(g.IdComercial, out var gastnDb))
             {
                 // 🔹 Si la factura se canceló, solo actualizar el estado
                 if (gastnDb.Cancelado != g.Cancelado)
                 {
                     gastnDb.Cancelado = g.Cancelado;
+                    _context.Entry(gastnDb).State = EntityState.Modified; // 🔹 Marcar como modificado
+                    cambiosRealizados = true;
                 }
+                // TODOS ESTOS CAMBIOS NO SE ESTAN GUARDANDO PORQUE??
 
                 // 🔹 Si se pagó o cambió el agente, actualizar datos y recalcular comisiones
                 if ((gastnDb.Pendiente != g.Pendiente || gastnDb.Agente != g.Agente) && gastnDb.Cancelado == 0)
                 {
                     gastnDb.Pendiente = g.Pendiente;
                     gastnDb.Agente = g.Agente;
-                    gastnDb.FechaPago = g.FechaPago;
-                    gastnDb.FolioPago = g.FolioPago;
-                    gastnDb.FechaCreacionPago = g.FechaCreacionPago;
+
+                    _context.Entry(gastnDb).State = EntityState.Modified; // 🔹 Marcar como modificado
+                    cambiosRealizados = true;
 
                     if (g.Movimientos != null)
                     {
@@ -149,6 +155,8 @@ public class GastosRepository : IGastosRepository
                                 movExistente.IvaAngie = movimiento.IvaAngie;
                                 movExistente.IsrRicardo = movimiento.IsrRicardo;
                                 movExistente.IsrAngie = movimiento.IsrRicardo;
+                                _context.Entry(movExistente).State = EntityState.Modified; // 🔹 Marcar como modificado
+                                cambiosRealizados = true;
                             }
                         }
                     }
@@ -186,6 +194,11 @@ public class GastosRepository : IGastosRepository
             }
         }
 
+        if (cambiosRealizados)
+        {
+            await _context.SaveChangesAsync();
+        }
+
         if (gastosToAdd.Count > 0 || movtosToAdd.Count > 0)
         {
             _context.Documentos.AddRange(gastosToAdd);
@@ -220,6 +233,8 @@ public class GastosRepository : IGastosRepository
                 IsrRicardo = 0,
                 IsrAngie = 0
             }).ToList();
+
+
         }
 
         // 🔹 Aplicar cálculos de comisión si el agente no es 3 o si hay solo un movimiento
@@ -283,20 +298,20 @@ public class GastosRepository : IGastosRepository
 
     public async Task<MovimientoDto> UpdateMovtoGastoAsync(int Id, MovimientoDto movto)
     {
+        // Aqui no modificamos el agente, se debe modificar desde comercial para actualizar la informacion 
 
-
-        var mov = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
-        if (mov == null)
+        var movBd = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
+        if (movBd == null)
         {
-            throw new NotFoundException(nameof(ApplicationUser), Id);
+            throw new NotFoundException(nameof(Movimiento), Id);
         }
-
-        mov.IdAgente = movto.IdAgente;
-        mov.IsrAngie = movto.IsrAngie;
-        mov.IsrRicardo = movto.IsrRicardo;
-        mov.IvaRicardo = movto.IvaRicardo;
-        mov.IvaAngie = movto.IvaAngie;
-        mov.Observaciones = movto.Observaciones;
+     
+        movBd.AfectaComisiones = movto.AfectaComisiones;
+        movBd.IsrAngie = movto.IsrAngie;
+        movBd.IsrRicardo = movto.IsrRicardo;
+        movBd.IvaRicardo = movto.IvaRicardo;
+        movBd.IvaAngie = movto.IvaAngie;
+        movBd.Observaciones = movto.Observaciones;
 
         var result = await _context.SaveChangesAsync();
 

@@ -215,6 +215,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdComercial = table.Column<int>(type: "int", nullable: false),
                     IdMovimiento = table.Column<int>(type: "int", nullable: false),
+                    IdDocumentoDe = table.Column<int>(type: "int", nullable: false),
                     IdProducto = table.Column<int>(type: "int", nullable: false),
                     IdAgente = table.Column<int>(type: "int", nullable: true),
                     Neto = table.Column<double>(type: "float", nullable: false),
@@ -232,7 +233,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     IvaAngie = table.Column<double>(type: "float", nullable: false),
                     IsrRicardo = table.Column<double>(type: "float", nullable: false),
                     IsrAngie = table.Column<double>(type: "float", nullable: false),
-                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfectaComisiones = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

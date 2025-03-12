@@ -69,9 +69,12 @@ export class FacturasListComponent implements OnInit {
         factura.movimientos.forEach(movimiento => {
           this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
         });
+      });
 
-      
-        
+      this.facturasPendientes.forEach(factura => {
+        factura.movimientos.forEach(movimiento => {
+          this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+        });
       });
     });
 
@@ -116,18 +119,27 @@ export class FacturasListComponent implements OnInit {
       console.error('El agente no puede ser 0');
       return;
     }
-  
- 
+    const comision = movimientoForm.get('comision')?.value || 0;
+
+    if (comision == 0) {
+      this.snackBarService.error('La comisión no puede ser 0');
+return
+    } 
   
     // ✅ Obtener valores del formulario
     const neto = movimientoForm.get('neto')?.value || 0;
     const descuento = movimientoForm.get('descuento')?.value || 0;
     const iva = movimientoForm.get('iva')?.value || 0;
     const isr = movimientoForm.get('isr')?.value || 0;
-    const comision = movimientoForm.get('comision')?.value || 0;
+
   
     // ✅ Calcular la utilidad base
     const utilidadBase = (neto - descuento) * (comision / 100) - isr;
+
+    if (utilidadBase <0) {
+      this.snackBarService.error('La utilidad no puede ser menor a 0');
+      return;
+    }
   
     // ✅ Llamar a la función que asigna valores en función del agente
     this.asignarComisiones(movimientoForm, idAgente, utilidadBase, iva, isr);
@@ -306,26 +318,40 @@ export class FacturasListComponent implements OnInit {
     this.selectedPeriodo$.next(selectedValue);
   }
 
+ 
+
   expandElement(element: IFactura): void {
-    // Colapsar todas las filas expandidas
-    this.facturasPagadas.forEach(factura => {
+    // Determinar si la factura es de facturasPagadas o facturasPendientes
+    const esPagada = this.facturasPagadas.includes(element);
+    const facturas = esPagada ? this.facturasPagadas : this.facturasPendientes;
+  
+    // Colapsar todas las filas expandidas en la tabla correspondiente
+    facturas.forEach(factura => {
       if (factura !== element) {
         factura.expanded = false;
       }
     });
-
+  
     // Expandir o colapsar la fila seleccionada
     element.expanded = !element.expanded;
-
-    if (element.expanded) {
-      // Cargar datos del primer movimiento
+  
+    if (element.expanded && element.movimientos && element.movimientos.length > 0) {
+      // Cargar datos del primer movimiento, asegurando que el formulario existe
       const movimiento = element.movimientos[0];
+  
+      if (!this.movimientoForms.has(movimiento.idMovimiento)) {
+        console.error(`No se encontró un formulario para el movimiento ${movimiento.idMovimiento}`);
+        return; // 🔹 Evita el error en caso de que el formulario no esté creado
+      }
+  
       const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
       if (movimientoForm) {
         movimientoForm.patchValue(movimiento);
       }
     }
   }
+  
+  
 
 }
 

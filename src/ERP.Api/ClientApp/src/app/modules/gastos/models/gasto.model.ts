@@ -12,6 +12,7 @@ export interface IGasto {
   folio: number;
   cliente: string;
   neto: number;
+  iva: number;
   total: number;
   descuento: number;
   pendiente: number;
@@ -28,6 +29,7 @@ export interface IGasto {
 
 export interface IMovimientos {
   id: number;
+  idComercial: number
   idMovimiento: number;
   idAgente?: number;
   neto: number;
@@ -46,6 +48,7 @@ export interface IMovimientos {
   isrRicardo?: number;
   isrAngie?: number;
   observaciones?: string;
+  afectaComisiones: number;
 }
 export interface IMovimientosConForm extends IMovimientos {
   form: FormGroup;

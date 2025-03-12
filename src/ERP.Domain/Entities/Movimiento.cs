@@ -24,6 +24,7 @@ public class Movimiento
     public double IsrRicardo { get; set; }
     public double IsrAngie { get; set; }
     public string? Observaciones { get; set; }
+    public int AfectaComisiones { get; set; }
     public virtual Documentos Factura { get; set; } // Relación con Factura
     public virtual Agente Agente { get; set; } // Relación opcional con Agente
 }

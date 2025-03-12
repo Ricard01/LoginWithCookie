@@ -15,6 +15,8 @@ public class MovimientoDto
 {
     public int Id { get; set; }
 
+    public int IdComercial { get; set; }
+
     public int IdMovimiento { get; set; }
 
     public int IdDocumentoDe { get; set; }
@@ -52,5 +54,5 @@ public class MovimientoDto
     public double IsrAngie { get; set; }
 
     public string? Observaciones { get; set; }
-
+    public int AfectaComisiones { get; set; }
 }

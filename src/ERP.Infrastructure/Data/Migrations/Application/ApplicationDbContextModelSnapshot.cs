@@ -256,6 +256,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AfectaComisiones")
+                        .HasColumnType("int");
+
                     b.Property<string>("CodigoProducto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

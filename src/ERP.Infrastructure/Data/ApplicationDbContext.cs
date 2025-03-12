@@ -3,6 +3,7 @@ using ERP.Infrastructure.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection.Emit;
 
 namespace ERP.Infrastructure.Data;
@@ -23,6 +24,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
         return base.SaveChangesAsync();
     }
+
+    public EntityEntry Entry(object entity) => base.Entry(entity);
     protected override void OnModelCreating(ModelBuilder builder)
     {
 

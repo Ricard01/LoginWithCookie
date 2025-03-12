@@ -1,99 +1,87 @@
-table {
-    width: 100%;
-  }
-
-  .save-icon {
-    color:#64668c
-}
-.pending-row {
-  background-color: rgba(117, 59, 140, 0.2) !important; /* Morado semitransparente */
-}
-
-.calculate-icon {
-  color:#8c89d0;
-}
 
 
-.custom-badge {
-  background-color: green;
-  color: white;
-}
+// table {
+//     width: 100%;
+//   }
 
-  .short-input{
-    width:50px !important;
- }
+// .totales-row {
+//   font-weight: 500;
+//   color: #f5f5f5;
+//   background-color: #508AA8;
+// }
 
- .utilidad-input{
-  width:70px !important;
-}
+// .pending-row {
+//   background-color: rgba(117, 59, 140, 0.2) !important; /* Morado semitransparente */
+// }
 
- .medium-input{
-  width:100px !important;
-}
+//   .short-input{
+//     width:50px !important;
+//  }
 
-.example-element-detail {
-  overflow: hidden;
-  display: flex;
-}
+// .element-detail {
+//   overflow: hidden;
+//   display: flex;
+//  background:#C8E0F4;
+// }
 
-.example-element-row td {
-  border-bottom-width: 0;
-}
+// .element-detail-inputs {
+//   overflow: hidden;
+//   display: flex;
+//  background:#C8E0F4
+// }
 
-.example-detail-row {
-  height: 0;
-}
+// .element-row td {
+//   border-bottom-width: 0;
+// }
 
-.example-element-row:not(.example-expanded-row):hover {
-  background: #f5f5f5;
-}
+// .detail-row {
+//   height: 0;
+// }
 
-.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
+// .element-row:not(.expanded-row):hover {
+//    background: #94B5D1;// rgba(98, 91, 163, 0.15); /* Morado translúcido */
+//   font-weight: 300; /* Texto en negrita */
+//   transition: background 0.3s ease, font-weight 0.2s
+// }
 
-
-/* Título principal */
-.main-title {
-  font-size: 1.2rem; /* 40px */
-  font-weight: bold;
-  // color: #2c3e50; /* Azul oscuro */
-  margin-bottom: 20px;
-  // border-bottom: 3px solid #3498db; /* Línea decorativa debajo del título */
-  padding-bottom: 10px;
-}
-
-/* Contenedor del filtro */
+// .element-row.expanded-row {
+//   font-weight: 500;
+//   background:#C8E0F4;
+// }
 
 
-/* Subtítulos */
-.subtitle {
-  font-size: 1rem; /* 32px */
-  font-weight: 600;
-  color: #34495e; /* Azul grisáceo */
-  margin-top: 30px;
-  margin-bottom: 15px;
-  padding-left: 10px;
-  border-left: 5px solid #3498db; /* Línea decorativa a la izquierda */
-}
 
-/* Badge dentro de los subtítulos */
-.subtitle .badge {
-  display: inline-block;
-  background-color: #3498db; /* Azul */
-  color: white;
-  font-size: .7rem;
-  padding: 5px 10px;
-  border-radius: 15px;
-  margin-left: 10px;
-  vertical-align: middle;
-}
+// .main-title {
+//   font-size: 1.2rem; 
+//   font-weight: bold;
+//   margin-bottom: 20px;
+//   padding-bottom: 10px;
+// }
 
-/* Estilos adicionales para resaltar */
-.subtitle .badge {
-  background-color: #2ecc71; /* Verde para facturas cobradas */
-}
+// .subtitle {
+//   font-size: 1rem; 
+//   font-weight: 600;
+//   color: #34495e; 
+//   margin-top: 30px;
+//   margin-bottom: 15px;
+//   padding-left: 10px;
+//   border-left: 5px solid #508AA8; 
+// }
 
-.subtitle:nth-of-type(2) .badge {
-  background-color: #e74c3c; /* Rojo para facturas pendientes */
-}
+// /* Badge dentro de los subtítulos */
+// .subtitle .badge {
+//   display: inline-block;
+//   font-size: .7rem;
+//   padding: 5px 10px;
+//   border-radius: 15px;
+//   margin-left: 10px;
+//   vertical-align: middle;
+// }
+
+// .subtitle .badge {
+//   background-color: #7CAE7A; /* Verde para facturas cobradas */
+// }
+
+// .subtitle:nth-of-type(2) .badge {
+//   background-color: #D84727; /* Rojo para facturas pendientes */
+// }

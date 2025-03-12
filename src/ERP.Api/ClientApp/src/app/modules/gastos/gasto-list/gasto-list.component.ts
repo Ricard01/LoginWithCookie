@@ -9,11 +9,14 @@ import { IGasto, IMovimientos } from '../models/gasto.model';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { MatHeaderRowDef, MatTableModule } from '@angular/material/table';
+import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-gasto-list',
   standalone: true,
-  imports: [SHARED_IMPORTS, PeriodoSelectComponent, CurrencyInputComponent],
+  imports: [SHARED_IMPORTS,  PeriodoSelectComponent, CurrencyInputComponent],
   templateUrl: './gasto-list.component.html',
   styleUrl: './gasto-list.component.scss'
 })
@@ -26,13 +29,14 @@ export class GastoListComponent {
    movimientoForms: Map<number, FormGroup> = new Map();
    gastos: IGasto[] = [];
   
-   columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
+   headerColumns = ['totales'];
+   columnsToDisplay = ['folio', 'fecha', 'cliente','neto', 'iva', 'total', 'agente', 'opciones'];
    columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
    expandedStates: Map<IGasto, boolean> = new Map(); 
  
    private selectedPeriodo$!: BehaviorSubject<Date>;
  
-   constructor(private fb: FormBuilder, private periodoService: PeriodoService, private gastoService: GastoService) { }
+   constructor(private fb: FormBuilder, private periodoService: PeriodoService, private gastoService: GastoService, private snackBarService: SnackbarService) { }
  
    ngOnInit() {
  
@@ -51,6 +55,8 @@ export class GastoListComponent {
     )
      .subscribe(  gastos => { 
        this.gastos = gastos;
+
+       console.log('gastos', gastos); 
        this.countGastos = gastos.length;
    
        this.gastos.forEach(gasto => {
@@ -61,6 +67,19 @@ export class GastoListComponent {
      });
  
    }
+
+   get totalNeto(): number {
+    return  this.gastos.reduce((sum, gasto) => sum + gasto.neto, 0);
+  }
+  
+  get totalIVA(): number {
+    return this.gastos.reduce((sum, gasto) => sum + gasto.iva, 0);
+  }
+  
+  get totalGeneral(): number {
+    return this.gastos.reduce((sum, gasto) => sum + gasto.total, 0);
+  }
+  
  
    initMovimientoForm(movimiento: IMovimientos): FormGroup {
      return this.fb.group({
@@ -171,16 +190,13 @@ export class GastoListComponent {
      }
  
      const updatedValues = {
-       // impuesto: movimientoForm.get('impuesto')?.value,
+ 
        idAgente: movimientoForm.get('idAgente')?.value,
-       comision: movimientoForm.get('comision')?.value,
-       utilidad: movimientoForm.get('utilidad')?.value,
-       utilidadRicardo: movimientoForm.get('utilidadRicardo')?.value,
-       utilidadAngie: movimientoForm.get('utilidadAngie')?.value,
        ivaRicardo: movimientoForm.get('ivaRicardo')?.value,
        ivaAngie: movimientoForm.get('ivaAngie')?.value,
        isrRicardo: movimientoForm.get('isrRicardo')?.value,
        isrAngie: movimientoForm.get('isrAngie')?.value,
+       afectaComisiones: movimientoForm.get('afectaComisiones')?.value,
        observaciones: movimientoForm.get('observaciones')?.value,
        // Agrega aquí los demás campos que necesitas actualizar
      };
@@ -191,22 +207,22 @@ export class GastoListComponent {
      movimientoForm.updateValueAndValidity();
  
      const updatedMovimiento = { ...movimiento, ...movimientoForm.value };
-    //  this.gastoService.updateMovimiento(updatedMovimiento).subscribe(
-    //    (response) => {
-    //      console.log(' actualizado:', response.nombreProducto);
-    //      // Actualiza el estado local del movimiento
-    //      const gasto = this.gastosPagadas.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
-    //      if (factura) {
-    //        const movimientoIndex = factura.movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
-    //        if (movimientoIndex !== -1) {
-    //          factura.movimientos[movimientoIndex] = updatedMovimiento;
-    //        }
-    //      }
-    //    },
-    //    (error) => {
-    //      console.error('Error al actualizar el movimiento:', error);
-    //    }
-    //  );
+     this.gastoService.updateMovtoGasto(updatedMovimiento).subscribe(
+       (response) => {
+        this.snackBarService.success('Informacion guardada con éxito');
+         // Actualiza el estado local del movimiento
+         const gasto = this.gastos.find(f => f.movimientos.some(m => m.idMovimiento === movimiento.idMovimiento));
+         if (gasto) {
+           const movimientoIndex = gasto.movimientos.findIndex(m => m.idMovimiento === movimiento.idMovimiento);
+           if (movimientoIndex !== -1) {
+             gasto.movimientos[movimientoIndex] = updatedMovimiento;
+           }
+         }
+       },
+       (error) => {
+         console.error('Error al actualizar el movimiento:', error);
+       }
+     );
    }
  
    onPeriodoChange(selectedValue: Date): void {

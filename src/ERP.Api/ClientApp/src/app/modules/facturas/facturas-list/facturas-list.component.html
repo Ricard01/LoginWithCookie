@@ -5,7 +5,7 @@
     (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
 
 
-<h6 class="subtitle">Facturas Cobradas <span class="badge">{{countFacPagadas}}</span></h6>
+<h6 class="subtitle">Facturas Cobradas <span class="badge success">{{countFacPagadas}}</span></h6>
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="this.facturasPagadas" multiTemplateDataRows class="mat-elevation-z8">
@@ -49,7 +49,7 @@
     <!-- #region 1era SubFila Codigo, Nombre y Descripcion del Producto -->
     <ng-container matColumnDef="detalles">
       <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="example-element-detail" *ngIf="element.expanded">
+        <div class="element-detail" *ngIf="element.expanded">
           <table mat-table [dataSource]="element.movimientos">
 
             <ng-container matColumnDef="descripcion">
@@ -69,7 +69,7 @@
     <!-- #region 2era SubFila Importes -->
     <ng-container matColumnDef="subDetalles">
       <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="example-element-detail" *ngIf="element.expanded">
+        <div class="element-detail" *ngIf="element.expanded">
           <table mat-table [dataSource]="element.movimientos">
 
             <ng-container matColumnDef="neto">
@@ -188,18 +188,18 @@
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"   ></tr>
     <tr mat-row *matRowDef="let element; columns: columnsToDisplay; let dataIndex = dataIndex"
-      class="example-element-row" [class.example-expanded-row]="element.expanded"
+      class="element-row" [class.expanded-row]="element.expanded"
       [ngClass]="{'pending-row': isPending(element)}" >
     </tr>
 
-    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="example-detail-row"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['subDetalles']" class="example-detail-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="detail-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['subDetalles']" class="detail-row"></tr>
 
   </table>
 </div>
 
 
-<h6 class="subtitle">Facturas Pendientes <span class="badge">{{countFacPendientes}}</span></h6>
+<h6 class="subtitle">Facturas Pendientes <span class="badge warning">{{countFacPendientes}}</span></h6>
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="this.facturasPendientes" multiTemplateDataRows class="mat-elevation-z8">
@@ -243,7 +243,7 @@
     <!-- #region 1era SubFila Codigo, Nombre y Descripcion del Producto -->
     <ng-container matColumnDef="detalles">
       <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="example-element-detail" *ngIf="element.expanded">
+        <div class="element-detail" *ngIf="element.expanded">
           <table mat-table [dataSource]="element.movimientos">
 
             <ng-container matColumnDef="descripcion">
@@ -263,7 +263,7 @@
     <!-- #region 2era SubFila Importes -->
     <ng-container matColumnDef="subDetalles">
       <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="example-element-detail" *ngIf="element.expanded">
+        <div class="element-detail" *ngIf="element.expanded">
           <table mat-table [dataSource]="element.movimientos">
 
             <ng-container matColumnDef="neto">
@@ -382,11 +382,11 @@
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let element; columns: columnsToDisplay; let dataIndex = dataIndex"
-      class="example-element-row" [class.example-expanded-row]="element.expanded">
+      class="element-row" [class.expanded-row]="element.expanded">
     </tr>
 
-    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="example-detail-row"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['subDetalles']" class="example-detail-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="detail-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['subDetalles']" class="detail-row"></tr>
 
   </table>
 </div>
