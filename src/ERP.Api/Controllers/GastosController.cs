@@ -25,9 +25,15 @@ public class GastosController : ApiControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<GastosVm>> GetGastos(DateTime periodo)
+    public async Task<ActionResult<List<GastosDto>>> GetGastos(DateTime periodo)
     {
         return Ok(await _gastosRepository.GetGastos(periodo));
+    }
+
+    [HttpGet("agente/{IdAgente}")]
+    public async Task<ActionResult<List<GastosDto>>> GetGastosAgente( int IdAgente, DateTime periodo)
+    {
+        return Ok(await _gastosRepository.GetGastosAgente( IdAgente, periodo));
     }
 
     [HttpPatch("{IdMovimiento}")]

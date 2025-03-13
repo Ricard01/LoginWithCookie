@@ -11,7 +11,9 @@ public interface IGastosRepository
     /// Lista de Facturas
     /// </summary>
     /// <returns>Obtiene la lista de facturas de mi Bd (primero se extraen de la Bd de Compac) .</returns>
-    Task<GastosVm> GetGastos(DateTime periodo);
+    Task<List<GastosDto>> GetGastos(DateTime periodo);
+
+    Task<List<GastosDto>> GetGastosAgente(int IdAgente, DateTime periodo);
 
     Task<MovimientoDto> UpdateMovtoGastoAsync(int Id, MovimientoDto movto);
 

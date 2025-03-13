@@ -1,1 +1,14 @@
-<p>gastos-detalle works!</p>
+<h1 class="main-title">Gastos</h1>
+
+<app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo"
+  (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
+
+  <app-agente-select class="ml-3" (agenteChange)="onAgenteChange($event)"></app-agente-select>
+
+<h6 class="subtitle">Gastos del Mes <span class="badge success">{{countGastos}}</span></h6>
+
+<app-dynamic-table
+  [dataSource]="this.gastos"
+  [columns]="columns"
+  (rowClick)="onRowClick($event)"
+></app-dynamic-table>

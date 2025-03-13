@@ -30,7 +30,7 @@ export class PeriodoSelectComponent {
 
   ngOnChanges(): void {
     if (this.defaultValue && !this.periodoControl.value) {
-      this.periodoControl.setValue(this.defaultValue); // 🔥 Solo si aún no tiene valor
+      this.periodoControl.setValue(this.defaultValue);
     }
   }
 
@@ -39,7 +39,6 @@ export class PeriodoSelectComponent {
       this.periodoControl.setValue(this.defaultValue);
     }
 
-    // 🔥 Emitir el valor inicial si existe
     this.periodoControl.valueChanges.subscribe(value => {
       if (value) {
         this.periodoChange.emit(value);

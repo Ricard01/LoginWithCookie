@@ -27,19 +27,26 @@ public class GastosRepository : IGastosRepository
         _mapper = mapper;
     }
 
-    public async Task<GastosVm> GetGastos(DateTime periodo)
+    public async Task<List<GastosDto>> GetGastos(DateTime periodo)
     {
 
-        var gastos =    await _context.Documentos.TagWith("GASTOS")
+        return   await _context.Documentos.TagWith("GASTOS")
           .AsNoTracking()
          .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == 19 )
          .OrderByDescending(d => d.Fecha)
              .ProjectTo<GastosDto>(_mapper.ConfigurationProvider).ToListAsync();
 
-        return new GastosVm
-        {
-            Gastos = gastos
-        };
+       
+
+    }
+
+    public async Task<List<GastosDto>> GetGastosAgente(int idAgente, DateTime periodo)
+    {
+
+        return await _context.Documentos.AsNoTracking()
+            .Where(g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month & g.Cancelado == 0 && g.IdDocumentoDe == 19  && g.Movimientos.Any(m => m.IdAgente == idAgente))            
+            .OrderByDescending(d => d.Fecha)
+            .ProjectTo<GastosDto>(_mapper.ConfigurationProvider).ToListAsync();
 
     }
 
@@ -108,9 +115,6 @@ public class GastosRepository : IGastosRepository
          .Where(g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.IdDocumentoDe == idDocumentoDe)
          .ToDictionaryAsync(g => g.IdComercial);
     }
-
- 
-
 
     private async Task CompareAndSyncChanges(List<AdmGastosDto> gastosCompac, Dictionary<int, Documentos> gastosInDb)
     {

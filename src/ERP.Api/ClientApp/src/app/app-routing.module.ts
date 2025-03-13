@@ -17,6 +17,7 @@ const routes: Routes = [
       {path: 'users', loadComponent: () => import('./modules/users/user-list/user-list.component').then(c => c.UserListComponent)},
       {path: 'facturas',   loadComponent: () => import('./modules/facturas/facturas-list/facturas-list.component').then(c => c.FacturasListComponent) },
       {path: 'gastos',   loadComponent: () => import('./modules/gastos/gasto-list/gasto-list.component').then(c => c.GastoListComponent) },
+      {path: 'gastos-detalle',   loadComponent: () => import('./modules/gastos/gastos-detalle/gastos-detalle.component').then(c => c.GastosDetalleComponent) },
       {path: 'comisiones',   loadComponent: () => import('./modules/comisiones/comisiones-list/comisiones-list.component').then(c => c.ComisionesListComponent) },
       {path: 'comisiones-angie',   loadComponent: () => import('./modules/comisiones/comisiones-angie/comisiones-angie.component').then(c => c.ComisionesAngieComponent) },
       {path: 'comisiones-ricardo',   loadComponent: () => import('./modules/comisiones/comisiones-ricardo/comisiones-ricardo.component').then(c => c.ComisionesRicardoComponent) },

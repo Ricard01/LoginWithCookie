@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs';
-import { IGastosVm, IMovimientos } from '../models/gasto.model';
+import { IGasto,  IMovimientos } from '../models/gasto.model';
 
 
 @Injectable({
@@ -23,9 +22,16 @@ export class GastoService {
   getGastos(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
 
-    return this.http.get<IGastosVm>(`${this.gastosUrl}?periodo=${formattedPeriodo}`).pipe(
-       map(resp => resp.gastos));
+    return this.http.get<IGasto[]>(`${this.gastosUrl}?periodo=${formattedPeriodo}`);
   }
+  getGastosAgente(idAgente: number, periodo: Date,) {
+
+    console.log('idAgente', idAgente, '<br> periodo', periodo);
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IGasto[]>(`${this.gastosUrl}/agente/${idAgente}?periodo=${formattedPeriodo}`);
+    }
+
+
 
   updateMovtoGasto(movimiento: IMovimientos) {
     return this.http.patch(`${this.gastosUrl}/${movimiento.idMovimiento}`, movimiento);

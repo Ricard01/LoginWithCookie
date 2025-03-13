@@ -18,7 +18,23 @@ export const MENU: MenuItem[] = [
         id: 3,
         label: 'Gastos',
         icon: 'ph-duotone ph-coins',
-      link: '/gastos',
+ 
+      subItems: [
+        {
+            id: 30,
+            label: 'Todos',
+            link: '/gastos',
+            parentId: 46
+        },
+        {
+            id: 51,
+            label: 'Personales ',
+            link: '/gastos-detalle',
+            parentId: 46,
+        },
+     
+
+    ]
 
     },
     {
