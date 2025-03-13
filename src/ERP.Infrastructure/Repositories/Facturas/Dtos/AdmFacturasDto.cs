@@ -1,11 +1,11 @@
 ﻿namespace ERP.Infrastructure.Repositories.Facturas.Dtos;
 
-// Dto Especial para facilitar el mapeo join 
+// DTO para el mapeo del SP  getFacturasConPagosAndMovimientos este debe coinicidir exactamente con mi consulta 
 public class AdmFacturasDto 
 {
     public int IdComercial { get; set; }
     public int IdDocumentoDe { get; set; }
-    public string Concepto { get; set; }
+    public  string Concepto { get; set; }
     public DateTime Fecha { get; set; }
     public  string? Serie { get; set; }
     public double Folio { get; set; }
@@ -15,6 +15,7 @@ public class AdmFacturasDto
     public double Neto { get; set; }
     public double IVA { get; set; }
     public double ISR { get; set; }
+    public double IvaRetenido { get; set; }
     public double Descuento { get; set; }
     public double Total { get; set; }
     public double Pendiente { get; set; }
@@ -36,8 +37,11 @@ public class AdmFacturaMovtos
     public double MovDescto { get; set; }
     public double MovIVA { get; set; }
     public double MovISR { get; set; }
+    public double MovIvaRetenido { get; set; }
     public string Codigo { get; set; }
     public string Nombre { get; set; }
     public string MovObserva { get; set; }
     public double Comision { get; set; }
+
+
 }

@@ -9,7 +9,6 @@ using System.Data;
 using Dapper;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Repositories.Dtos;
-using System.Diagnostics.Eventing.Reader;
 
 
 namespace ERP.Infrastructure.Repositories.Facturas;
@@ -295,6 +294,7 @@ public class FacturasRepository : IFacturasRepository
                     Cliente = f.Cliente,
                     Neto = f.Neto,
                     IVA = f.IVA,
+                    //IvaRetenido = f.IvaRetenido,
                     ISR = f.ISR,
                     Descuento = f.Descuento,
                     Total = f.Total,

@@ -12,6 +12,9 @@ export interface IFactura {
   folio: number;
   cliente: string;
   neto: number;
+  iva: number; 
+  ivaRetenido: number;
+  isr: number;
   total: number;
   descuento: number;
   pendiente: number;

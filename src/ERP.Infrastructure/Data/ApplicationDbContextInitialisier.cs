@@ -79,9 +79,31 @@ public class ApplicationDbContextInitialiser
         if (admin != null) return Task.CompletedTask;
 
         CreateAdminUser(_userManager);
+
+       var agentes =  _context.Agentes.ToList();
+
+        if (agentes.Any()) return Task.CompletedTask;
+
+        CreateAgentes(_context);
+
         return Task.CompletedTask;
     }
 
+
+    private static void CreateAgentes(ApplicationDbContext context)
+    {
+        var agentes = new List<Agente>
+    {
+        new Agente { Nombre = "Ninguno" },
+        new Agente { Nombre = "Ricardo Chavéz" },
+        new Agente { Nombre = "Angélica Petul" },
+        new Agente { Nombre = "Ambos" }
+    };
+
+        context.Agentes.AddRange(agentes);
+        context.SaveChanges();
+
+    }
 
     private static void CreateAdminUser(UserManager<ApplicationUser> userMgr)
     {

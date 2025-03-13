@@ -178,6 +178,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AfectaComisiones")
+                        .HasColumnType("int");
+
                     b.Property<string>("Agente")
                         .HasColumnType("nvarchar(max)");
 
@@ -224,6 +227,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<int>("IdDocumentoDe")
                         .HasColumnType("int");
+
+                    b.Property<double>("IvaRetenido")
+                        .HasColumnType("float");
 
                     b.Property<double>("Neto")
                         .HasColumnType("float");
@@ -300,6 +306,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .HasColumnType("float");
 
                     b.Property<double>("IvaAngie")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IvaRetenido")
                         .HasColumnType("float");
 
                     b.Property<double>("IvaRicardo")

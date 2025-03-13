@@ -30,13 +30,53 @@ export class FacturasListComponent implements OnInit {
   facturasPendientes: IFactura[] = [];
   facturasPagadas: IFactura[] = [];
 
-  columnsToDisplay = ['folio', 'fecha', 'cliente', 'total', 'agente', 'opciones'];
+  columnsToDisplay = ['folio', 'fecha', 'cliente','neto','iva','isr','ivaRetenido', 'total', 'agente', 'opciones']; // este es el orden de impresion de las columnas y se define en TR
   columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'Com', 'Uti',  'U.Ric', 'U.Ang', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
   expandedStates: Map<IFactura, boolean> = new Map(); 
 
   private selectedPeriodo$!: BehaviorSubject<Date>;
 
   constructor(private fb: FormBuilder, private periodoService: PeriodoService, private facturaService: FacturaService, private snackBarService: SnackbarService) { }
+
+  get totalNeto(): number {
+    return  this.facturasPagadas.reduce((sum, gasto) => sum + gasto.neto, 0);
+  }
+  
+  get totalIva(): number {
+    return this.facturasPagadas.reduce((sum, gasto) => sum + gasto.iva, 0);
+  }
+
+  get totalIsr(): number {
+    return this.facturasPagadas.reduce((sum, gasto) => sum + gasto.isr, 0);
+  }
+
+  get totalIvaRetenido(): number {
+    return this.facturasPagadas.reduce((sum, gasto) => sum + gasto.ivaRetenido, 0);
+  }
+  
+  get totalGeneral(): number {
+    return this.facturasPagadas.reduce((sum, gasto) => sum + gasto.total, 0);
+  }
+
+  get totalNetoPendientes(): number {
+    return  this.facturasPendientes.reduce((sum, gasto) => sum + gasto.neto, 0);
+  }
+  
+  get totalIvaPendientes(): number {
+    return this.facturasPendientes.reduce((sum, gasto) => sum + gasto.iva, 0);
+  }
+
+  get totalIsrPendientes(): number {
+    return this.facturasPendientes.reduce((sum, gasto) => sum + gasto.isr, 0);
+  }
+
+  get totalIvaRetenidoPendientes(): number {
+    return this.facturasPendientes.reduce((sum, gasto) => sum + gasto.ivaRetenido, 0);
+  }
+  
+  get totalGeneralPendientes(): number {
+    return this.facturasPendientes.reduce((sum, gasto) => sum + gasto.total, 0);
+  }
 
   ngOnInit() {
 
@@ -317,8 +357,6 @@ return
   onPeriodoChange(selectedValue: Date): void {
     this.selectedPeriodo$.next(selectedValue);
   }
-
- 
 
   expandElement(element: IFactura): void {
     // Determinar si la factura es de facturasPagadas o facturasPendientes

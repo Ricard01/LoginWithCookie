@@ -83,6 +83,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     Neto = table.Column<double>(type: "float", nullable: false),
                     IVA = table.Column<double>(type: "float", nullable: false),
                     ISR = table.Column<double>(type: "float", nullable: false),
+                    IvaRetenido = table.Column<double>(type: "float", nullable: false),
                     Descuento = table.Column<double>(type: "float", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false),
                     Pendiente = table.Column<double>(type: "float", nullable: false),
@@ -93,7 +94,8 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     FechaPago = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FolioPago = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaCreacionPago = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfectaComisiones = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,6 +224,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     Descuento = table.Column<double>(type: "float", nullable: false),
                     IVA = table.Column<double>(type: "float", nullable: false),
                     ISR = table.Column<double>(type: "float", nullable: false),
+                    IvaRetenido = table.Column<double>(type: "float", nullable: false),
                     CodigoProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NombreProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -25,7 +25,7 @@ export class GastoListComponent {
    movimientoForms: Map<number, FormGroup> = new Map();
    gastos: IGasto[] = [];
   
-   headerColumns = ['totales'];
+  
    columnsToDisplay = ['folio', 'fecha', 'cliente','neto', 'iva', 'total', 'agente', 'opciones'];
    columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
    expandedStates: Map<IGasto, boolean> = new Map(); 

@@ -23,6 +23,7 @@ export interface IGasto {
   fechaPago?: string;
   folioPago?: string;
   fechaCreacionPago?: string;
+  afectaComisiones: number;
   movimientos: IMovimientos[];
   expanded?: boolean; // Propiedad opcional para manejar la expansión
 }

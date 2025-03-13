@@ -20,6 +20,9 @@ public class FacturasDto
     public double Folio { get; set; }
     public required string Cliente { get; set; }
     public double Neto { get; set; }
+    public double IVA { get; set; }
+    public double IvaRetenido { get; set; }
+    public double ISR { get; set; }
     public double Total { get; set; }
     public double Descuento { get; set; }
     public double Pendiente { get; set; }
@@ -30,6 +33,7 @@ public class FacturasDto
     public string? FechaPago { get; set; }
     public string? FolioPago { get; set; }
     public string? FechaCreacionPago { get; set; }
+    public int  AfectaComisiones { get; set; }
     public virtual required ICollection<MovimientoDto> Movimientos { get; set; }
 }
 
