@@ -39,6 +39,13 @@ export const MENU: MenuItem[] = [
     },
     {
         id: 4,
+        label: 'Facturas NEW',
+        icon: 'ph-duotone ph-invoice',
+      link: '/facturas-list',
+
+    },
+    {
+        id: 4,
         label: 'Facturas',
         icon: 'ph-duotone ph-invoice',
       link: '/facturas',

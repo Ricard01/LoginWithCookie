@@ -3,16 +3,19 @@ import { GastoService } from '../services/gasto.service';
 import { BehaviorSubject, distinctUntilChanged, switchMap } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
-import { IGasto, IMovimientos } from '../models/gasto.model';
+import { IGasto } from '../models/gasto.model';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { ExpandRowTableComponent } from 'src/app/shared/components/expand-row-table/expand-row-table.component';
+import { ColumnDefinition } from 'src/app/shared/models/column.model';
+import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
 @Component({
   selector: 'app-gasto-list',
   standalone: true,
-  imports: [SHARED_IMPORTS,  PeriodoSelectComponent, CurrencyInputComponent],
+  imports: [ PeriodoSelectComponent, ExpandRowTableComponent],
   templateUrl: './gasto-list.component.html',
   styleUrl: './gasto-list.component.scss'
 })
@@ -26,8 +29,34 @@ export class GastoListComponent {
    gastos: IGasto[] = [];
   
   
-   columnsToDisplay = ['folio', 'fecha', 'cliente','neto', 'iva', 'total', 'agente', 'opciones'];
-   columnsMovtoImportes = ['neto', 'descto', 'IVA', 'ISR', 'Agente', 'IvaR', 'IvaA', 'IsrR', 'IsrA','Observa','save'];
+
+    mainColumns: ColumnDefinition[] = 
+     [
+       { key: 'folio', header: 'Folio' },
+       { key: 'fecha', header: 'Fecha', format: 'date' },
+       { key: 'cliente', header: 'Cliente'},
+       { key: 'neto', header: 'Neto', format: 'currency' },
+       { key: 'descuento', header: 'Descuento', format: 'currency' },
+       { key: 'iva', header: 'Iva', format: 'currency' },
+      //  { key: 'isr', header: 'Isr', format: 'currency' },
+      //  { key: 'ivaRetenido', header: 'Iva Retenido', format: 'currency' },
+       { key: 'total', header: 'Total', format: 'currency' },
+       { key: 'agente', header: 'Agente' }
+     ];
+   
+     amountColumns: ColumnDefinition[] = [
+       { key: 'neto', header: 'Neto', format: 'currency' },
+       { key: 'descuento', header: 'Descto', format: 'currency' },
+       { key: 'iva', header: 'IVA', format: 'currency' },
+       { key: 'isr', header: 'ISR', format: 'currency' },
+       { key: 'idAgente', header: 'Agente', input: true, inputType:'number', formControlName: 'idAgente', class: 'short-input' },
+       { key: 'ivaRicardo', header: 'Iva R', format: 'currency', input: true,inputType:'number', formControlName: 'ivaRicardo', class: 'short-input' },
+       { key: 'ivaAngie', header: 'Iva A', format: 'currency', input: true,inputType:'number', formControlName: 'ivaAngie', class: 'short-input' },
+       { key: 'isrRicardo', header: 'Isr R', format: 'currency', input: true,inputType:'number', formControlName: 'isrRicardo', class: 'short-input' },
+       { key: 'isrAngie', header: 'Isr A', format: 'currency', input: true,inputType:'number', formControlName: 'isrAngie', class: 'short-input' },
+       { key: 'observaciones', header: 'Observaciones', input: true, inputType:'text', formControlName: 'observaciones', class: 'medium-input' },
+       { key: 'afectaComisiones', header: 'Afecta Comision', input: true, inputType:'number', formControlName: 'afectaComisiones', class: 'short-input' },
+     ];
    expandedStates: Map<IGasto, boolean> = new Map(); 
  
    private selectedPeriodo$!: BehaviorSubject<Date>;
@@ -50,31 +79,39 @@ export class GastoListComponent {
       )
     )
      .subscribe(  gastos => { 
+      console.log('gastos',gastos);
        this.gastos = gastos;
 
-       console.log('gastos', gastos); 
-       this.countGastos = gastos.length;
+       this.setMovimientoForms(gastos);
    
-       this.gastos.forEach(gasto => {
-         gasto.movimientos.forEach(movimiento => {
-           this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
-         });
-       });
+      //  this.gastos.forEach(gasto => {
+      //    gasto.movimientos.forEach(movimiento => {
+      //      this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+      //    });
+      //  });
      });
  
    }
 
-   get totalNeto(): number {
-    return  this.gastos.reduce((sum, gasto) => sum + gasto.neto, 0);
-  }
+      private setMovimientoForms(gastos: IGasto[]) {
+         gastos.forEach(gast => {
+           gast.movimientos.forEach(movimiento => {
+             this.movimientoForms.set(movimiento.idMovimiento, this.initMovimientoForm(movimiento));
+           });
+         });
+       }
+
+  //  get totalNeto(): number {
+  //   return  this.gastos.reduce((sum, gasto) => sum + gasto.neto, 0);
+  // }
   
-  get totalIVA(): number {
-    return this.gastos.reduce((sum, gasto) => sum + gasto.iva, 0);
-  }
+  // get totalIVA(): number {
+  //   return this.gastos.reduce((sum, gasto) => sum + gasto.iva, 0);
+  // }
   
-  get totalGeneral(): number {
-    return this.gastos.reduce((sum, gasto) => sum + gasto.total, 0);
-  }
+  // get totalGeneral(): number {
+  //   return this.gastos.reduce((sum, gasto) => sum + gasto.total, 0);
+  // }
   
  
    initMovimientoForm(movimiento: IMovimientos): FormGroup {
@@ -96,7 +133,8 @@ export class GastoListComponent {
        ivaAngie: [movimiento.ivaAngie || 0],
        isrRicardo: [movimiento.isrRicardo || 0],
        isrAngie: [movimiento.isrAngie || 0],
-       observaciones: [movimiento.observaciones || '']
+       observaciones: [movimiento.observaciones || ''],
+       afectaComisiones: [movimiento.afectaComisiones || 0],
      });
    }
  

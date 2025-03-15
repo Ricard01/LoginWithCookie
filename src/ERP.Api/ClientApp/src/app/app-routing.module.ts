@@ -16,6 +16,7 @@ const routes: Routes = [
       {path: 'dashboard', loadComponent: () => import('./modules/dashboard/dashboard.component').then(c => c.DashboardComponent)},
       {path: 'users', loadComponent: () => import('./modules/users/user-list/user-list.component').then(c => c.UserListComponent)},
       {path: 'facturas',   loadComponent: () => import('./modules/facturas/facturas-list/facturas-list.component').then(c => c.FacturasListComponent) },
+      {path: 'facturas-list', loadComponent: () => import('./modules/facturas/factura-list/factura-list.component').then(c => c.FacturaListComponent) },
       {path: 'gastos',   loadComponent: () => import('./modules/gastos/gasto-list/gasto-list.component').then(c => c.GastoListComponent) },
       {path: 'gastos-detalle',   loadComponent: () => import('./modules/gastos/gastos-detalle/gastos-detalle.component').then(c => c.GastosDetalleComponent) },
       {path: 'comisiones',   loadComponent: () => import('./modules/comisiones/comisiones-list/comisiones-list.component').then(c => c.ComisionesListComponent) },

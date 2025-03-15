@@ -1,4 +1,5 @@
-import { FormGroup } from '@angular/forms';
+
+import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
 export interface IGastosVm {
   gastos: IGasto[]
@@ -28,32 +29,8 @@ export interface IGasto {
   expanded?: boolean; // Propiedad opcional para manejar la expansión
 }
 
-export interface IMovimientos {
-  id: number;
-  idComercial: number
-  idMovimiento: number;
-  idAgente?: number;
-  neto: number;
-  descuento?: number;
-  iva?: number;
-  isr?: number;
-  codigoProducto: string;
-  nombreProducto: string;
-  descripcion?: string ;
-  comision?: number;
-  utilidad?: number;
-  utilidadRicardo?: number;
-  utilidadAngie?: number;
-  ivaRicardo?: number;
-  ivaAngie?: number;
-  isrRicardo?: number;
-  isrAngie?: number;
-  observaciones?: string;
-  afectaComisiones: number;
-}
-export interface IMovimientosConForm extends IMovimientos {
-  form: FormGroup;
-}
+
+
 
 
 

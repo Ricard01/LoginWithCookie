@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map, Observable, tap, } from "rxjs";
-import { IFactura, IFacturaVm, IMovimientos } from '../models/factura.model';
+import { IFactura, IFacturaVm } from '../models/factura.model';
+import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
 
 

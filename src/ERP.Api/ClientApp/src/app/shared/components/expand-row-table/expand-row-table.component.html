@@ -1,0 +1,132 @@
+<h6 class="tableTitle"> {{tableTitle}} <span [class]="badgeClass">{{data.length}}</span></h6>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="data" multiTemplateDataRows class="mat-elevation-z8">
+
+        <!--#region totalesGenerales [hidden]="totalGeneral == 0"--> 
+     <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto','totalDescto', 'totalIva', 'totalIsr','totalIvaRetenido','totalGeneral', 'span2']" class="totales-row"  ></tr>
+     <ng-container matColumnDef="span3">
+       <th mat-header-cell *matHeaderCellDef colspan="3">  <p  class="text-end">Totales:</p> </th>               
+     </ng-container>
+     <ng-container matColumnDef="totalNeto">
+       <th mat-header-cell *matHeaderCellDef>    {{ calcularTotal('neto') | currency }}</th>               
+     </ng-container>
+
+     <ng-container matColumnDef="totalDescto">
+      <th mat-header-cell *matHeaderCellDef> {{ calcularTotal('descuento') | currency }}</th>               
+    </ng-container>
+
+     <ng-container matColumnDef="totalIva">
+      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('iva') | currency }}</th>               
+    </ng-container>
+
+    <ng-container matColumnDef="totalIsr">
+      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('isr') | currency }}</th>               
+    </ng-container>
+    
+    <ng-container matColumnDef="totalIvaRetenido">
+      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('ivaRetenido') | currency }}</th>               
+    </ng-container>
+
+
+    <ng-container matColumnDef="totalGeneral">
+      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('total') | currency }}</th>               
+    </ng-container>
+    <ng-container matColumnDef="span2">
+      <th mat-header-cell *matHeaderCellDef colspan="2">  </th>               
+    </ng-container>
+    <!--#endregion totalesGenerales-->
+
+
+    <!--#region mainColumns-->
+    <ng-container *ngFor="let column of mainColumns" [matColumnDef]="column.key">
+      <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+      <td mat-cell *matCellDef="let row">
+        {{ formatCell(row[column.key], column.format || 'default') }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="opciones">
+      <th mat-header-cell *matHeaderCellDef> Opciones </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary">
+          <mat-icon>{{ row.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedMainColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedMainColumns" [class.expanded-row]="row.expanded"
+      class="main-row" (click)="expandElement(row)"  [ngClass]="{'pending-row': isPending(row)}"></tr>
+    <!--#endregion mainColumns-->
+
+    <!--#region descripcionDetail-->
+    <ng-container matColumnDef="descripcionDetail">
+      <!-- mainColumns.length +1 para incluir espacio de opciones -->
+      <td mat-cell *matCellDef="let row" [attr.colspan]="mainColumns.length + 1">
+        <div class="expanded-detail" *ngIf="row.expanded">
+          <table mat-table [dataSource]="row.movimientos">
+
+            <ng-container matColumnDef="productos">
+              <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+              <td mat-cell *matCellDef="let prodRow">
+                <strong>{{ prodRow.codigoProducto }}</strong>
+                <span class="ml-4"> {{ prodRow.nombreProducto }} - {{ prodRow.descripcion }} </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['productos']"></tr>
+            <tr mat-row *matRowDef="let prodRow; columns: ['productos']"></tr>
+          </table>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-row *matRowDef="let row; columns: ['descripcionDetail']" [hidden]="!row.expanded"></tr>
+    <!--#endregion descripcionDetail-->
+
+    <!--#region amountDetail-->
+    <ng-container matColumnDef="amountDetail">
+      <td mat-cell *matCellDef="let row" [attr.colspan]="mainColumns.length +1">
+        <div class="expanded-detail" *ngIf="row.expanded">
+          <table mat-table [dataSource]="row.movimientos">
+            <ng-container *ngFor="let column of amountColumns" [matColumnDef]="column.key">
+              <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+              <td mat-cell *matCellDef="let movRow">
+                <ng-container *ngIf="column.input; else textTemplate">
+                  <input [type]="column.inputType"
+                    [formControl]="$any(movimientoForms).get(movRow.idMovimiento)?.get(column.formControlName)"
+                    [ngClass]="column.class" />
+                </ng-container>
+                <ng-template #textTemplate>
+                  {{ formatCell(movRow[column.key], column.format || 'default') }}
+                </ng-template>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef> Opciones </th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button matTooltip="calc comision" matTooltipPosition="left" aria-label="calcular"
+                  class="calulate-icon" (click)="calcComisiones(row)">
+                  <mat-icon>calculate</mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="save" class="save-icon" (click)="updateMovimiento(row)">
+                  <mat-icon>save</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedAmountColumns"></tr>
+            <tr mat-row *matRowDef="let movRow; columns: displayedAmountColumns"></tr>
+          </table>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-row *matRowDef="let row; columns: ['amountDetail']" [hidden]="!row.expanded"></tr>
+    <!--#endregion amountDetail-->
+
+  </table>
+</div>

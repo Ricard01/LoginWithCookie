@@ -1,11 +1,10 @@
 /* 📌 TABLAS GENERALES */
 table {
     width: 100%;
-
     .detail-row {
       height: auto;
     }
-  
+
     .totales-row {
       font-weight: 500;
       color: #f5f5f5;
@@ -15,23 +14,84 @@ table {
     .pending-row {
       background-color: rgba(117, 59, 140, 0.2) !important;
     }
+  
+  }
 
-    
+
+  .expanded-detail {
+    width: 100%;
+    border-collapse: collapse; /* Asegura que los bordes sean consistentes */
+    background: #C8E0F4;
+  }
+  
+  .expanded-detail th,
+  .expanded-detail td {
+    white-space: nowrap; /* Evita saltos de línea en celdas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Muestra "..." si el contenido es muy largo */
+    // border-bottom: 1px solid #b0b0b0; /* Asegura que los bordes sean uniformes */
+    padding: 4px 8px; /* Reduce el espacio entre texto y bordes */
+    text-align: left; /* Asegura alineación de contenido */
+  }
+  
+  .expanded-detail th {
+    // background: #207a43; /* Fondo distinto para diferenciar encabezados */
+    font-weight: 500;
+  }
+  
+  .expanded-detail tr {
+    height: auto; /* Ajusta la altura según el contenido */
+  }
+  
+  // .expanded-detail input {
+    // width: 100%;
+    // box-sizing: border-box;
+    // padding: 2px 4px;
+    // border: 1px solid #ccc;
+  // }
+  
+  
+
+
   .short-input {
     width: 50px !important;
   }
-  
 
-
+  .medium-input {
+    width: 80px !important;
   }
 
-  
+  .large-input {
+    width: 150px !important;
+  }
+
+  .expanded-content{
+
+    background: #C8E0F4;
+
+  }
   .element-detail, 
   .element-detail-inputs {
     overflow: hidden;
     display: flex;
     background: #C8E0F4;
   }
+
+  .main-row td {
+    border-bottom-width: 0;
+  }
+  
+  .main-row:not(.expanded-row):hover {
+    background: #94B5D1; 
+    font-weight: 300;
+    transition: background 0.3s ease, font-weight 0.2s;
+  }
+  
+  .main-row.expanded-row {
+    font-weight: 500;
+    background: #C8E0F4;
+  }
+
   
   .element-row td {
     border-bottom-width: 0;

@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
-import { IFactura, IMovimientos, } from '../models/factura.model';
+import { IFactura } from '../models/factura.model';
 import { FacturaService } from '../services/factura.service';
 
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { distinctUntilChanged, forkJoin, switchMap } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
 
 @Component({

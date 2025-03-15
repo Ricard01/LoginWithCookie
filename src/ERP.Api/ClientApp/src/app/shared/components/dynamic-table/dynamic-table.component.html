@@ -2,18 +2,10 @@
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
       <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="!column.action; else actionTemplate">
+       
           {{ formatCell(row[column.key], column.format || 'default') }}
-        </ng-container>
-        <ng-template #actionTemplate>
-          <button
-            mat-button
-            color="primary"
-            (click)="onActionClick(column.action, row)"
-          >
-            {{ column.header }}
-          </button>
-        </ng-template>
+   
+      
       </td>
     </ng-container>
 

@@ -1,0 +1,25 @@
+<h1 class="main-title">Facturas</h1>
+
+<app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo" (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
+
+<app-expand-row-table
+  [tableTitle]="'Facturas Cobradas'"
+  [badgeClass]="'badge success'"
+  [data]="facturasPagadas"
+  [mainColumns]="mainColumns"
+  [amountColumns]="amountColumns"
+  [movimientoForms]="movimientoForms"
+  (expandElementEvent)="expandElement($event)"
+  (updateMovimientoEvent)="updateMovimiento($event)"
+></app-expand-row-table>
+
+<app-expand-row-table
+  [tableTitle]="'Facturas Pendientes'"
+  [badgeClass]="'badge warning'"
+  [data]="facturasPendientes"
+  [mainColumns]="mainColumns"
+  [amountColumns]="amountColumns"
+  [movimientoForms]="movimientoForms"
+  (expandElementEvent)="expandElement($event)"
+  (updateMovimientoEvent)="updateMovimiento($event)"
+></app-expand-row-table>

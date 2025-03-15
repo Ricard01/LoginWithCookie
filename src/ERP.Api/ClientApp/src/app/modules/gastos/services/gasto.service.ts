@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IGasto,  IMovimientos } from '../models/gasto.model';
+import { IGasto } from '../models/gasto.model';
+import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
 
 @Injectable({

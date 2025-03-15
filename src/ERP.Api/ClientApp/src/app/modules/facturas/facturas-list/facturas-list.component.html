@@ -1,9 +1,6 @@
 <h1 class="main-title">Facturas</h1>
 
-
-  <app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo"
-    (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
-
+<app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo" (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
 
 <h6 class="subtitle">Facturas Cobradas <span class="badge success">{{countFacPagadas}}</span></h6>
 
@@ -11,6 +8,7 @@
   <table mat-table [dataSource]="this.facturasPagadas" multiTemplateDataRows class="mat-elevation-z8">
  
     <!-- #region Totales Factura Pagadas-->
+    <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto', 'totalIva', 'totalIsr','totalIvaRetenido','totalGeneral', 'span2']" class="totales-row" [hidden]="totalGeneral == 0"></tr>
     <ng-container matColumnDef="span3">
       <th mat-header-cell *matHeaderCellDef colspan="3">  <p  class="text-end">Totales:</p> </th>               
     </ng-container>
@@ -238,7 +236,7 @@
     </ng-container>
     <!-- #endregion -->
 
-    <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto', 'totalIva', 'totalIsr','totalIvaRetenido','totalGeneral', 'span2']" class="totales-row" [hidden]="totalGeneral == 0"></tr>
+
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"   ></tr>
     <tr mat-row *matRowDef="let element; columns: columnsToDisplay; let dataIndex = dataIndex"
       class="element-row" [class.expanded-row]="element.expanded"
@@ -251,7 +249,7 @@
   </table>
 </div>
 
-
+<!-- #region Facturas Pendientes  -->
 <h6 class="subtitle">Facturas Pendientes <span class="badge warning">{{countFacPendientes}}</span></h6>
 
 <div class="mat-elevation-z8">
@@ -486,11 +484,13 @@
     <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto', 'totalIva', 'totalIsr','totalIvaRetenido','totalGeneral', 'span2']" class="totales-row" [hidden]="totalGeneral == 0"></tr>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let element; columns: columnsToDisplay; let dataIndex = dataIndex"
-      class="element-row" [class.expanded-row]="element.expanded">
+    class="element-row" [class.expanded-row]="element.expanded">
     </tr>
 
-    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="detail-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['detalles']" class="detail-row"></tr>  
     <tr mat-row *matRowDef="let row; columns: ['subDetalles']" class="detail-row"></tr>
 
   </table>
+
 </div>
+  <!-- #endregion Facturas Pendientes  -->
