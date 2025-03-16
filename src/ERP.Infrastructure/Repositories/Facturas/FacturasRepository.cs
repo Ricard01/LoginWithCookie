@@ -9,16 +9,19 @@ using System.Data;
 using Dapper;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Repositories.Dtos;
+using System.Linq.Expressions;
 
 
 namespace ERP.Infrastructure.Repositories.Facturas;
 
 public class FacturasRepository : IFacturasRepository
 {
+    private const int IdDocumentoDe = 4; 
 
     private readonly IApplicationDbContext _context;
     private readonly ICompacDbContext _compacContext;
     private readonly IMapper _mapper;
+   
 
     public FacturasRepository(ApplicationDbContext context, ICompacDbContext compacContext, IMapper mapper)
     {
@@ -30,7 +33,15 @@ public class FacturasRepository : IFacturasRepository
     public async Task<FacturasVm> GetFacturasPagadas(DateTime periodo)
     {
 
-        var facturas = await GeFacturasPagadasAsync(4, periodo);
+        var facturas = await GetFacturasAsync("FACTURAS PAGADAS",
+        f => f.Fecha.Year == periodo.Year &&
+             f.Fecha.Month == periodo.Month &&
+             f.Cancelado == 0 &&
+             f.IdDocumentoDe == IdDocumentoDe &&
+             f.Pendiente == 0 &&
+             f.FechaCreacionPago.HasValue &&
+             f.FechaCreacionPago.Value.Month == periodo.Month &&
+             f.FechaCreacionPago.Value.Year == periodo.Year);
 
         return new FacturasVm
         {
@@ -42,48 +53,86 @@ public class FacturasRepository : IFacturasRepository
     public async Task<FacturasVm> GetFacturasPendientes(DateTime periodo)
     {
 
-        var facturas = await GetFacturasPendientesAsync(4, periodo);
+        var facturas = await GetFacturasAsync("FACTURAS PENDIENTES",
+            f =>
+        (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == IdDocumentoDe && f.Pendiente > 0)
+        ||
+       (f.Pendiente == 0 && f.Fecha.Month == periodo.Month && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Year == periodo.Year && f.FechaCreacionPago.Value.Month != periodo.Month)
+     );
         return new FacturasVm
         {
             Facturas = facturas
         };
     }
 
-    private async Task<List<FacturasDto>> GeFacturasPagadasAsync(int idDocumentoDe, DateTime periodo)
+    private async Task<List<FacturasDto>> GetFacturasAsync(string tag, Expression<Func<Documentos, bool>> whereCondition)
     {
-        return await _context.Documentos.TagWith("FACT PAGADAS")
-          .AsNoTracking()
-         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == idDocumentoDe && f.Pendiente == 0 && f.FechaCreacionPago.HasValue  && f.FechaCreacionPago.Value.Month == periodo.Month && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Year == periodo.Year)
-         .OrderByDescending(d => d.Fecha)
-             .ProjectTo<FacturasDto>(_mapper.ConfigurationProvider).ToListAsync();
-    }
-
-    private async Task<List<FacturasDto>> GetFacturasPendientesAsync(int idDocumentoDe, DateTime periodo)
-    {
-        return await _context.Documentos.TagWith("FACT PENDIENTES")
-     .AsNoTracking()
-     .Where(f =>
-        (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == idDocumentoDe && f.Pendiente > 0)
-        ||
-       (f.Pendiente == 0 && f.Fecha.Month == periodo.Month && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Year == periodo.Year && f.FechaCreacionPago.Value.Month != periodo.Month)
-     )
-     .OrderByDescending(d => d.Fecha)
-     .ProjectTo<FacturasDto>(_mapper.ConfigurationProvider)
-     .ToListAsync();
+        return await _context.Documentos
+            .TagWith(tag)
+            .AsNoTracking()
+            .Where(whereCondition)
+            .OrderByDescending(d => d.Fecha)
+            .Select(d => new FacturasDto
+            {
+                Id = d.Id,
+                Concepto = d.Concepto,
+                Fecha = d.Fecha,
+                Folio = (d.Serie ?? "") + d.Folio,
+                Cliente = d.Cliente,
+                Neto = d.Neto,
+                IVA = d.IVA,
+                IvaRetenido = d.IvaRetenido,
+                ISR = d.ISR,
+                Total = d.Total,
+                Descuento = d.Descuento,
+                Pendiente = d.Pendiente,
+                Cancelado = d.Cancelado,
+                Agente = d.Agente,
+                Utilidad = d.Utilidad,
+                FechaPago = d.FechaPago,
+                FolioPago = d.FolioPago,
+                FechaCreacionPago = d.FechaCreacionPago,
+                AfectaComisiones = d.AfectaComisiones,
+                Movimientos = d.Movimientos.Select(m => new MovimientoDto
+                {
+                    IdMovimiento = m.IdMovimiento,
+                    IdComercial = m.IdComercial,
+                    IdDocumentoDe = m.IdDocumentoDe,
+                    IdAgente = m.IdAgente,
+                    Neto = m.Neto,
+                    Descuento = m.Descuento,
+                    IVA = m.IVA,
+                    ISR = m.ISR,
+                    CodigoProducto = m.CodigoProducto,
+                    NombreProducto = m.NombreProducto,
+                    Descripcion = m.Descripcion,
+                    Comision = m.Comision,
+                    Utilidad = m.Utilidad,
+                    UtilidadRicardo = m.UtilidadRicardo,
+                    UtilidadAngie = m.UtilidadAngie,
+                    IvaRicardo = m.IvaRicardo,
+                    IvaAngie = m.IvaAngie,
+                    IsrRicardo = m.IsrRicardo,
+                    IsrAngie = m.IsrAngie,
+                    Observaciones = m.Observaciones,
+                    AfectaComisiones = m.AfectaComisiones
+                }).ToList(),
+            })
+            .ToListAsync();
     }
 
     public async Task SincronizarFacturasAsync(DateTime periodo)
     {
-        await GetAndSetFacturasCompacAsync(4, periodo);
+        await GetAndSetFacturasCompacAsync(periodo);
     }
 
-    private async Task GetAndSetFacturasCompacAsync(int idDocumentoDe, DateTime periodo)
+    private async Task GetAndSetFacturasCompacAsync(DateTime periodo)
     {
         // 1. Obtiene todo los documentos de COMPAC del periodo 
         var facturasCompac = await GetFacturasCompacSP(periodo);
 
         // 2. Obtiene los documentos existentes en mi BD
-        var facturasInDb = await GetFacturasAsync(idDocumentoDe, periodo);
+        var facturasInDb = await GetFacturasToCompareAsync(periodo);
 
         // 3.Sincroniza con mi Bd los cambios y agrega las nuevas facturas. 
         await CompareAndSyncChanges(facturasCompac, facturasInDb);
@@ -131,102 +180,12 @@ public class FacturasRepository : IFacturasRepository
 
     }
 
-    private async Task<Dictionary<int, Documentos>> GetFacturasAsync(int idDocumentoDe, DateTime periodo)
+    private async Task<Dictionary<int, Documentos>> GetFacturasToCompareAsync( DateTime periodo)
     {
         return await _context.Documentos
-         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.IdDocumentoDe == idDocumentoDe)
+         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.IdDocumentoDe == IdDocumentoDe)
          .ToDictionaryAsync(f => f.IdComercial);
     }
-
-    //private async Task CompareAndSyncChanges(List<AdmFacturasDto> facturasCompac, Dictionary<int, Documentos> facturasInDb)
-    //{
-    //    var facturasToAdd = new List<Documentos>();
-    //    var movtosToAdd = new List<Movimiento>();
-
-    //    foreach (var f in facturasCompac)
-    //    {
-    //        if (facturasInDb.TryGetValue(f.IdComercial, out var facInDb))
-    //        {
-    //            //si se cancelo la factura no se necesita actualizar el movimiento pero si cambiar el estatus 
-
-    //            if(facInDb.Cancelado != f.Cancelado)
-    //            {
-    //                facInDb.Cancelado = f.Cancelado;
-    //            }
-    //            // si el pendiente es diferente quiere decir que ya pagaron la factura y necesita actualizarse la informacion de los movimientos 
-    //            // si el agente cambio las comisiones serian para otro agente y por lo tanto el movto tambien debe cambiar. 
-    //            if (facInDb.Pendiente != f.Pendiente || facInDb.Agente != f.Agente && facInDb.Cancelado==0)
-    //            {
-    //                facInDb.Pendiente = f.Pendiente;                 
-    //                facInDb.Agente = f.Agente;
-    //                facInDb.FechaPago = f.FechaPago;
-    //                facInDb.FolioPago = f.FolioPago;
-    //                facInDb.FechaCreacionPago = f.FechaCreacionPago;
-
-    //                if (f.Movimientos != null)
-    //                {
-
-    //                  movtosToAdd =   CalcularComisiones(f.Movimientos, f.IdAgente);
-
-    //                }
-
-    //            }
-    //        }
-    //        else
-    //        {
-    //            var newFactura = new Documentos
-    //            {
-    //                IdComercial = f.IdComercial,
-    //                IdDocumentoDe = f.IdDocumentoDe,
-    //                Concepto = f.Concepto,
-    //                Fecha = f.Fecha,
-    //                Serie = f.Serie,
-    //                Folio = f.Folio,
-    //                Cliente = f.Cliente,
-    //                Neto = f.Neto,
-    //                IVA =   f.IVA,
-    //                ISR = f.ISR,
-    //                Descuento = f.Descuento,
-    //                Total = f.Total,
-    //                Pendiente = f.Pendiente,
-    //                Cancelado = f.Cancelado,
-    //                Agente = f.Agente,
-    //                FechaPago = f.FechaPago,
-    //                FolioPago = f.FolioPago,
-    //                FechaCreacionPago =f.FechaCreacionPago
-    //            };
-
-    //            facturasToAdd.Add(newFactura);
-
-    //            // Por error de usuario pueden existir facturas sin movimientos por eso hay que checar null antes de intentar agregar
-    //            if (f.Movimientos != null)
-    //            {
-    //                movtosToAdd.AddRange(f.Movimientos.Select(m => new Movimiento
-    //                {
-    //                    IdMovimiento = m.IdMovimiento,
-    //                    IdComercial = m.IdComercialMov,
-    //                    IdProducto = m.IdProducto,
-    //                    IdAgente = f.IdAgente,
-    //                    Neto = m.MovNeto,
-    //                    Descuento = m.MovDescto,
-    //                    IVA = m.MovIVA,
-    //                    ISR = m.MovISR,
-    //                    CodigoProducto = m.Codigo,
-    //                    NombreProducto = m.Nombre,
-    //                    Descripcion = m.MovObserva,               
-    //                    Comision = m.Comision
-    //                }));
-    //            }
-    //        }
-    //    }
-
-    //    if (facturasToAdd.Count > 0 || movtosToAdd.Count > 0)
-    //    {
-    //        _context.Documentos.AddRange(facturasToAdd);
-    //        _context.Movimientos.AddRange(movtosToAdd);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
 
     private async Task CompareAndSyncChanges(List<AdmFacturasDto> facturasCompac, Dictionary<int, Documentos> facturasInDb)
     {
