@@ -40,3 +40,6 @@ testem.log
 .DS_Store
 Thumbs.db
 .qodo
+
+.nx/cache
+.nx/workspace-data

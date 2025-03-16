@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input,  Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -24,12 +24,7 @@ export class ExpandRowTableComponent  {
   @Input() tableTitle: string = '';
   @Input() badgeClass: string = '';
 
-  @Input() totalNeto: number = 110;
-  @Input() totalDescto: number = 10;
-  @Input() totalIva: number = 20;
-  @Input() totalIsr: number =30;
-  @Input() totalIvaRetenido: number = 0;
-  @Input() totalGeneral: number = 0;
+
   @Input() totals: { [key: string]: number } = {}; 
   @Input() mainColumns: ColumnDefinition[] = [];
   @Input() totalColumns: string[] = [];
@@ -42,9 +37,7 @@ export class ExpandRowTableComponent  {
   @Output() updateMovimientoEvent = new EventEmitter<IMovimientos>();
 
 
-constructor(private snackBarService: SnackbarService) {
-  console.log('data', this.data)
-}
+constructor(private snackBarService: SnackbarService) {}
 
 
   formatCell(value: any, format: string): string {
@@ -61,7 +54,7 @@ constructor(private snackBarService: SnackbarService) {
     }
   }
 
-// En tu componente
+
 calcularTotal(columna: string): number {
   return this.data.reduce((sum, row) => sum + (row[columna] || 0), 0);
 }
@@ -79,7 +72,6 @@ calcularTotal(columna: string): number {
     return facturas.reduce((sum, factura) => sum + (factura[campo] as number || 0), 0);
   }
   
-
 
   calcComisiones(movimiento: IMovimientos): void {
     const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
@@ -116,6 +108,9 @@ get displayedMainColumns(): string[] {
   return this.mainColumns.map(c => c.key).concat(['opciones']);
 }
 
+get displayedTotalColumns(): string[] {
+  return ['span3',...this.totalColumns, 'span2']
+}
 
   private asignarComisiones(movimientoForm: FormGroup, idAgente: number, utilidadBase: number, iva: number, isr: number): void {
     let utilidadRicardo = 0, utilidadAngie = 0;

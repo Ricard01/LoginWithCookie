@@ -1,7 +1,3 @@
-interface IPeriodoRequest { 
-  request: Date;
-}
-
 export interface IPeriodo {
   value: Date;
   viewValue: string;

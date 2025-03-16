@@ -3,38 +3,24 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="data" multiTemplateDataRows class="mat-elevation-z8">
 
-        <!--#region totalesGenerales [hidden]="totalGeneral == 0"--> 
-     <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto','totalDescto', 'totalIva', 'totalIsr','totalIvaRetenido','totalGeneral', 'span2']" class="totales-row"  ></tr>
-     <ng-container matColumnDef="span3">
-       <th mat-header-cell *matHeaderCellDef colspan="3">  <p  class="text-end">Totales:</p> </th>               
-     </ng-container>
-     <ng-container matColumnDef="totalNeto">
-       <th mat-header-cell *matHeaderCellDef>    {{ calcularTotal('neto') | currency }}</th>               
-     </ng-container>
+    <!--#region totalesGenerales [hidden]="totalGeneral == 0"-->
+    <tr mat-header-row *matHeaderRowDef="displayedTotalColumns" class="totales-row"></tr>
 
-     <ng-container matColumnDef="totalDescto">
-      <th mat-header-cell *matHeaderCellDef> {{ calcularTotal('descuento') | currency }}</th>               
-    </ng-container>
-
-     <ng-container matColumnDef="totalIva">
-      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('iva') | currency }}</th>               
-    </ng-container>
-
-    <ng-container matColumnDef="totalIsr">
-      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('isr') | currency }}</th>               
+    <ng-container matColumnDef="span3">
+      <th mat-header-cell *matHeaderCellDef colspan="3">
+        <p class="text-end">Totales:</p>
+      </th>
     </ng-container>
     
-    <ng-container matColumnDef="totalIvaRetenido">
-      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('ivaRetenido') | currency }}</th>               
+    <!-- Renderiza dinámicamente solo las columnas necesarias -->
+    <ng-container *ngFor="let column of totalColumns" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef>     {{ calcularTotal(column.replace('total_', '')) | currency }}  </th>
     </ng-container>
-
-
-    <ng-container matColumnDef="totalGeneral">
-      <th mat-header-cell *matHeaderCellDef>   {{ calcularTotal('total') | currency }}</th>               
-    </ng-container>
+    
     <ng-container matColumnDef="span2">
-      <th mat-header-cell *matHeaderCellDef colspan="2">  </th>               
+      <th mat-header-cell *matHeaderCellDef colspan="2"> </th>
     </ng-container>
+    
     <!--#endregion totalesGenerales-->
 
 
@@ -56,8 +42,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedMainColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedMainColumns" [class.expanded-row]="row.expanded"
-      class="main-row" (click)="expandElement(row)"  [ngClass]="{'pending-row': isPending(row)}"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedMainColumns" [class.expanded-row]="row.expanded" class="main-row"
+      (click)="expandElement(row)" [ngClass]="{'pending-row': isPending(row)}"></tr>
     <!--#endregion mainColumns-->
 
     <!--#region descripcionDetail-->

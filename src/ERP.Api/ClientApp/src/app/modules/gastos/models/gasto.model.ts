@@ -1,10 +1,6 @@
 
 import { IMovimientos } from 'src/app/shared/models/movimientos.model';
 
-export interface IGastosVm {
-  gastos: IGasto[]
-}
-
 export interface IGasto {
   id: number;
   concepto: string;

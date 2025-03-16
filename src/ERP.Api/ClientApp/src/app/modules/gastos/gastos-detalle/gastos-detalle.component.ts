@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
 import { IGasto } from '../models/gasto.model';
-import { BehaviorSubject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { GastoService } from '../services/gasto.service';
 import { ColumnDefinition } from 'src/app/shared/models/column.model';

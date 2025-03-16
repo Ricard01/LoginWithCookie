@@ -25,7 +25,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "allowedCommonJsDependencies": [
-              "oidc-client",   "can-use-dom"
+              "oidc-client",
+              "can-use-dom"
             ],
             "assets": [
               "src/assets",
@@ -35,7 +36,9 @@
               "node_modules/@phosphor-icons/web/src/duotone/style.css",
               "src/styles.scss"
             ],
-            "scripts": ["node_modules/preline/preline.js"]
+            "scripts": [
+              "node_modules/preline/preline.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -102,7 +105,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [ ]
+            "scripts": []
           }
         },
         "server": {
@@ -132,8 +135,22 @@
               "buildOptimizer": true
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

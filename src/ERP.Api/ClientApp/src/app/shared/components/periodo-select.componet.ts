@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -21,7 +21,7 @@ import { IPeriodo } from '../models/periodo.model';
     </mat-form-field>
   `,
 })
-export class PeriodoSelectComponent {
+export class PeriodoSelectComponent implements OnInit, OnChanges{
   @Input() periodos: IPeriodo[] = []; 
   @Input() defaultValue: Date | null = null; 
   @Output() periodoChange = new EventEmitter<Date>(); 

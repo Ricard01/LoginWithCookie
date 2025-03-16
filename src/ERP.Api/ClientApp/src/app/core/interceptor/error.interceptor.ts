@@ -5,7 +5,6 @@ import {catchError} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Store} from "@ngrx/store";
 import {IAppState} from "../../state/app.state";
-import {logOut} from "../../state/auth/auth.actions";
 import * as AuthActions from "../../state/auth/auth.actions";
 import {TabService} from "../services/tab.service";
 

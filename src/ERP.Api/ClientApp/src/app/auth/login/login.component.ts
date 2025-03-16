@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IAppState } from "../../state/app.state";
@@ -19,7 +19,7 @@ import { AuthStateModule } from 'src/app/state/auth/auth.state.module';
   styles: []
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   returnUrl: string = '/';
   credentials: ICredentials = { email: '', password: '' };
