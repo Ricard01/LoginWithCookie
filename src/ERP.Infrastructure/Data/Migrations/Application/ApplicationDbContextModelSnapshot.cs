@@ -324,6 +324,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
                     b.Property<double>("Utilidad")
                         .HasColumnType("float");
 

@@ -24,6 +24,7 @@ public class Movimiento
     public double IvaAngie { get; set; }
     public double IsrRicardo { get; set; }
     public double IsrAngie { get; set; }
+    public double Total { get; set; }
     public string? Observaciones { get; set; }
     public int AfectaComisiones { get; set; }
     public virtual Documentos Factura { get; set; } // Relación con Factura

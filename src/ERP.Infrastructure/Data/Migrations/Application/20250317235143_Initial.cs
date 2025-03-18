@@ -236,6 +236,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     IvaAngie = table.Column<double>(type: "float", nullable: false),
                     IsrRicardo = table.Column<double>(type: "float", nullable: false),
                     IsrAngie = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfectaComisiones = table.Column<int>(type: "int", nullable: false)
                 },

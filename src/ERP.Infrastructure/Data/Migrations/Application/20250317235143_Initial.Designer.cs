@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Infrastructure.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250313191410_Initial")]
+    [Migration("20250317235143_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -326,6 +326,9 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
                     b.Property<double>("Utilidad")
                         .HasColumnType("float");

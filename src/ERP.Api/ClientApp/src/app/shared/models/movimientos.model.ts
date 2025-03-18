@@ -20,6 +20,7 @@ export interface IMovimientos {
     ivaAngie?: number;
     isrRicardo?: number;
     isrAngie?: number;
+    total: number;
     observaciones?: string;
     afectaComisiones: number;
   }

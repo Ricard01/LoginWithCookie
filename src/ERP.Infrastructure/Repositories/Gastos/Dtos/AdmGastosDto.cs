@@ -35,6 +35,7 @@ public class AdmGastoMovtos
     public double MovDescto { get; set; }
     public double MovIVA { get; set; }
     public double MovISR { get; set; }
+    public double MovTotal { get; set; }
     public string Codigo { get; set; }
     public string Nombre { get; set; }
     public string MovObserva { get; set; }

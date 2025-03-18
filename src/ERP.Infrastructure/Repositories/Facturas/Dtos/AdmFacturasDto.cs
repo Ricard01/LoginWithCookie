@@ -28,7 +28,6 @@ public class AdmFacturasDto
 
 public class AdmFacturaMovtos
 {
-
     public int IdMovimiento { get; set; }
     public int IdComercialMov { get; set; }
     public int IdDocumentoDe { get; set; }
@@ -38,10 +37,10 @@ public class AdmFacturaMovtos
     public double MovIVA { get; set; }
     public double MovISR { get; set; }
     public double MovIvaRetenido { get; set; }
+    public double MovTotal { get; set; }
     public string Codigo { get; set; }
     public string Nombre { get; set; }
     public string MovObserva { get; set; }
     public double Comision { get; set; }
-
 
 }
