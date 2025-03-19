@@ -6,6 +6,8 @@ using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Repositories.Dtos;
+using ERP.Domain.Constants;
+
 
 
 
@@ -13,7 +15,6 @@ namespace ERP.Infrastructure.Repositories.Comisiones;
 
 public class ComisionesRepository : IComisionesRepository
 {
-
     private readonly IApplicationDbContext _context;
     private readonly ICompacDbContext _compacContext;
     private readonly IMapper _mapper;
@@ -25,18 +26,21 @@ public class ComisionesRepository : IComisionesRepository
         _mapper = mapper;
     }
 
-    public async Task<List<ComisionDto>> GetComisiones(DateTime periodo)
+
+    public async Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
-              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == 4)
+.Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Month == periodo.Month)
               .Join(
                   _context.Movimientos,
                   f => f.IdComercial,
                   m => m.IdComercial,
                   (f, m) => new { Factura = f, Movimiento = m }
               )
-              .OrderByDescending(x => x.Factura.Fecha)
+              .Where(x => x.Movimiento.IdAgente ==CONTPAQi.IdAgente.Ambos && x.Movimiento.IdProducto != CONTPAQi.IdProducto.Poliza)
+              .OrderByDescending(x => x.Factura.Serie)
+              .ThenByDescending(x => x.Factura.Fecha)
               .Select(x => new ComisionDto
               {
                   Fecha = x.Factura.Fecha,
@@ -48,8 +52,8 @@ public class ComisionesRepository : IComisionesRepository
                   NombreProducto = x.Movimiento.NombreProducto,
                   Descripcion = x.Movimiento.Descripcion,
                   Neto = x.Movimiento.Neto,
-                  Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
-                  Utilidad = x.Movimiento.Utilidad,
+                  Comision = x.Movimiento.Comision, // Probablemente no los necesito
+                  Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
                   UtilidadRicardo = x.Movimiento.UtilidadRicardo,
                   IvaRicardo = x.Movimiento.IvaRicardo,
                   IsrRicardo = x.Movimiento.IsrRicardo,
@@ -64,19 +68,20 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<List<ComisionRDto>> GetComisionesR(DateTime periodo)
+    public async Task<List<ComisionRDto>> GetComisionesRicardo(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
-              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == 4)
+              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe== CONTPAQi.IdDocumentoDe.Facturas)
               .Join(
                   _context.Movimientos,
                   f => f.IdComercial,
                   m => m.IdComercial,
                   (f, m) => new { Factura = f, Movimiento = m }
               )
-              .Where(x => x.Movimiento.IdAgente != 2)
-              .OrderByDescending(x => x.Factura.Fecha)
+              .Where(x => x.Movimiento.IdAgente == CONTPAQi.IdAgente.RicardoChavez || x.Movimiento.IdProducto == CONTPAQi.IdProducto.Poliza)
+              .OrderByDescending(x => x.Factura.Serie)
+              .ThenByDescending(x => x.Factura.Fecha)
               .Select(x => new ComisionRDto
               {
                   Fecha = x.Factura.Fecha,
@@ -88,8 +93,8 @@ public class ComisionesRepository : IComisionesRepository
                   NombreProducto = x.Movimiento.NombreProducto,
                   Descripcion = x.Movimiento.Descripcion,
                   Neto = x.Movimiento.Neto,
-                  Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
-                  Utilidad = x.Movimiento.Utilidad,
+                  Comision = x.Movimiento.Comision, // Probablemente no los necesito
+                  Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
                   UtilidadRicardo = x.Movimiento.UtilidadRicardo,
                   IvaRicardo = x.Movimiento.IvaRicardo,
                   IsrRicardo = x.Movimiento.IsrRicardo,
@@ -101,7 +106,7 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<List<ComisionADto>> GetComisionesA(DateTime periodo)
+    public async Task<List<ComisionADto>> GetComisionesAngie(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos

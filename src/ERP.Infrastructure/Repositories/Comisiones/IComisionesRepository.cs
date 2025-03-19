@@ -20,14 +20,14 @@ public interface IComisionesRepository
     /// Obtiene la lista de Comisiones de Angelica
     /// </summary>
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
-    Task<List<ComisionADto>> GetComisionesA(DateTime periodo);
+    Task<List<ComisionADto>> GetComisionesAngie(DateTime periodo);
 
 
     /// <summary>
     /// Obtiene la lista de Comisiones de Ricardo
     /// </summary>
     /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
-    Task<List<ComisionRDto>> GetComisionesR(DateTime periodo);
+    Task<List<ComisionRDto>> GetComisionesRicardo(DateTime periodo);
 
 
 
@@ -35,7 +35,7 @@ public interface IComisionesRepository
     /// Obtiene la lista de Comisiones de Ricardo
     /// </summary>
     /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
-    Task<List<ComisionDto>> GetComisiones(DateTime periodo);
+    Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo);
 
 
     /// <summary>

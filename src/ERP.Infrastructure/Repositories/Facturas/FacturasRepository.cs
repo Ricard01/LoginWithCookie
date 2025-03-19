@@ -253,7 +253,7 @@ public class FacturasRepository : IFacturasRepository
                     Cliente = f.Cliente,
                     Neto = f.Neto,
                     IVA = f.IVA,
-                    //IvaRetenido = f.IvaRetenido,
+                    IvaRetenido = f.IvaRetenido,
                     ISR = f.ISR,
                     Descuento = f.Descuento,
                     Total = f.Total,

@@ -20,13 +20,13 @@ public class ComisionesController : ApiControllerBase
     [HttpGet("{periodo}")]
     public async Task<ActionResult<List<ComisionDto>>> GetComisiones(DateTime periodo)
     {
-        return Ok(await _comisionesRepository.GetComisiones(periodo));
+        return Ok(await _comisionesRepository.GetComisionesAmbos(periodo));
     }
 
     [HttpGet("ricardo/{periodo}")]
     public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR(DateTime periodo)
     {
-        var comisiones = await _comisionesRepository.GetComisionesR(periodo);
+        var comisiones = await _comisionesRepository.GetComisionesRicardo(periodo);
         return Ok(comisiones);
     }
 
@@ -34,7 +34,7 @@ public class ComisionesController : ApiControllerBase
     public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA(DateTime periodo)
     {
 
-        var comisiones = await _comisionesRepository.GetComisionesA(periodo);
+        var comisiones = await _comisionesRepository.GetComisionesAngie(periodo);
         return Ok(comisiones);
     }
 
