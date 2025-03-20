@@ -20,7 +20,7 @@ public interface IComisionesRepository
     /// Obtiene la lista de Comisiones de Angelica
     /// </summary>
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
-    Task<List<ComisionADto>> GetComisionesAngie(DateTime periodo);
+    Task<List<ComAngelicaDto>> GetComisionesAngie(DateTime periodo);
 
 
     /// <summary>

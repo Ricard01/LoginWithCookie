@@ -3,12 +3,14 @@
 <app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo"
   (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
 
-  <app-agente-select class="ml-3" (agenteChange)="onAgenteChange($event)"></app-agente-select>
+<app-agente-select class="ml-3" (agenteChange)="onAgenteChange($event)"></app-agente-select>
 
-<h6 class="subtitle">Gastos del Mes <span class="badge success">{{countGastos}}</span></h6>
+<!-- <h6 class="subtitle">Gastos del Mes <span class="badge success">{{countGastos}}</span></h6> -->
 
-<app-dynamic-table
-  [dataSource]="this.gastos"
-  [columns]="columns"
-  (rowClick)="onRowClick($event)"
-></app-dynamic-table>
+<app-dynamic-table 
+[tableTitle]="'Gastos del Mes'" 
+[badgeClass]="'badge success'"
+[data]="this.gastos" 
+[columns]="columns" 
+[totalColumns]="totalColumns" 
+(rowClick)="onRowClick($event)"></app-dynamic-table>

@@ -16,7 +16,7 @@ export class ComisionService {
   constructor(private http: HttpClient) {
   }
 
-  getDetalleComisiones(periodo: Date) {
+  getComisionesAmbos(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
     return this.http.get<IComisiones[]>(`${this.comisionesUrl}/${formattedPeriodo}`);
   }

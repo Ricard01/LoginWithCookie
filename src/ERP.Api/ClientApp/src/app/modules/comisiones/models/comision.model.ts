@@ -1,4 +1,5 @@
 export interface IComisionRicardo {
+  idComercial: number; 
   fecha: string;
   serie: string;
   folio: number;
@@ -8,15 +9,18 @@ export interface IComisionRicardo {
   nombreProducto: string;
   descripcion: string;
   neto: number;
+  descuento: number;
   comision: number;
+  ivaRetenido: number; 
   utilidad: number;
-  utilidadRicardo: number;
   ivaRicardo: number;
   isrRicardo: number;
+  utilidadRicardo: number;
   observaciones: string | null; 
 }
 
 export interface IComisionAngie {
+    idComercial: number; 
     fecha: string;
     serie: string;
     folio: number;
@@ -26,11 +30,13 @@ export interface IComisionAngie {
     nombreProducto: string;
     descripcion: string;
     neto: number;
+    descuento: number;
     comision: number;
+    ivaRetenido: number; 
     utilidad: number;
-    utilidadAngie: number;
     ivaAngie: number;
     isrAngie: number;
+    utilidadAngie: number;
     observaciones: string | null;
   }
 
@@ -44,6 +50,7 @@ export interface IComisionAngie {
     nombreProducto: string;
     descripcion: string;
     neto: number;
+    descuento: number; 
     comision: number;
     utilidad: number;
     utilidadRicardo: number;

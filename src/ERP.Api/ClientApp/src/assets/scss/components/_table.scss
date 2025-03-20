@@ -1,4 +1,4 @@
-/* 📌 TABLAS GENERALES */
+
 table {
     width: 100%;
     .detail-row {
@@ -30,29 +30,18 @@ table {
     overflow: hidden;
     text-overflow: ellipsis; /* Muestra "..." si el contenido es muy largo */
     // border-bottom: 1px solid #b0b0b0; /* Asegura que los bordes sean uniformes */
-    padding: 4px 8px; /* Reduce el espacio entre texto y bordes */
-    text-align: left; /* Asegura alineación de contenido */
+    padding: 4px 8px; 
+    text-align: left; 
   }
   
   .expanded-detail th {
-    // background: #207a43; /* Fondo distinto para diferenciar encabezados */
     font-weight: 500;
   }
   
   .expanded-detail tr {
-    height: auto; /* Ajusta la altura según el contenido */
+    height: auto;
   }
   
-  // .expanded-detail input {
-    // width: 100%;
-    // box-sizing: border-box;
-    // padding: 2px 4px;
-    // border: 1px solid #ccc;
-  // }
-  
-  
-
-
   .short-input {
     width: 50px !important;
   }

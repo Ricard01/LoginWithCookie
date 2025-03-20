@@ -9,8 +9,6 @@ using ERP.Infrastructure.Repositories.Dtos;
 using ERP.Domain.Constants;
 
 
-
-
 namespace ERP.Infrastructure.Repositories.Comisiones;
 
 public class ComisionesRepository : IComisionesRepository
@@ -93,8 +91,8 @@ public class ComisionesRepository : IComisionesRepository
                   NombreProducto = x.Movimiento.NombreProducto,
                   Descripcion = x.Movimiento.Descripcion,
                   Neto = x.Movimiento.Neto,
-                  Comision = x.Movimiento.Comision, // Probablemente no los necesito
-                  Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
+                  //Comision = x.Movimiento.Comision, // Probablemente no los necesito
+                  //Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
                   UtilidadRicardo = x.Movimiento.UtilidadRicardo,
                   IvaRicardo = x.Movimiento.IvaRicardo,
                   IsrRicardo = x.Movimiento.IsrRicardo,
@@ -106,7 +104,7 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<List<ComisionADto>> GetComisionesAngie(DateTime periodo)
+    public async Task<List<ComAngelicaDto>> GetComisionesAngie(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
@@ -117,24 +115,28 @@ public class ComisionesRepository : IComisionesRepository
                       m => m.IdComercial,
                       (f, m) => new { Factura = f, Movimiento = m }
                   )
-                  .Where(x => x.Movimiento.IdAgente != 1)
-                  .OrderByDescending(x => x.Factura.Fecha)
-                  .Select(x => new ComisionADto
+                   .Where(x => x.Movimiento.IdAgente == CONTPAQi.IdAgente.AngelicaPetul || x.Movimiento.IdProducto == CONTPAQi.IdProducto.Poliza)
+              .OrderByDescending(x => x.Factura.Serie)
+              .ThenByDescending(x => x.Factura.Fecha)
+                  .Select(x => new ComAngelicaDto
                   {
+                      IdComercial = x.Factura.IdComercial,
                       Fecha = x.Factura.Fecha,
-                      Serie = (x.Factura.Serie ?? ""),
-                      Folio = x.Factura.Folio,
+                      Folio = $"{x.Factura.Serie ?? ""}{x.Factura.Folio}",
                       Cliente = x.Factura.Cliente,
                       IdMovimiento = x.Movimiento.IdMovimiento,
                       IdAgente = x.Movimiento.IdAgente,
                       NombreProducto = x.Movimiento.NombreProducto,
                       Descripcion = x.Movimiento.Descripcion,
                       Neto = x.Movimiento.Neto,
-                      Comision = x.Movimiento.Comision, // Asumiendo que Comision es Utilidad
-                      Utilidad = x.Movimiento.Utilidad,
-                      UtilidadAngie = x.Movimiento.UtilidadAngie,
+                      Descuento = x.Movimiento.Descuento,
+                      Comision = x.Movimiento.Comision, // Probablemente no los necesito
+                      //Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
                       IvaAngie = x.Movimiento.IvaAngie,
                       IsrAngie = x.Movimiento.IsrAngie,
+                      IvaRetenido = x.Movimiento.IvaRetenido,
+                      UtilidadAngie = x.Movimiento.UtilidadAngie,
+                    
                       Observaciones = x.Movimiento.Observaciones
                   })
                   .ToListAsync();

@@ -31,7 +31,7 @@ public class ComisionesController : ApiControllerBase
     }
 
     [HttpGet("angie/{periodo}")]
-    public async Task<ActionResult<Task<List<ComisionADto>>>> GetComnisionesA(DateTime periodo)
+    public async Task<ActionResult<Task<List<ComAngelicaDto>>>> GetComnisionesA(DateTime periodo)
     {
 
         var comisiones = await _comisionesRepository.GetComisionesAngie(periodo);

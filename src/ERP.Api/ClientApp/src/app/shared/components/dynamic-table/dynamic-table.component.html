@@ -1,39 +1,33 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
-      <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
-      <td mat-cell *matCellDef="let row">
-       
-          {{ formatCell(row[column.key], column.format || 'default') }}
-   
-      
-      </td>
-    </ng-container>
+<h6 class="tableTitle"> {{tableTitle}} <span [class]="badgeClass">{{data.length}}</span></h6>
 
-    <ng-container matColumnDef="span3">
-      <th mat-header-cell *matHeaderCellDef colspan="3">  <p  class="text-end">Totales:</p> </th>               
-    </ng-container>
-    <ng-container matColumnDef="totalNeto">
-      <th mat-header-cell *matHeaderCellDef>  {{ totalNeto | currency }}</th>               
-    </ng-container>
+<table mat-table [dataSource]="data" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="totalIva">
-      <th mat-header-cell *matHeaderCellDef>  {{ totalIva | currency }}</th>               
-    </ng-container>
+  <!--#region totalesGenerales [hidden]="totalGeneral == 0"-->
+  <tr mat-header-row *matHeaderRowDef="displayedTotalColumns" class="totales-row"></tr>
 
-    <ng-container matColumnDef="totalGeneral">
-      <th mat-header-cell *matHeaderCellDef>  {{ totalGeneral | currency }}</th>               
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="['span3', 'totalNeto', 'totalIva', 'totalGeneral']" class="totales-row" [hidden]="totalGeneral == 0"></tr>
-    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: getDisplayedColumns()"  class="element-row"
-      (click)="onRowClick(row)"
-    ></tr>
-  </table>
-  
-  <!-- <mat-paginator
+  <ng-container matColumnDef="startSpan">
+    <th mat-header-cell *matHeaderCellDef [attr.colspan]="startSpanNum">
+      <p class="text-end">Totales:</p>
+    </th>
+  </ng-container>
+
+  <ng-container *ngFor="let column of totalColumns" [matColumnDef]="column">
+    <th mat-header-cell *matHeaderCellDef> {{ calcularTotal(column.replace('total_', '')) | currency }} </th>
+  </ng-container>
+  <!--#endregion totalesGenerales-->
+
+
+  <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
+    <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+    <td mat-cell *matCellDef="let row">
+      {{ formatCell(row[column.key], column.format || 'default') }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+  <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()" class="element-row" (click)="onRowClick(row)"></tr>
+</table>
+<!-- <mat-paginator
     [pageSizeOptions]="pageSizeOptions"
     [pageSize]="pageSize"
     showFirstLastButtons

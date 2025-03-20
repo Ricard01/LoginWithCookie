@@ -1,37 +1,45 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output, ViewEncapsulation } from '@angular/core';
 import { ColumnDefinition } from '../../models/column.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @Component({
   selector: 'app-dynamic-table',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule],
   templateUrl: './dynamic-table.component.html',
-  styleUrl: './dynamic-table.component.scss'
+  styleUrl: './dynamic-table.component.scss',
+  encapsulation: ViewEncapsulation.None
+
+
 })
 export class DynamicTableComponent {
 
-  @Input() dataSource: any[] = [];
+  @Input() data: any[] = [];
+  @Input() tableTitle: string = '';
+  @Input() badgeClass: string = '';
+  @Input() startSpanNum : number = 3; 
   @Input() columns: ColumnDefinition[] = [];
+  @Input() totalColumns: string[] = [];
   @Input() pageSizeOptions: number[] = [5, 10, 20];
   @Input() pageSize: number = 10;
 
+  @Output() filterEvent = new EventEmitter<any>();
   @Output() rowClick = new EventEmitter<any>();
   @Output() actionClick = new EventEmitter<any>();
 
-  get totalNeto(): number {
-    return  this.dataSource.reduce((sum, data) => sum + data.neto, 0);
+
+
+  get displayedTotalColumns(): string[] {
+    return ['startSpan',...this.totalColumns]
   }
-  
-  get totalIva(): number {
-    return this.dataSource.reduce((sum, data) => sum + data.iva, 0);
-  }
-  
-  get totalGeneral(): number {
-    return this.dataSource.reduce((sum, data) => sum + data.total, 0);
+
+  calcularTotal(columna: string): number {
+    return this.data.reduce((sum, row) => sum + (row[columna] || 0), 0);
   }
 
   formatCell(value: any, format: string): string {
@@ -46,6 +54,10 @@ export class DynamicTableComponent {
       default:
         return value;
     }
+  }
+
+  onFilterEvent(value: any) {
+    this.filterEvent.emit(value)
   }
 
   onRowClick(row: any): void {

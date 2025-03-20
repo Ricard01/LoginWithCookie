@@ -30,6 +30,8 @@ export class GastosDetalleComponent  implements OnInit{
     { key: 'iva', header: 'Iva', format: 'currency' },
     { key: 'total', header: 'Total', format: 'currency' },
   ];
+
+  totalColumns = ['total_neto', 'total_iva', 'total_total']
   
   // // Columnas visibles en la tabla
   // columns: ColumnDefinition[] = [];

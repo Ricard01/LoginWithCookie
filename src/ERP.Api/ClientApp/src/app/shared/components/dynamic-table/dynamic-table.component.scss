@@ -1,0 +1,29 @@
+//  ::ng-deep 
+.comisiones-ambos table {
+    .element-row:hover {
+        background-color: #94B5D1; 
+        font-weight: 500;
+        transition: background 0.3s ease, font-weight 0.2s;
+      }
+
+      .element-row:hover .mat-column-utilidadRicardo, 
+      .element-row:hover .mat-column-ivaRicardo, 
+      .element-row:hover .mat-column-isrRicardo,
+      .element-row:hover .mat-column-utilidadAngie, 
+      .element-row:hover .mat-column-ivaAngie, 
+      .element-row:hover .mat-column-isrAngie {
+        background-color: unset !important;
+      }
+
+    .mat-column-utilidadRicardo, 
+    .mat-column-ivaRicardo, 
+    .mat-column-isrRicardo {
+      background-color: #e0f7fa;
+    }
+  
+    .mat-column-utilidadAngie, 
+    .mat-column-ivaAngie, 
+    .mat-column-isrAngie {
+      background-color: #fce4ec;
+    }
+  }
