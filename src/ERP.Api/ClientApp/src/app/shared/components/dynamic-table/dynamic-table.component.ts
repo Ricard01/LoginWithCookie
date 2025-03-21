@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ColumnDefinition } from '../../models/column.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 
 })
-export class DynamicTableComponent {
+export class DynamicTableComponent implements OnInit, OnChanges {
 
   @Input() data: any[] = [];
   @Input() tableTitle: string = '';

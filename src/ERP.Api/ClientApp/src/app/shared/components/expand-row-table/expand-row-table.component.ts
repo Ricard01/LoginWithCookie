@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input,  Output } from '@angular/core';
+import { Component, EventEmitter, Input,  OnChanges,  OnInit,  Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -19,7 +19,7 @@ import { IMovimientos } from '../../models/movimientos.model';
   templateUrl: './expand-row-table.component.html',
   styleUrl: './expand-row-table.component.scss'
 })
-export class ExpandRowTableComponent  {
+export class ExpandRowTableComponent implements OnInit, OnChanges  {
   @Input() data: any[] = [];
   @Input() tableTitle: string = '';
   @Input() badgeClass: string = '';
@@ -35,10 +35,21 @@ export class ExpandRowTableComponent  {
   @Output() expandElementEvent = new EventEmitter<any>();
   @Output() calcComisionesEvent = new EventEmitter<IMovimientos>();
   @Output() updateMovimientoEvent = new EventEmitter<IMovimientos>();
+  @Output() filterEvent = new EventEmitter<any>();
 
+
+  filteredData: any[] = [];
+  filterText: string = '';
 
 constructor(private snackBarService: SnackbarService) {}
 
+ngOnInit() {
+  this.filteredData = [...this.data]; 
+}
+
+ngOnChanges() {
+  this.filteredData = [...this.data];
+}
 
   formatCell(value: any, format: string): string {
     switch (format) {
@@ -109,8 +120,27 @@ get displayedMainColumns(): string[] {
 }
 
 get displayedTotalColumns(): string[] {
-  return ['span3',...this.totalColumns, 'span2']
+  return ['filter','span3',...this.totalColumns, 'span2']
 }
+
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  this.filterText = filterValue;
+
+  this.filteredData = this.data.filter(row =>
+    this.filtrarPorColumnas(row, filterValue)
+  );
+}
+
+private filtrarPorColumnas(row: any, filterValue: string): boolean {
+  return (
+    row.folio?.toString().toLowerCase().includes(filterValue) ||
+    row.fecha?.toString().toLowerCase().includes(filterValue) ||
+    row.cliente?.toLowerCase().includes(filterValue) ||
+    row.descripcion?.toLowerCase().includes(filterValue)
+  );
+}
+
 
   private asignarComisiones(movimientoForm: FormGroup, idAgente: number, utilidadBase: number, iva: number, isr: number): void {
     let utilidadRicardo = 0, utilidadAngie = 0;

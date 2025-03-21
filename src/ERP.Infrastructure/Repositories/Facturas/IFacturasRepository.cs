@@ -7,6 +7,8 @@ public interface IFacturasRepository
 {
     Task SincronizarFacturasAsync(DateTime periodo);
 
+    Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo);
+
     /// <summary>
     /// Lista de Facturas
     /// </summary>

@@ -9,11 +9,12 @@ import { ColumnDefinition } from 'src/app/shared/models/column.model';
 import { ExpandRowTableComponent } from 'src/app/shared/components/expand-row-table/expand-row-table.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { IMovimientos } from 'src/app/shared/models/movimientos.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-factura-list',
   standalone: true,
-  imports: [ExpandRowTableComponent, PeriodoSelectComponent],
+  imports: [CommonModule, ExpandRowTableComponent, PeriodoSelectComponent],
   templateUrl: './factura-list.component.html',
   styleUrl: './factura-list.component.scss'
 })
@@ -25,9 +26,9 @@ export class FacturaListComponent implements OnInit {
   movimientoForms: Map<number, FormGroup> = new Map();
   facturasPendientes: IFactura[] = [];
   facturasPagadas: IFactura[] = [];
+  facturasCanceladas: IFactura[]=[];
 
   totalColumns = [ 'total_neto','total_descuento', 'total_iva', 'total_isr','total_ivaRetenido','total_total']
-
   mainColumns: ColumnDefinition[] =
     [
       { key: 'folio', header: 'Folio' },
@@ -41,7 +42,6 @@ export class FacturaListComponent implements OnInit {
       { key: 'total', header: 'Total', format: 'currency' },
       { key: 'agente', header: 'Agente' }
     ];
-
   amountColumns: ColumnDefinition[] = [
     { key: 'neto', header: 'Neto', format: 'currency' },
     { key: 'descuento', header: 'Descto', format: 'currency' },
@@ -59,6 +59,7 @@ export class FacturaListComponent implements OnInit {
     { key: 'observaciones', header: 'Observaciones', input: true, inputType: 'text', formControlName: 'observaciones', class: 'medium-input' },
 
   ];
+
 
   expandedStates: Map<IFactura, boolean> = new Map();
 
@@ -80,15 +81,17 @@ export class FacturaListComponent implements OnInit {
             switchMap(() =>
               forkJoin({
                 facturasPagadas: this.facturaService.getFacturasPagadas(selectedValue),
-                facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue)
+                facturasPendientes: this.facturaService.getFacturasPendientes(selectedValue),
+                facturasCanceladas: this.facturaService.getFacturasCanceladas(selectedValue)
               })
             )
           )
         )
       )
-      .subscribe(({ facturasPagadas, facturasPendientes }) => {
+      .subscribe(({ facturasPagadas, facturasPendientes, facturasCanceladas }) => {
         this.facturasPagadas = facturasPagadas;
         this.facturasPendientes = facturasPendientes;
+        this.facturasCanceladas = facturasCanceladas;
 
 
         this.setMovimientoForms(facturasPagadas);

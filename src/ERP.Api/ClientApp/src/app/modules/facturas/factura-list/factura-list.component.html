@@ -16,7 +16,7 @@
 
 <app-expand-row-table
   [tableTitle]="'Facturas Pendientes'"
-  [badgeClass]="'badge warning'"
+  [badgeClass]="'badge info'"
   [data]="facturasPendientes"
   [totalColumns]="totalColumns"
   [mainColumns]="mainColumns"
@@ -25,3 +25,17 @@
   (expandElementEvent)="expandElement($event)"
   (updateMovimientoEvent)="updateMovimiento($event)"
 ></app-expand-row-table>
+
+<div *ngIf="facturasCanceladas.length > 0 ">
+  <app-expand-row-table
+  [tableTitle]="'Facturas Canceladas'"
+  [badgeClass]="'badge warning'"
+  [data]="facturasCanceladas"
+  [totalColumns]="totalColumns"
+  [mainColumns]="mainColumns"
+  [amountColumns]="amountColumns"
+  [movimientoForms]="movimientoForms"
+  (expandElementEvent)="expandElement($event)"
+></app-expand-row-table>
+
+</div>

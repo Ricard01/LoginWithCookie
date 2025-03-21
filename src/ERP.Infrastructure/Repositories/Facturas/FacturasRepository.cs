@@ -29,7 +29,11 @@ public class FacturasRepository : IFacturasRepository
         _compacContext = compacContext;
         _mapper = mapper;
     }
- 
+    
+    public async Task SincronizarFacturasAsync(DateTime periodo)
+    {
+        await GetAndSetFacturasCompacAsync(periodo);
+    }
     public async Task<FacturasVm> GetFacturasPagadas(DateTime periodo)
     {
 
@@ -65,6 +69,11 @@ public class FacturasRepository : IFacturasRepository
         };
     }
 
+    public async Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo)
+    {
+        return await GetFacturasAsync("FACTURAS CANCELADAS", f => f.Cancelado == 1 && f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month);
+    }
+
     private async Task<List<FacturasDto>> GetFacturasAsync(string tag, Expression<Func<Documentos, bool>> whereCondition)
     {
         return await _context.Documentos
@@ -77,7 +86,7 @@ public class FacturasRepository : IFacturasRepository
                 Id = d.Id,
                 Concepto = d.Concepto,
                 Fecha = d.Fecha,
-                Folio = (d.Serie ?? "") + d.Folio,
+                Folio = $"{d.Serie ?? ""}{d.Folio}",
                 Cliente = d.Cliente,
                 Neto = d.Neto,
                 IVA = d.IVA,
@@ -119,11 +128,6 @@ public class FacturasRepository : IFacturasRepository
                 }).ToList(),
             })
             .ToListAsync();
-    }
-
-    public async Task SincronizarFacturasAsync(DateTime periodo)
-    {
-        await GetAndSetFacturasCompacAsync(periodo);
     }
 
     private async Task GetAndSetFacturasCompacAsync(DateTime periodo)

@@ -29,7 +29,7 @@ public class ComisionesRepository : IComisionesRepository
     {
 
         var comisiones = await _context.Documentos
-.Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Month == periodo.Month)
+              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Month == periodo.Month)
               .Join(
                   _context.Movimientos,
                   f => f.IdComercial,
@@ -41,9 +41,8 @@ public class ComisionesRepository : IComisionesRepository
               .ThenByDescending(x => x.Factura.Fecha)
               .Select(x => new ComisionDto
               {
-                  Fecha = x.Factura.Fecha,
-                  Serie = (x.Factura.Serie ?? ""),
-                  Folio = x.Factura.Folio,
+                  Fecha = x.Factura.Fecha,                  
+                  Folio = $"{x.Factura.Serie ?? ""}{x.Factura.Folio}",
                   Cliente = x.Factura.Cliente,
                   IdMovimiento = x.Movimiento.IdMovimiento,
                   IdAgente = x.Movimiento.IdAgente,

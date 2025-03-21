@@ -22,6 +22,13 @@ public class FacturasController: ApiControllerBase
         return Ok();
     }
 
+    [HttpGet("canceladas")]
+    public async Task<IActionResult> GetFacturasCanceladas(DateTime periodo)
+    {
+        return Ok(await _facRepository.GetFacturasCanceladasAsync(periodo));
+
+    }
+
     [HttpGet("pagadas")]
     public async Task<ActionResult<FacturasVm>> GetFacturasPagadas(DateTime periodo)
     {

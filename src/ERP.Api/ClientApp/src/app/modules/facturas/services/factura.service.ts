@@ -23,6 +23,12 @@ export class FacturaService {
     return this.http.post(`${this.facturasUrl}/sincronizar`, {periodo});  
   }
 
+  getFacturasCanceladas(periodo: Date) {
+    const formattedPeriodo = periodo.toISOString();
+
+    return this.http.get<IFactura[]>(`${this.facturasUrl}/canceladas?periodo=${formattedPeriodo}`);
+  }
+
   getFacturasPagadas(periodo: Date) {
     const formattedPeriodo = periodo.toISOString();
     return this.http.get<IFacturaVm>(`${this.facturasUrl}/pagadas?periodo=${formattedPeriodo}`).pipe(

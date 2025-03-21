@@ -14,6 +14,14 @@ export const MENU: MenuItem[] = [
       link: '/',
 
     },
+
+    {
+        id: 4,
+        label: 'Facturas',
+        icon: 'ph-duotone ph-invoice',
+      link: '/facturas',
+
+    },
     {
         id: 3,
         label: 'Gastos',
@@ -35,13 +43,6 @@ export const MENU: MenuItem[] = [
      
 
     ]
-
-    },
-    {
-        id: 4,
-        label: 'Facturas',
-        icon: 'ph-duotone ph-invoice',
-      link: '/facturas',
 
     },
     {
