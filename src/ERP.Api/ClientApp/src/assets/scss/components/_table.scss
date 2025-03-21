@@ -6,9 +6,17 @@ table {
     }
 
     .totales-row {
+      height: auto;
       font-weight: 500;
       color: #f5f5f5;
       background-color: #508AA8;
+      padding: 4px 0; 
+    }
+
+    .totales-row th {
+      height: auto !important;
+      // line-height: 1.2; /* 🔹 Reduce espacio entre líneas dentro de la celda */
+      // padding: 4px 8px; /* 🔹 Reduce espacio interno */
     }
 
     .pending-row {
@@ -16,6 +24,35 @@ table {
     }
   
   }
+
+.filter-field {
+  display: flex;
+  padding: 7px 7px;
+  flex-grow: 1;
+  // width: 100%;
+  justify-content: center; 
+}
+.filter-field .mat-mdc-form-field-infix {
+  padding-top: 8px !important;
+  padding-bottom: 0px !important;
+  min-height: 36px !important;
+  height: auto !important;
+}
+
+
+  .filter-field .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+.filter-field mat-icon {
+  color: #508AA8;
+  margin-right: 0.5rem;
+}
+
 
 
   .expanded-detail {

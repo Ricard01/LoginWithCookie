@@ -23,35 +23,6 @@ export class ComisionesListComponent implements OnInit {
   displayedColumns = ['folio', 'fecha', 'cliente', 'descripcion', 'comision', 'utilidad', 'utilidadR', 'ivaR', 'isrR', 'utilidadA', 'ivaA', 'isrA'];
 
 
-  columnsAngie: ColumnDefinition[] = [
-    { key: 'folio', header: 'Folio' },
-    { key: 'fecha', header: 'Fecha', format: 'date' },
-    { key: 'cliente', header: 'Proveedor' },
-    { key: 'neto', header: 'Neto', format: 'currency' },
-    { key: 'descuento', header: 'Descuento', format: 'currency' },
-    { key: 'ivaAngie', header: 'Iva', format: 'currency' },
-    { key: 'isrAngie', header: 'Isr', format: 'currency' },
-    { key: 'ivaRetenido', header: 'Iva Ret', format: 'currency' },
-    { key: 'utilidadAngie', header: 'Utilidad', format: 'currency' },
-  ];
-  totalColumns = ['total_neto', 'total_descuento', 'total_ivaAngie', 'total_isrAngie', 'total_ivaRetenido', 'total_utilidadAngie']
-
-  columnsAmbos: ColumnDefinition[] = [
-    { key: 'folio', header: 'Folio' },
-    { key: 'fecha', header: 'Fecha', format: 'date' },
-    { key: 'cliente', header: 'Cliente' },
-    { key: 'descripcion', header: 'Descripcion' },
-    { key: 'comision', header: '% Com' },
-    { key: 'utilidad', header: 'Ut. Ambos', format: 'currency' },
-    { key: 'utilidadRicardo', header: 'Utilidad', format: 'currency' },
-    { key: 'ivaRicardo', header: 'Iva ', format: 'currency' },
-    { key: 'isrRicardo', header: 'Isr', format: 'currency' },
-    { key: 'utilidadAngie', header: 'Utilidad ', format: 'currency' },
-    { key: 'ivaAngie', header: 'Iva ', format: 'currency' },
-    { key: 'isrAngie', header: 'Isr', format: 'currency' },
-  ];
-
-  totalColumnsAmbos = ['total_utilidad', 'total_utilidadRicardo', 'total_ivaRicardo', 'total_isrRicardo', 'total_utilidadAngie', 'total_ivaAngie','total_isrAngie']
 
   totalUtilidad: number = 0;
   totalUtilidadR: number = 0;

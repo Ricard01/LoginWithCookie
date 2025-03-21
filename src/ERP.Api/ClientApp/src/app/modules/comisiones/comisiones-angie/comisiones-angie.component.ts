@@ -1,65 +1,79 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ComisionService } from '../services/comision.service';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
-import { IComisionAngie } from '../models/comision.model';
-import { MatTableDataSource } from '@angular/material/table';
+import { IComisionAngie, IComisiones } from '../models/comision.model';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
-import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
+import { ColumnDefinition } from 'src/app/shared/models/column.model';
+import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-comisiones-angie',
   standalone: true,
-  imports: [PeriodoSelectComponent, SHARED_IMPORTS],
+  imports: [PeriodoSelectComponent, DynamicTableComponent],
   templateUrl: './comisiones-angie.component.html',
   styleUrl: './comisiones-angie.component.scss'
 })
-export class ComisionesAngieComponent {
+export class ComisionesAngieComponent implements OnInit {
+
   periodos = this.periodoService.getPeriodos();
-    defaultPeriodo: Date | null = null;
-  
-    displayedColumns = ['folio', 'fecha', 'cliente', 'descripcion', 'utilidad', 'iva', 'isr'];
-  
-  
-    totalUtilidad: number = 0;
-    totalIva: number = 0;
-    totalIsr: number = 0;
-  
-    comisionesAngie: IComisionAngie[] = [];
+  defaultPeriodo: Date = this.periodoService.getCurrentMonth();
 
-   dataSourceAngie = new MatTableDataSource<IComisionAngie>([]);
-  
-    constructor(private comisionService: ComisionService, private periodoService: PeriodoService) { }
-  
-    onPeriodoChange(selectedValue: Date): void {
-  
-      this.comisionService.getComisionesAngie(selectedValue).subscribe((comisiones) => {
-      
-        this.dataSourceAngie.data = comisiones; 
-        this.totalUtilidad = comisiones.reduce((sum, item) => sum + item.utilidadAngie, 0);
-        this.totalIva = comisiones.reduce((sum, item) => sum + item.ivaAngie, 0);
-        this.totalIsr = comisiones.reduce((sum, item) => sum + item.isrAngie, 0);
-      });
-  
-    }
-  
-    // this.getComisionesA(selectedValue);    this.ref.detectChanges();
-  
-   
-  
-    getComisionesA(periodo: Date) {
-      this.comisionService.getComisionesAngie(periodo).subscribe((comisiones) => {
-        this.comisionesAngie = comisiones
-      });
-    }
+  comisionesAngie: IComisionAngie[] = [];
+  columnsAngieTable: ColumnDefinition[] = [
+    { key: 'folio', header: 'Folio' },
+    { key: 'fecha', header: 'Fecha', format: 'date' },
+    { key: 'cliente', header: 'Proveedor' },
+    { key: 'neto', header: 'Neto', format: 'currency' },
+    { key: 'descuento', header: 'Descuento', format: 'currency' },
+    { key: 'ivaAngie', header: 'Iva', format: 'currency' },
+    { key: 'isrAngie', header: 'Isr', format: 'currency' },
+    { key: 'ivaRetenido', header: 'Iva Ret', format: 'currency' },
+    { key: 'utilidadAngie', header: 'Utilidad', format: 'currency' },
+  ];
+  totalsAngieTable = ['total_neto', 'total_descuento', 'total_ivaAngie', 'total_isrAngie', 'total_ivaRetenido', 'total_utilidadAngie']
 
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSourceAngie.filter = filterValue.trim().toLowerCase();
-  
-      if (this.dataSourceAngie.paginator) {
-          this.dataSourceAngie.paginator.firstPage();
-      }
-    }
-  
+  comisionesAmbos: IComisiones[] = [];
+  columnsAmbosTable: ColumnDefinition[] = [
+    { key: 'folio', header: 'Folio' },
+    { key: 'fecha', header: 'Fecha', format: 'date' },
+    { key: 'cliente', header: 'Cliente' },
+    { key: 'descripcion', header: 'Descripcion' },
+    { key: 'comision', header: '% Com' },
+    { key: 'utilidad', header: 'Ut. Ambos', format: 'currency' },
+    { key: 'utilidadRicardo', header: 'Utilidad', format: 'currency' },
+    { key: 'ivaRicardo', header: 'Iva ', format: 'currency' },
+    { key: 'isrRicardo', header: 'Isr', format: 'currency' },
+    { key: 'utilidadAngie', header: 'Utilidad ', format: 'currency' },
+    { key: 'ivaAngie', header: 'Iva ', format: 'currency' },
+    { key: 'isrAngie', header: 'Isr', format: 'currency' },
+  ];
+  totalsAmbosTable = ['total_utilidad', 'total_utilidadRicardo', 'total_ivaRicardo', 'total_isrRicardo', 'total_utilidadAngie', 'total_ivaAngie', 'total_isrAngie']
+
+  constructor(private periodoService: PeriodoService, private comisionService: ComisionService) { }
+
+  ngOnInit() {
+    this.cargarComisiones(this.defaultPeriodo);
+  }
+
+  onPeriodoChange(periodo: Date): void {
+    this.cargarComisiones(periodo);
+  }
+
+  private cargarComisiones(periodo: Date): void {
+    forkJoin({
+      angie: this.comisionService.getComisionesAngie(periodo),
+      ambos: this.comisionService.getComisionesAmbos(periodo),
+    }).subscribe({
+      next: ({ angie, ambos }) => {
+        this.comisionesAngie = angie;
+        this.comisionesAmbos = ambos;
+      },
+      error: (err) => {
+        console.error('Error al cargar las comisiones:', err);
+        // Aquí podrías mostrar un snackbar si lo usas
+      },
+    });
+  }
 
 }

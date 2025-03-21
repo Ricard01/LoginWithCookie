@@ -5,12 +5,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-dynamic-table',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatIconModule],
   templateUrl: './dynamic-table.component.html',
   styleUrl: './dynamic-table.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -32,10 +33,40 @@ export class DynamicTableComponent {
   @Output() rowClick = new EventEmitter<any>();
   @Output() actionClick = new EventEmitter<any>();
 
+  filteredData: any[] = [];
+  filterText: string = '';
+
+  ngOnInit() {
+    this.filteredData = [...this.data]; // Inicializar la tabla con todos los datos
+  }
+
+  ngOnChanges() {
+    this.filteredData = [...this.data]; // Mantener sincronizado con cambios en data
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.filterText = filterValue;
+  
+    this.filteredData = this.data.filter(row =>
+      this.filtrarPorColumnas(row, filterValue)
+    );
+  }
+  
+  private filtrarPorColumnas(row: any, filterValue: string): boolean {
+    return (
+      row.folio?.toString().toLowerCase().includes(filterValue) ||
+      row.fecha?.toString().toLowerCase().includes(filterValue) ||
+      row.cliente?.toLowerCase().includes(filterValue) ||
+      row.descripcion?.toLowerCase().includes(filterValue)
+    );
+  }
+  
+
 
 
   get displayedTotalColumns(): string[] {
-    return ['startSpan',...this.totalColumns]
+    return ['filter','startSpan',...this.totalColumns]
   }
 
   calcularTotal(columna: string): number {
@@ -70,7 +101,7 @@ export class DynamicTableComponent {
     }
     this.actionClick.emit(row);
   }
-  
+ 
 
   getDisplayedColumns(): string[] {
     return this.columns.map((column) => column.key);

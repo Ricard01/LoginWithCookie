@@ -1,155 +1,138 @@
 <h4 class="title">Comisiones Detalle</h4>
 
-<app-periodo-select 
-[periodos]="periodos" 
-[defaultValue]="defaultPeriodo" 
-(periodoChange)="onPeriodoChange($event)"
-></app-periodo-select>
-
-<app-dynamic-table [tableTitle]="'Comisiones Angie'"   [badgeClass]="'badge info'"  [data]="comisionesAngie" [columns]="columnsAngie" [totalColumns]="totalColumns" (filterEvent)="applyFilter($event)"></app-dynamic-table>
-
-<div class="mt-5 mb-5"></div>
-
-<div class="comisiones-ambos"> 
-<app-dynamic-table [tableTitle]="'Comisiones Ambos'"   [badgeClass]="'badge info'"  [startSpanNum]=5 [data]="comisionesAmbos" [columns]="columnsAmbos" [totalColumns]="totalColumnsAmbos" (filterEvent)="applyFilter($event)"></app-dynamic-table>
-</div>
-
-    <div class="mt-5">
-
-      <ng-container *ngIf="this.dataSource; else noItems" matSort matSortActive="cliente">
-        <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8" matSort matSortActive="cliente" >
-
-          <ng-container matColumnDef="empty">
-            <th mat-header-cell *matHeaderCellDef colspan="5"> 
-                <mat-form-field>
-                    <mat-icon
-                        class="icon-size-2"
-                        matPrefix
-                        >search</mat-icon>
-                     <input
-                        matInput
-                        (keyup)="applyFilter($event)"
-                        placeholder="Buscar  ..."
-                        #input>
-                </mat-form-field>
-             </th>
-          </ng-container>
-
-          <ng-container matColumnDef="utilidad-amb">
-            <th mat-header-cell *matHeaderCellDef class="utilidad-amb" >  {{ totalUtilidad | currency }} </th>
-          </ng-container>
-
-          <ng-container matColumnDef="utilidad-sum">
-            <th mat-header-cell *matHeaderCellDef class="utilidadR">  {{ totalUtilidadR | currency }} </th>
-          </ng-container>
-        
-          <!-- Cost Description Column -->
-          <ng-container matColumnDef="iva-sum">
-            <th mat-header-cell *matHeaderCellDef class="ivaR"> {{totalIvaR | currency}} </th>
-          </ng-container>
-
-          <ng-container matColumnDef="isr-sum">
-            <th mat-header-cell *matHeaderCellDef class="isrR"> {{ totalIsrR | currency }} </th>
-          </ng-container>
-
-          <ng-container matColumnDef="utilidadA-sum">
-            <th mat-header-cell *matHeaderCellDef class="utilidadA" >  {{ totalUtilidadA | currency }} </th>
-          </ng-container>
-        
-          <!-- Cost Description Column -->
-          <ng-container matColumnDef="ivaA-sum">
-            <th mat-header-cell *matHeaderCellDef class="ivaA"> {{totalIvaA | currency}} </th>
-          </ng-container>
-
-          <ng-container matColumnDef="isrA-sum">
-            <th mat-header-cell *matHeaderCellDef class="isrA"> {{ totalIsrA | currency }} </th>
-          </ng-container>
-      
-  
-          <tr class="sum-container" mat-header-row *matHeaderRowDef="['empty', 'utilidad-amb','utilidad-sum', 'iva-sum','isr-sum','utilidadA-sum', 'ivaA-sum','isrA-sum']"
-          class="example-second-header-row"></tr>
+<app-periodo-select [periodos]="periodos" [defaultValue]="defaultPeriodo"
+  (periodoChange)="onPeriodoChange($event)"></app-periodo-select>
 
 
+<div class="mt-5">
 
+  <ng-container *ngIf="this.dataSource; else noItems" matSort matSortActive="cliente">
+    <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8" matSort matSortActive="cliente">
 
-            <ng-container matColumnDef="folio">
-                <th mat-header-cell *matHeaderCellDef> Folio </th>
-                <td mat-cell *matCellDef="let item"> {{item.serie }} {{item.folio}} </td>
-              </ng-container>
-          
-              <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                <td mat-cell *matCellDef="let item">{{ item.fecha | date: 'dd/MM/yyyy' }}</td>
-              </ng-container>
-          
-              <ng-container matColumnDef="cliente">
-                <th mat-header-cell *matHeaderCellDef> Cliente </th>
-                <td mat-cell *matCellDef="let item"> {{item.cliente}} </td>
-              </ng-container>
-
-                  
-              <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-                <td mat-cell *matCellDef="let item"> {{item.descripcion}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="comision">
-                <th mat-header-cell *matHeaderCellDef > % Com </th>
-                <td mat-cell *matCellDef="let item"> {{item.comision  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="utilidad">
-                <th mat-header-cell *matHeaderCellDef class="utilidad-amb" > Utilidad </th>
-                <td mat-cell *matCellDef="let item" class="utilidad-amb"> {{item.utilidad | currency }} </td>
-              </ng-container>
-          
-
-              <ng-container matColumnDef="utilidadR">
-                <th mat-header-cell *matHeaderCellDef  class="utilidadR"> Utilidad </th>
-                <td mat-cell *matCellDef="let item" class="utilidadR"> {{item.utilidadRicardo | currency }} </td>
-              </ng-container>
-
-
-              <ng-container matColumnDef="ivaR">
-                <th mat-header-cell *matHeaderCellDef  class="ivaR"> IVA </th>
-                <td mat-cell *matCellDef="let item" class="ivaR"> {{item.ivaRicardo | currency }} </td>
-              </ng-container>
-
-
-              <ng-container matColumnDef="isrR">
-                <th mat-header-cell *matHeaderCellDef  class="isrR"> ISR </th>
-                <td mat-cell *matCellDef="let item" class="isrR"> {{item.isrRicardo | currency }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="utilidadA">
-                <th mat-header-cell *matHeaderCellDef class="utilidadA"> Utilidad </th>
-                <td mat-cell *matCellDef="let item" class="utilidadA"> {{item.utilidadAngie | currency }} </td>
-              </ng-container>
-
-
-              <ng-container matColumnDef="ivaA">
-                <th mat-header-cell *matHeaderCellDef class="ivaA"> IVA </th>
-                <td mat-cell *matCellDef="let item" class="ivaA"> {{item.ivaAngie | currency }} </td>
-              </ng-container>
-
-
-              <ng-container matColumnDef="isrA">
-                <th mat-header-cell *matHeaderCellDef  class="isrA"> ISR </th>
-                <td mat-cell *matCellDef="let item" class="isrA"> {{item.isrAngie | currency }} </td>
-              </ng-container>
-
-            
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      
-        </table>
+      <ng-container matColumnDef="empty">
+        <th mat-header-cell *matHeaderCellDef colspan="5">
+          <mat-form-field>
+            <mat-icon class="icon-size-2" matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar  ..." #input>
+          </mat-form-field>
+        </th>
       </ng-container>
 
-    
-      <ng-template #noItems>
-        <p>No hay datos para mostrar.</p>
-      </ng-template>
-    </div>
+      <ng-container matColumnDef="utilidad-amb">
+        <th mat-header-cell *matHeaderCellDef class="utilidad-amb"> {{ totalUtilidad | currency }} </th>
+      </ng-container>
 
+      <ng-container matColumnDef="utilidad-sum">
+        <th mat-header-cell *matHeaderCellDef class="utilidadR"> {{ totalUtilidadR | currency }} </th>
+      </ng-container>
+
+      <!-- Cost Description Column -->
+      <ng-container matColumnDef="iva-sum">
+        <th mat-header-cell *matHeaderCellDef class="ivaR"> {{totalIvaR | currency}} </th>
+      </ng-container>
+
+      <ng-container matColumnDef="isr-sum">
+        <th mat-header-cell *matHeaderCellDef class="isrR"> {{ totalIsrR | currency }} </th>
+      </ng-container>
+
+      <ng-container matColumnDef="utilidadA-sum">
+        <th mat-header-cell *matHeaderCellDef class="utilidadA"> {{ totalUtilidadA | currency }} </th>
+      </ng-container>
+
+      <!-- Cost Description Column -->
+      <ng-container matColumnDef="ivaA-sum">
+        <th mat-header-cell *matHeaderCellDef class="ivaA"> {{totalIvaA | currency}} </th>
+      </ng-container>
+
+      <ng-container matColumnDef="isrA-sum">
+        <th mat-header-cell *matHeaderCellDef class="isrA"> {{ totalIsrA | currency }} </th>
+      </ng-container>
+
+
+      <tr class="sum-container" mat-header-row
+        *matHeaderRowDef="['empty', 'utilidad-amb','utilidad-sum', 'iva-sum','isr-sum','utilidadA-sum', 'ivaA-sum','isrA-sum']"
+        class="example-second-header-row"></tr>
+
+
+
+
+      <ng-container matColumnDef="folio">
+        <th mat-header-cell *matHeaderCellDef> Folio </th>
+        <td mat-cell *matCellDef="let item"> {{item.serie }} {{item.folio}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let item">{{ item.fecha | date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cliente">
+        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+        <td mat-cell *matCellDef="let item"> {{item.cliente}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+        <td mat-cell *matCellDef="let item"> {{item.descripcion}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comision">
+        <th mat-header-cell *matHeaderCellDef> % Com </th>
+        <td mat-cell *matCellDef="let item"> {{item.comision }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="utilidad">
+        <th mat-header-cell *matHeaderCellDef class="utilidad-amb"> Utilidad </th>
+        <td mat-cell *matCellDef="let item" class="utilidad-amb"> {{item.utilidad | currency }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="utilidadR">
+        <th mat-header-cell *matHeaderCellDef class="utilidadR"> Utilidad </th>
+        <td mat-cell *matCellDef="let item" class="utilidadR"> {{item.utilidadRicardo | currency }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="ivaR">
+        <th mat-header-cell *matHeaderCellDef class="ivaR"> IVA </th>
+        <td mat-cell *matCellDef="let item" class="ivaR"> {{item.ivaRicardo | currency }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="isrR">
+        <th mat-header-cell *matHeaderCellDef class="isrR"> ISR </th>
+        <td mat-cell *matCellDef="let item" class="isrR"> {{item.isrRicardo | currency }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="utilidadA">
+        <th mat-header-cell *matHeaderCellDef class="utilidadA"> Utilidad </th>
+        <td mat-cell *matCellDef="let item" class="utilidadA"> {{item.utilidadAngie | currency }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="ivaA">
+        <th mat-header-cell *matHeaderCellDef class="ivaA"> IVA </th>
+        <td mat-cell *matCellDef="let item" class="ivaA"> {{item.ivaAngie | currency }} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="isrA">
+        <th mat-header-cell *matHeaderCellDef class="isrA"> ISR </th>
+        <td mat-cell *matCellDef="let item" class="isrA"> {{item.isrAngie | currency }} </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    </table>
+  </ng-container>
+
+
+  <ng-template #noItems>
+    <p>No hay datos para mostrar.</p>
+  </ng-template>
+</div>

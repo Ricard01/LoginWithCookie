@@ -1,9 +1,18 @@
 <h6 class="tableTitle"> {{tableTitle}} <span [class]="badgeClass">{{data.length}}</span></h6>
 
-<table mat-table [dataSource]="data" class="mat-elevation-z8">
+<table mat-table [dataSource]="filteredData" class="mat-elevation-z8">
 
   <!--#region totalesGenerales [hidden]="totalGeneral == 0"-->
   <tr mat-header-row *matHeaderRowDef="displayedTotalColumns" class="totales-row"></tr>
+
+  <ng-container matColumnDef="filter">
+    <th mat-header-cell *matHeaderCellDef colspan="2">
+      <mat-form-field class="filter-field">
+        <mat-icon class="icon-size-2" matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)"  [value]="filterText">
+      </mat-form-field>
+    </th>
+  </ng-container>
 
   <ng-container matColumnDef="startSpan">
     <th mat-header-cell *matHeaderCellDef [attr.colspan]="startSpanNum">
