@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper.QueryableExtensions;
+﻿using Microsoft.EntityFrameworkCore;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
@@ -20,14 +18,14 @@ public class FacturasRepository : IFacturasRepository
 
     private readonly IApplicationDbContext _context;
     private readonly ICompacDbContext _compacContext;
-    private readonly IMapper _mapper;
+
    
 
-    public FacturasRepository(ApplicationDbContext context, ICompacDbContext compacContext, IMapper mapper)
+    public FacturasRepository(ApplicationDbContext context, ICompacDbContext compacContext)
     {
         _context = context;
         _compacContext = compacContext;
-        _mapper = mapper;
+
     }
     
     public async Task SincronizarFacturasAsync(DateTime periodo)
@@ -54,6 +52,9 @@ public class FacturasRepository : IFacturasRepository
 
     }
 
+    // TIP-PRO: Este método usa async porque se crea un nuevo objeto con el resultado
+    // REF: docs/general/tips-pro.md#async-si-se-necesita-si-hay-logica-despues-del-await
+
     public async Task<FacturasVm> GetFacturasPendientes(DateTime periodo)
     {
 
@@ -69,14 +70,17 @@ public class FacturasRepository : IFacturasRepository
         };
     }
 
-    public async Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo)
+    public  Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo)
     {
-        return await GetFacturasAsync("FACTURAS CANCELADAS", f => f.Cancelado == 1 && f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month);
+        return  GetFacturasAsync("FACTURAS CANCELADAS", f => f.Cancelado == 1 && f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month);
     }
 
-    private async Task<List<FacturasDto>> GetFacturasAsync(string tag, Expression<Func<Documentos, bool>> whereCondition)
+    // TIP-PRO: No usar async/await si solo retorna un Task directo.
+    // REF: docs/general/tips-pro.md#async-vs-await-cuando-devolves-una-consulta-directa
+    private Task<List<FacturasDto>> GetFacturasAsync(string tag, Expression<Func<Documentos, bool>> whereCondition)
     {
-        return await _context.Documentos
+       
+        return _context.Documentos
             .TagWith(tag)
             .AsNoTracking()
             .Where(whereCondition)
@@ -128,6 +132,7 @@ public class FacturasRepository : IFacturasRepository
                 }).ToList(),
             })
             .ToListAsync();
+
     }
 
     private async Task GetAndSetFacturasCompacAsync(DateTime periodo)

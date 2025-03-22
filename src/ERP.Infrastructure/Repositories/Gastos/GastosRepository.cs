@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper.QueryableExtensions;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
@@ -8,6 +7,8 @@ using ERP.Infrastructure.Repositories.Gastos.Dtos;
 using Dapper;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Repositories.Dtos;
+using System.Linq.Expressions;
+using ERP.Domain.Constants;
 
 
 namespace ERP.Infrastructure.Repositories.Gastos;
@@ -15,44 +16,80 @@ namespace ERP.Infrastructure.Repositories.Gastos;
 public class GastosRepository : IGastosRepository
 {
 
-
     private readonly IApplicationDbContext _context;
     private readonly ICompacDbContext _compacContext;
-    private readonly IMapper _mapper;
 
-    public GastosRepository(ApplicationDbContext context, ICompacDbContext compacContext, IMapper mapper)
+
+    public GastosRepository(ApplicationDbContext context, ICompacDbContext compacContext)
     {
         _context = context;
         _compacContext = compacContext;
-        _mapper = mapper;
     }
 
-    public async Task<List<GastosDto>> GetGastos(DateTime periodo)
+    public  Task<List<GastosDto>> GetGastos(DateTime periodo)
     {
-
-        return   await _context.Documentos.TagWith("GASTOS")
-          .AsNoTracking()
-         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == 19 )
-         .OrderByDescending(d => d.Fecha)
-             .ProjectTo<GastosDto>(_mapper.ConfigurationProvider).ToListAsync();
-
-       
-
+        return GetGastosQuery("GASTOS", g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos);
     }
 
-    public async Task<List<GastosDto>> GetGastosAgente(int idAgente, DateTime periodo)
+    public  Task<List<GastosDto>> GetGastosAgente(int idAgente, DateTime periodo)
     {
+        return GetGastosQuery("GASTOS X AGENTE",g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos && g.Movimientos.Any(m => m.IdAgente == idAgente));
+    }
 
-        return await _context.Documentos.AsNoTracking()
-            .Where(g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month & g.Cancelado == 0 && g.IdDocumentoDe == 19  && g.Movimientos.Any(m => m.IdAgente == idAgente))            
+    public  Task<List<GastosDto>> GetGastosQuery(string? tag,Expression<Func<Documentos, bool>> whereCondition)
+    {
+        return _context.Documentos
+            .AsNoTracking()
+            .Where(whereCondition)
             .OrderByDescending(d => d.Fecha)
-            .ProjectTo<GastosDto>(_mapper.ConfigurationProvider).ToListAsync();
+            .Select(d => new GastosDto
+            {
+                Id = d.Id,
+                Concepto = d.Concepto,
+                Fecha = d.Fecha,
+                Folio = $"{d.Serie ?? ""}{d.Folio}",
+                Proveedor = d.Cliente,
+                Neto = d.Neto,
+                IVA = d.IVA,
+                Total = d.Total,
+                Descuento = d.Descuento,
+                Pendiente = d.Pendiente,
+                Cancelado = d.Cancelado,
+                Agente = d.Agente,
+                AfectaComisiones = d.AfectaComisiones,
+                Movimientos = d.Movimientos.Select(m => new MovimientoDto
+                {
+                    IdMovimiento = m.IdMovimiento,
+                    IdComercial = m.IdComercial,
+                    IdDocumentoDe = m.IdDocumentoDe,
+                    IdAgente = m.IdAgente,
+                    Neto = m.Neto,
+                    Descuento = m.Descuento,
+                    IVA = m.IVA,
+                    ISR = m.ISR,
+                    CodigoProducto = m.CodigoProducto,
+                    NombreProducto = m.NombreProducto,
+                    Descripcion = m.Descripcion,
+                    Comision = m.Comision,
+                    Utilidad = m.Utilidad,
+                    UtilidadRicardo = m.UtilidadRicardo,
+                    UtilidadAngie = m.UtilidadAngie,
+                    IvaRicardo = m.IvaRicardo,
+                    IvaAngie = m.IvaAngie,
+                    IsrRicardo = m.IsrRicardo,
+                    IsrAngie = m.IsrAngie,
+                    Observaciones = m.Observaciones,
+                    AfectaComisiones = m.AfectaComisiones
+                }).ToList(),
 
+            }).ToListAsync();
     }
 
-    public async Task SincronizarGastosAsync(DateTime periodo)
+    // TIP-PRO: No uses async/await si solo reenviás el Task y no procesás el resultado
+    // REF: docs/general/tips-pro.md#async-vs-await-cuando-solo-redirigis-la-tarea
+    public Task SincronizarGastosAsync(DateTime periodo)
     {
-        await GetAndSetGastosCompacAsync(19, periodo);
+       return  GetAndSetGastosCompacAsync(CONTPAQi.IdDocumentoDe.Gastos, periodo);
     }
 
     private async Task GetAndSetGastosCompacAsync(int idDocumentoDe, DateTime periodo)
@@ -300,7 +337,6 @@ public class GastosRepository : IGastosRepository
 
         return movimientosCalculados;
     }
-
 
     public async Task<MovimientoDto> UpdateMovtoGastoAsync(int Id, MovimientoDto movto)
     {

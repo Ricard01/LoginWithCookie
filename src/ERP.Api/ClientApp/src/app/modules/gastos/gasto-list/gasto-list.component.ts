@@ -30,7 +30,7 @@ export class GastoListComponent implements OnInit {
     [
       { key: 'folio', header: 'Folio' },
       { key: 'fecha', header: 'Fecha', format: 'date' },
-      { key: 'cliente', header: 'Cliente' },
+      { key: 'proveedor', header: 'Cliente' },
       { key: 'neto', header: 'Neto', format: 'currency' },
       { key: 'descuento', header: 'Descuento', format: 'currency' },
       { key: 'iva', header: 'Iva', format: 'currency' },

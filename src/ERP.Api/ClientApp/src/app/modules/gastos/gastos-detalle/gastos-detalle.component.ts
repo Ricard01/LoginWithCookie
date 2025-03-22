@@ -25,7 +25,7 @@ export class GastosDetalleComponent  implements OnInit{
   columns: ColumnDefinition[] = [
     { key: 'folio', header: 'Folio' },
     { key: 'fecha', header: 'Fecha', format: 'date' },
-    { key: 'cliente', header: 'Proveedor' },
+    { key: 'proveedor', header: 'Proveedor' },
     { key: 'neto', header: 'Neto', format: 'currency' },
     { key: 'iva', header: 'Iva', format: 'currency' },
     { key: 'total', header: 'Total', format: 'currency' },
