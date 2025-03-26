@@ -3,7 +3,7 @@ import { ComisionService } from '../services/comision.service';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
-import { IComisionAngie, IComisiones } from '../models/comision.model';
+import { IComisionAngie, IComisionesAmbos } from '../models/comision.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { DynamicTableComponent } from "../../../shared/components/dynamic-table/dynamic-table.component";
 import { ColumnDefinition } from 'src/app/shared/models/column.model';
@@ -32,10 +32,10 @@ export class ComisionesListComponent implements OnInit {
   totalIvaA: number = 0;
   totalIsrA: number = 0;
 
-  comisiones: IComisiones[] = [];
+  comisiones: IComisionesAmbos[] = [];
   comisionesAngie: IComisionAngie[] = [];
-  comisionesAmbos: IComisiones[] = [];
-  dataSource = new MatTableDataSource<IComisiones>([]);
+  comisionesAmbos: IComisionesAmbos[] = [];
+  dataSource = new MatTableDataSource<IComisionesAmbos>([]);
   dataSourcePersonal = new MatTableDataSource<IComisionAngie>([]);
 
   constructor(private comisionService: ComisionService, private periodoService: PeriodoService) { }

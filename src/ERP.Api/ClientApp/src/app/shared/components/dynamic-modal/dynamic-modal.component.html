@@ -1,0 +1,13 @@
+<ng-container [ngSwitch]="origen">
+
+    <ng-container *ngSwitchCase="TipoContenidoOrigen.ComisionesAngie">
+
+       <app-comision-angie-detalle [data]="data"></app-comision-angie-detalle>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="TipoContenidoOrigen.Gastos">
+        <app-gasto-detalle-modal [data]="data"></app-gasto-detalle-modal>
+     </ng-container>
+
+</ng-container>
+

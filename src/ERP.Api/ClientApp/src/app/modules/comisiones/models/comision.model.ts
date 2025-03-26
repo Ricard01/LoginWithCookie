@@ -1,7 +1,6 @@
-export interface IComisionRicardo {
+export interface IComisionBase {
   idComercial: number; 
   fecha: string;
-  serie: string;
   folio: number;
   cliente: string;
   idMovimiento: number;
@@ -13,52 +12,45 @@ export interface IComisionRicardo {
   comision: number;
   ivaRetenido: number; 
   utilidad: number;
-  ivaRicardo: number;
-  isrRicardo: number;
-  utilidadRicardo: number;
   observaciones: string | null; 
 }
 
-export interface IComisionAngie {
-    idComercial: number; 
-    fecha: string;
-    serie: string;
-    folio: number;
-    cliente: string;
-    idMovimiento: number;
-    idAgente: number;
-    nombreProducto: string;
-    descripcion: string;
-    neto: number;
-    descuento: number;
-    comision: number;
-    ivaRetenido: number; 
-    utilidad: number;
+export interface IComisionRicardo extends IComisionBase {
+  ivaRicardo: number;
+  isrRicardo: number;
+  utilidadRicardo: number;
+}
+
+export interface IComisionAngie extends IComisionBase {
     ivaAngie: number;
     isrAngie: number;
     utilidadAngie: number;
-    observaciones: string | null;
   }
 
-  export interface IComisiones {
-    fecha: string;
-    serie: string;
-    folio: number;
-    cliente: string;
-    idMovimiento: number;
-    idAgente: number;
-    nombreProducto: string;
-    descripcion: string;
-    neto: number;
-    descuento: number; 
-    comision: number;
-    utilidad: number;
+  export interface IComisionesAmbos extends IComisionBase {
     utilidadRicardo: number;
     ivaRicardo: number;
     isrRicardo: number;
     utilidadAngie: number;
     ivaAngie: number;
     isrAngie: number;
-    observaciones: string | null;
   }
   
+
+  export interface IMovimientoComisionBase {
+    idMovimiento: number, 
+    ivaRetenido: number, 
+    observaciones: string, 
+  }
+
+  export interface IMovimientoComisionAngie  extends IMovimientoComisionBase{
+    utilidadAngie: number,
+    isrAngie: number, 
+    ivaAngie: number
+  }
+
+  export interface IMovimientoComisionRicardo  extends IMovimientoComisionBase{
+    utilidadRicardo: number,
+    isrRicardo: number, 
+    ivaRicardo: number
+  }

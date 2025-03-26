@@ -1,3 +1,4 @@
+using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 using ERP.Infrastructure.Repositories.Dtos;
 
@@ -5,16 +6,18 @@ namespace ERP.Infrastructure.Repositories.Comisiones;
 
 public interface IComisionesRepository
 {
- 
-    
-
 
     /// <summary>
-    /// Updates the Movto information 
+    /// Updates the Movto information for Ricardo
     /// </summary>
     /// <returns>The result from and identityResult operation </returns>
-    Task<MovimientoDto> UpdateMovtoAsync(int MovtoId, MovimientoDto movto);
+    Task<MovimientoComisionRicardoDto> UpdateMovtoComisionRicardoAsync(int MovtoId, MovimientoComisionRicardoDto movto);
 
+    /// <summary>
+    /// Updates the Movto information for Angie
+    /// </summary>
+    /// <returns>The result from and identityResult operation </returns>
+    Task<MovimientoComisionAngieDto> UpdateMovtoComisionAngieAsync(int MovtoId, MovimientoComisionAngieDto movto);
 
     /// <summary>
     /// Obtiene la lista de Comisiones de Angelica

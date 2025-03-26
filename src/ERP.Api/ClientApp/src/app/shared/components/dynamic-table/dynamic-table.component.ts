@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter,  Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ColumnDefinition } from '../../models/column.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -6,6 +6,9 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { TipoContenidoOrigen } from '../../models/tipo.contenido.model';
+import { DynamicModalComponent } from '../dynamic-modal/dynamic-modal.component';
 
 
 @Component({
@@ -28,13 +31,18 @@ export class DynamicTableComponent implements OnInit, OnChanges {
   @Input() totalColumns: string[] = [];
   @Input() pageSizeOptions: number[] = [5, 10, 20];
   @Input() pageSize: number = 10;
+  @Input() clickOnFolio: boolean = false;
+  @Input() contenido!: TipoContenidoOrigen;
+
 
   @Output() filterEvent = new EventEmitter<any>();
-  @Output() rowClick = new EventEmitter<any>();
-  @Output() actionClick = new EventEmitter<any>();
+  @Output() folioClick = new EventEmitter<any>();
+
 
   filteredData: any[] = [];
   filterText: string = '';
+
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
     this.filteredData = [...this.data]; // Inicializar la tabla con todos los datos
@@ -61,9 +69,6 @@ export class DynamicTableComponent implements OnInit, OnChanges {
       row.descripcion?.toLowerCase().includes(filterValue)
     );
   }
-  
-
-
 
   get displayedTotalColumns(): string[] {
     return ['filter','startSpan',...this.totalColumns]
@@ -87,20 +92,34 @@ export class DynamicTableComponent implements OnInit, OnChanges {
     }
   }
 
+  
+  mostrarDetalle(row: any ) {
+
+      this.dialog.open(DynamicModalComponent, {
+        width: '800px',
+        data: {
+          ...row,
+          origenContenido: this.contenido
+        }
+        
+      });
+
+  }
+
   onFilterEvent(value: any) {
     this.filterEvent.emit(value)
   }
 
-  onRowClick(row: any): void {
-    this.rowClick.emit(row);
-  }
+  // onRowClick(row: any): void {
+  //   this.rowClick.emit(row);
+  // }
 
-  onActionClick(action: ((row: any) => void) | undefined, row: any): void {
-    if (action) {
-      action(row);
-    }
-    this.actionClick.emit(row);
-  }
+  // onActionClick(action: ((row: any) => void) | undefined, row: any): void {
+  //   if (action) {
+  //     action(row);
+  //   }
+  //   this.actionClick.emit(row);
+  // }
  
 
   getDisplayedColumns(): string[] {

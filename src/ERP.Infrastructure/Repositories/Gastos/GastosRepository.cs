@@ -67,6 +67,7 @@ public class GastosRepository : IGastosRepository
                     Descuento = m.Descuento,
                     IVA = m.IVA,
                     ISR = m.ISR,
+                    Total = m.Total,
                     CodigoProducto = m.CodigoProducto,
                     NombreProducto = m.NombreProducto,
                     Descripcion = m.Descripcion,

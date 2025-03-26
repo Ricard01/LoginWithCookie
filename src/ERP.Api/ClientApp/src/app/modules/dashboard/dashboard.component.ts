@@ -7,6 +7,9 @@ import { FacturaService } from '../facturas/services/factura.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from 'src/app/shared/shared.imports';
+import { MatButton, MatButtonModule, MatFabButton } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 
 interface City {
@@ -16,7 +19,7 @@ interface City {
 @Component({
 standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, SHARED_IMPORTS],
+  imports: [CommonModule, MatButtonModule, MatDividerModule, MatIconModule, MatFabButton ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

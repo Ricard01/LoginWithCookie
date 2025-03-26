@@ -1,5 +1,12 @@
 <h1 class="main-title">Comisiones Angelica Petul</h1>
 
+<div class="row">
+COMISIONES  DESCUENTOS IVA ISR RET IVA  ISR MENSUAL IVA A FAVOR TOTAL IMPUESTOS 
+
+
+
+</div>
+
 <app-periodo-select 
   [periodos]="periodos" 
   [defaultValue]="defaultPeriodo"
@@ -12,7 +19,22 @@
   [startSpanNum]=0
   [data]="comisionesAngie"
   [columns]="columnsAngieTable"
-  [totalColumns]="totalsAngieTable">
+  [totalColumns]="totalsAngieTable"
+  [clickOnFolio]="true"
+  [contenido]="TipoContenidoOrigen.ComisionesAngie"
+  >
+</app-dynamic-table>
+
+<app-dynamic-table 
+  [tableTitle]="'Gastos Angie'" 
+  [badgeClass]="'badge info'" 
+  [startSpanNum]=0
+  [data]="gastosAngie"
+  [columns]="columnsGastosTable"
+  [totalColumns]="totalsGastosTable"
+  [clickOnFolio]="true"
+  [contenido]="TipoContenidoOrigen.Gastos"
+  >
 </app-dynamic-table>
 
 <div class="mt-5 mb-5"></div>

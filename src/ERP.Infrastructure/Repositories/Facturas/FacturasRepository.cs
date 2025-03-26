@@ -113,6 +113,7 @@ public class FacturasRepository : IFacturasRepository
                     IdDocumentoDe = m.IdDocumentoDe,
                     IdAgente = m.IdAgente,
                     Neto = m.Neto,
+                    Total = m.Total,
                     Descuento = m.Descuento,
                     IVA = m.IVA,
                     ISR = m.ISR,
@@ -399,7 +400,7 @@ public class FacturasRepository : IFacturasRepository
         var mov = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
         if (mov == null)
         {
-            throw new NotFoundException(nameof(ApplicationUser), Id);
+            throw new NotFoundException(nameof(Movimiento), Id);
         }
 
         mov.IdAgente = movto.IdAgente;

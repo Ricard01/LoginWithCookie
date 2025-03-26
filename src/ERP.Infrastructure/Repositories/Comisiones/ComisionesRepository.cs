@@ -7,6 +7,7 @@ using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Repositories.Dtos;
 using ERP.Domain.Constants;
+using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 
 
 namespace ERP.Infrastructure.Repositories.Comisiones;
@@ -14,14 +15,10 @@ namespace ERP.Infrastructure.Repositories.Comisiones;
 public class ComisionesRepository : IComisionesRepository
 {
     private readonly IApplicationDbContext _context;
-    private readonly ICompacDbContext _compacContext;
-    private readonly IMapper _mapper;
-
-    public ComisionesRepository(ApplicationDbContext context, ICompacDbContext compacContext, IMapper mapper)
+   
+    public ComisionesRepository(ApplicationDbContext context)
     {
         _context = context;
-        _compacContext = compacContext;
-        _mapper = mapper;
     }
 
 
@@ -130,7 +127,7 @@ public class ComisionesRepository : IComisionesRepository
                       Neto = x.Movimiento.Neto,
                       Descuento = x.Movimiento.Descuento,
                       Comision = x.Movimiento.Comision, // Probablemente no los necesito
-                      //Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
+                      Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
                       IvaAngie = x.Movimiento.IvaAngie,
                       IsrAngie = x.Movimiento.IsrAngie,
                       IvaRetenido = x.Movimiento.IvaRetenido,
@@ -144,25 +141,41 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<MovimientoDto> UpdateMovtoAsync(int Id, MovimientoDto movto)
+    public async Task<MovimientoComisionAngieDto> UpdateMovtoComisionAngieAsync(int Id, MovimientoComisionAngieDto movto)
     {
 
 
         var mov = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
         if (mov == null)
         {
-            throw new NotFoundException(nameof(ApplicationUser), Id);
+            throw new NotFoundException(nameof(Movimiento), Id);
         }
-
-        mov.IdAgente = movto.IdAgente;
-        mov.Comision = movto.Comision;
-        mov.Utilidad = movto.Utilidad;
-        mov.UtilidadRicardo = movto.UtilidadRicardo;
+       
         mov.UtilidadAngie = movto.UtilidadAngie;
         mov.IsrAngie = movto.IsrAngie;
+        mov.IvaAngie = movto.IvaAngie;
+        mov.IvaRetenido = movto.IvaRetenido;
+        mov.Observaciones = movto.Observaciones;
+
+        var result = await _context.SaveChangesAsync();
+
+        return movto;
+    }
+
+    public async Task<MovimientoComisionRicardoDto> UpdateMovtoComisionRicardoAsync(int Id, MovimientoComisionRicardoDto movto)
+    {
+
+
+        var mov = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
+        if (mov == null)
+        {
+            throw new NotFoundException(nameof(Movimiento), Id);
+        }
+
+        mov.UtilidadRicardo = movto.UtilidadRicardo;
         mov.IsrRicardo = movto.IsrRicardo;
         mov.IvaRicardo = movto.IvaRicardo;
-        mov.IvaAngie = movto.IvaAngie;
+        mov.IvaRetenido = movto.IvaRetenido;
         mov.Observaciones = movto.Observaciones;
 
         var result = await _context.SaveChangesAsync();

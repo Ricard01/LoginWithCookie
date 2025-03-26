@@ -18,6 +18,7 @@ public class MovimientoDto
     public double IVA { get; set; }
     public double IvaRetenido { get; set; }
     public double ISR { get; set; }
+    public double Total { get; set; }
     public required string CodigoProducto { get; set; }
     public required string NombreProducto { get; set; }
     public string? Descripcion { get; set; }

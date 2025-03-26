@@ -1,5 +1,6 @@
 
 using ERP.Infrastructure.Repositories.Comisiones;
+using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
 using ERP.Infrastructure.Repositories.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +39,21 @@ public class ComisionesController : ApiControllerBase
         return Ok(comisiones);
     }
 
-    [HttpPatch("{IdMovimiento}")]
-    public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)
+    [HttpPatch("ricardo/{IdMovimiento}")]
+    public async Task<ActionResult<MovimientoComisionRicardoDto>> UpdateMovientoRicardoAsync(int IdMovimiento, [FromBody] MovimientoComisionRicardoDto Movto)
     {
 
-        var mov = await _comisionesRepository.UpdateMovtoAsync(IdMovimiento, Movto);
+        var mov = await _comisionesRepository.UpdateMovtoComisionRicardoAsync(IdMovimiento, Movto);
         return Ok(mov);
     }
+
+    [HttpPatch("angie/{IdMovimiento}")]
+    public async Task<ActionResult<MovimientoComisionAngieDto>> UpdateMovientoAngieAsync(int IdMovimiento, [FromBody] MovimientoComisionAngieDto Movto)
+    {
+
+        var mov = await _comisionesRepository.UpdateMovtoComisionAngieAsync(IdMovimiento, Movto);
+        return Ok(mov);
+    }
+
+ 
 }

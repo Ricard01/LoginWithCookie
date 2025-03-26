@@ -28,13 +28,33 @@
 
   <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
     <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+
     <td mat-cell *matCellDef="let row">
-      {{ formatCell(row[column.key], column.format || 'default') }}
+      <ng-container [ngSwitch]="column.key">
+    
+        <ng-container *ngSwitchCase="'folio'">
+          <ng-container *ngIf="clickOnFolio; else soloTexto">
+            <a class="clickable-folio" (click)="mostrarDetalle(row)">
+              {{ row[column.key] }}
+            </a>
+          </ng-container>
+          <ng-template #soloTexto>
+            {{ row[column.key] }}
+          </ng-template>
+        </ng-container>
+    
+        <ng-container *ngSwitchDefault>
+          {{ formatCell(row[column.key], column.format || 'default') }}
+        </ng-container>
+    
+      </ng-container>
     </td>
+    
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
-  <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()" class="element-row" (click)="onRowClick(row)"></tr>
+  <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()" class="element-row"></tr>
+  <!-- (click)="onRowClick(row)" -->
 </table>
 <!-- <mat-paginator
     [pageSizeOptions]="pageSizeOptions"
