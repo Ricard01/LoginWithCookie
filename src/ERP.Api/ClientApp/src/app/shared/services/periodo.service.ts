@@ -15,7 +15,7 @@ export class PeriodoService {
   
       //  Buscar el período correspondiente al mes actual
       const periodo = periodos.find(p => 
-        p.value.getMonth() === currentDate.getMonth() -2 && 
+        p.value.getMonth() === currentDate.getMonth() -3 && 
         p.value.getFullYear() === currentDate.getFullYear()
       );
   

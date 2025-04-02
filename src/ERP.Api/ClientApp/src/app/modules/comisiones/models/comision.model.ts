@@ -1,3 +1,27 @@
+export interface IResumenComisionVm {
+personal: IResumenPersonal;
+compartida: IResumenCompartida;
+}
+
+export interface IResumenComisionBase{
+  neto: number;
+  utilidad: number;
+  descuento: number;
+  iva: number;
+  isr: number; 
+  ivaRet: number; 
+  isrMensual: number;
+  ivaAfavor: number;
+  totalImpuestos: number;
+}
+
+export interface IResumenPersonal extends IResumenComisionBase { }
+
+export interface IResumenCompartida extends IResumenComisionBase {
+gastos: number;
+}
+
+
 export interface IComisionBase {
   idComercial: number; 
   fecha: string;

@@ -1,0 +1,149 @@
+<div class="container py-4" *ngIf="comision">
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-dark text-white">
+        Resumen base Neto
+      </div>
+      <div class="card-body p-2">
+        <table class="table table-bordered text-center align-middle mb-0">
+          <thead class="table-secondary">
+            <tr>
+              <th>Comisión</th>
+              <th>Neto</th>
+              <th>Descuentos</th>
+              <th>IVA</th>
+              <th>ISR</th>
+              <th>Ret IVA</th>
+              <th>ISR Mensual</th>
+              <th>IVA a Favor</th>
+              <th>Total Impuestos</th>
+              <th>Gastos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold">Personal</td>
+              <td>{{ comision.personal.neto | currency }}</td>
+              <td>{{ comision.personal.descuento | currency }}</td>
+              <td>{{ comision.personal.iva | currency }}</td>
+              <td>{{ comision.personal.isr | currency }}</td>
+              <td>{{ comision.personal.ivaRet | currency }}</td>
+              <td>{{ comision.personal.isrMensual | currency }}</td>
+              <td>{{ comision.personal.ivaAfavor | currency }}</td>
+              <td class="fw-bold text-danger">
+                {{ comision.personal.totalImpuestos | currency }}
+              </td>
+              <td>$0</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Compartida</td>
+              <td>{{ comision.compartida.neto | currency }}</td>
+              <td>{{ comision.compartida.descuento | currency }}</td>
+              <td>{{ comision.compartida.iva | currency }}</td>
+              <td>{{ comision.compartida.isr | currency }}</td>
+              <td>{{ comision.compartida.ivaRet | currency }}</td>
+              <td>{{ comision.compartida.isrMensual | currency }}</td>
+              <td>{{ comision.compartida.ivaAfavor | currency }}</td>
+              <td class="fw-bold text-danger">
+                {{ comision.compartida.totalImpuestos | currency }}
+              </td>
+              <td>{{ comision.compartida.gastos | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="card shadow-sm mb-4">
+    
+  
+          <div class="card-header bg-dark text-white">
+            Resumen base Utilidad
+          </div>
+          <div class="card-body p-2">
+            <table class="table table-bordered text-center align-middle mb-0">
+              <thead class="table-secondary">
+                <tr>
+                  <th colspan="4">PERSONAL</th>
+                  <th></th>
+                  <th colspan="5">COMPARTIDA</th>
+                </tr>
+                <tr>
+                  <th>Utilidad</th>
+                  <th>ISR Mensual</th>
+                  <th>IVA a Favor</th>
+                  <th>Total</th>
+                  <th></th>
+                  <th>Utilidad</th>
+                  <th>ISR Mensual</th>
+                  <th>Gastos Of</th>
+                  <th>Total</th>
+                  <th>Entre 2</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ comision.personal.utilidad | currency }}</td>
+                  <td>{{ comision.personal.isrMensual | currency }}</td>
+                  <td>{{ comision.personal.ivaAfavor | currency }}</td>
+                  <td class="fw-bold text-success">{{ utilidadPersonal | currency }}</td>
+                  <td></td>
+                  <td>{{ comision.compartida.utilidad | currency }}</td>
+                  <td>{{ comision.compartida.isrMensual | currency }}</td>
+                  <td>{{ this.gastosOficina | currency }}</td>
+                  <td class="fw-bold text-success">{{ this.utilidadCompartida | currency }}</td>
+                  <td class="fw-bold">{{ this.utilidadCompartidaDivida  | currency }} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    
+  
+  
+
+  
+  </div>
+      <!-- 🔹 Resumen base Utilidad -->
+      <!-- <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          Resumen base Utilidad
+        </div>
+        <div class="card-body p-2">
+          <table class="table table-bordered text-center align-middle mb-0">
+            <thead>
+              <tr class="table-active">
+                <th colspan="4">PERSONAL</th>
+                <th colspan="4">COMPARTIDA</th>
+              </tr>
+              <tr class="table-light">
+                <th>Utilidad</th>
+                <th>ISR Mensual</th>
+                <th>IVA a Favor</th>
+                <th>Total</th>
+                <th>Utilidad</th>
+                <th>ISR Mensual</th>
+                <th>Gastos</th>
+                <th>Entre 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ resumenComision.utilidad | currency }}</td>
+                <td>{{ resumenComision.isrMensual | currency }}</td>
+                <td>{{ resumenComision.ivaAfavor | currency }}</td>
+                <td class="fw-bold">
+                  {{ (resumenComision.utilidad + resumenComision.ivaAfavor - resumenComision.isrMensual) | currency }}
+                </td>
+                <td>{{ resumenAmbos.utilidad | currency }}</td>
+                <td>{{ resumenAmbos.isrMensual | currency }}</td>
+                <td>{{ resumenAmbos.gastos | currency }}</td>
+                <td class="fw-bold text-primary">
+                  {{ ((resumenAmbos.utilidad + resumenAmbos.ivaAfavor - resumenAmbos.isrMensual - resumenAmbos.gastos) / 2) | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> -->

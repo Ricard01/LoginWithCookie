@@ -43,4 +43,10 @@ public class GastosController : ApiControllerBase
 
         return Ok(mov);
     }
+
+    [HttpGet("oficina/")]
+    public async Task<ActionResult<double>> GetGastosOficina(DateTime periodo)
+    {
+        return await _gastosRepository.GetGastosOficina(periodo);
+    }
 }

@@ -1,17 +1,12 @@
 <h1 class="main-title">Comisiones Angelica Petul</h1>
 
-<div class="row">
-COMISIONES  DESCUENTOS IVA ISR RET IVA  ISR MENSUAL IVA A FAVOR TOTAL IMPUESTOS 
-
-
-
-</div>
-
 <app-periodo-select 
   [periodos]="periodos" 
   [defaultValue]="defaultPeriodo"
   (periodoChange)="onPeriodoChange($event)">
 </app-periodo-select>
+
+<app-comisiones-resumen-neto [comision]="resumenCom" [periodo]="defaultPeriodo" ></app-comisiones-resumen-neto>
 
 <app-dynamic-table 
   [tableTitle]="'Comisiones Angie'" 

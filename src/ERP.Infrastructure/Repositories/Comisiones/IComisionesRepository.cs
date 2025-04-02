@@ -25,6 +25,8 @@ public interface IComisionesRepository
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
     Task<List<ComAngelicaDto>> GetComisionesAngie(DateTime periodo);
 
+    Task<ResumenComisionVm> GetResumenComisionesAngie(DateTime periodo);
+
 
     /// <summary>
     /// Obtiene la lista de Comisiones de Ricardo
@@ -41,10 +43,5 @@ public interface IComisionesRepository
     Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo);
 
 
-    /// <summary>
-    /// Deletes the Doctos by id
-    /// </summary>
-    /// <returns>The result from and identityResult operation </returns>
-    //Task<Result> DeleteAsync(Guid DoctosId);
 
 }

@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, isDevMode} from '@angular/core';
+import {LOCALE_ID, NgModule, isDevMode} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
@@ -12,7 +12,10 @@ import {EffectsModule} from '@ngrx/effects';
 import {CoreModule} from "./core/core.module";
 import {CsrfInterceptor} from "./core/interceptor/csrf.interceptor";
 import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
+import { registerLocaleData } from '@angular/common';
+import localeEsMX from '@angular/common/locales/es-MX';
 
+registerLocaleData(localeEsMX, 'es-MX');
 
 @NgModule({
   declarations: [
@@ -44,7 +47,8 @@ import {ErrorInterceptor} from "./core/interceptor/error.interceptor";
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+  
   ],
   bootstrap: [AppComponent]
 })

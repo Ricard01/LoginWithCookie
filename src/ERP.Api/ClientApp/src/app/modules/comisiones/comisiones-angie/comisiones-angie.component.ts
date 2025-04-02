@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComisionService } from '../services/comision.service';
 import { PeriodoService } from 'src/app/shared/services/periodo.service';
-import { IComisionAngie, IComisionesAmbos } from '../models/comision.model';
+import { IComisionAngie, IComisionesAmbos, IResumenComisionVm } from '../models/comision.model';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { ColumnDefinition } from 'src/app/shared/models/column.model';
 import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
@@ -9,12 +9,14 @@ import { forkJoin } from 'rxjs';
 import { TipoContenidoOrigen } from 'src/app/shared/models/tipo.contenido.model';
 import { GastoService } from '../../gastos/services/gasto.service';
 import { IGasto } from '../../gastos/models/gasto.model';
+import { CommonModule } from '@angular/common';
+import { ComisionesResumenNetoComponent } from "../comisiones-resumen-neto/comisiones-resumen-neto.component";
 
 
 @Component({
   selector: 'app-comisiones-angie',
   standalone: true,
-  imports: [PeriodoSelectComponent, DynamicTableComponent],
+  imports: [CommonModule, PeriodoSelectComponent, DynamicTableComponent, ComisionesResumenNetoComponent],
   templateUrl: './comisiones-angie.component.html',
   styleUrl: './comisiones-angie.component.scss'
 })
@@ -23,6 +25,8 @@ export class ComisionesAngieComponent implements OnInit {
   periodos = this.periodoService.getPeriodos();
   defaultPeriodo: Date = this.periodoService.getCurrentMonth();
   TipoContenidoOrigen = TipoContenidoOrigen; 
+  resumenCom!: IResumenComisionVm;
+
 
   comisionesAngie: IComisionAngie[] = [];
   columnsAngieTable: ColumnDefinition[] = [
@@ -82,14 +86,21 @@ export class ComisionesAngieComponent implements OnInit {
 
   private cargarComisiones(periodo: Date): void {
     forkJoin({
+      resumenCom: this.comisionService.getResumenComisionesAngie(periodo),
       angie: this.comisionService.getComisionesAngie(periodo),
       ambos: this.comisionService.getComisionesAmbos(periodo),
       gastos: this.gastoService.getGastosAgente(2, periodo)
     }).subscribe({
-      next: ({ angie, ambos, gastos }) => {
+      next: ({ resumenCom, angie, ambos, gastos }) => {
+
+
+        this.resumenCom = resumenCom;
+        console.log('this.resumenComision:', this.resumenCom);
         this.comisionesAngie = angie;
         this.comisionesAmbos = ambos;
         this.gastosAngie = gastos;
+
+      
       },
       error: (err) => {
         console.error('Error al cargar las comisiones:', err);

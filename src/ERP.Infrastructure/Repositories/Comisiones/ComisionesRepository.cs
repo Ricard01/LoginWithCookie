@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using ERP.Infrastructure.Repositories.Doctos.Dtos;
+﻿using ERP.Infrastructure.Repositories.Doctos.Dtos;
 using Microsoft.EntityFrameworkCore;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Common.Exceptions;
-using ERP.Infrastructure.Repositories.Dtos;
 using ERP.Domain.Constants;
 using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 
@@ -20,7 +18,6 @@ public class ComisionesRepository : IComisionesRepository
     {
         _context = context;
     }
-
 
     public async Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo)
     {
@@ -139,6 +136,167 @@ public class ComisionesRepository : IComisionesRepository
 
         return comisiones;
 
+    }
+
+    public async Task<ResumenComisionVm> GetResumenComisionesAngie(DateTime periodo)
+    {
+        return await GetResumenComisionesAgente(CONTPAQi.IdAgente.AngelicaPetul, periodo);
+    }
+
+    public async Task<ResumenComisionVm> GetResumenComisionesAgente(int idAgente, DateTime periodo)
+    {
+        var comisionPersonal = await GetComisionPersonal(idAgente, periodo);
+        var comisionCompartida = await GetComisionCompartida(periodo);
+
+        return new ResumenComisionVm
+        {
+            Personal = new ComisionPersonalDto
+            {
+                Neto = comisionPersonal.Neto,
+                Utilidad = comisionPersonal.Utilidad,
+                Descuento = comisionPersonal.Descuento,
+                Iva = comisionPersonal.Iva,
+                Isr = comisionPersonal.Isr,
+                IvaRet = comisionPersonal.IvaRet,
+                IsrMensual = comisionPersonal.IsrMensual,
+                IvaAfavor = comisionPersonal.IvaAfavor,
+                TotalImpuestos = comisionPersonal.TotalImpuestos,
+            },
+            Compartida = new ComisionCompartidaDto
+            {
+                Neto = comisionCompartida.Neto,
+                Utilidad = comisionCompartida.Utilidad,
+                Descuento = comisionCompartida.Descuento,
+                Iva = comisionCompartida.Iva,
+                Isr = comisionCompartida.Isr,
+                IvaRet = comisionCompartida.IvaRet,
+                IsrMensual = comisionCompartida.IsrMensual,
+                IvaAfavor = comisionCompartida.IvaAfavor,
+                TotalImpuestos = comisionCompartida.TotalImpuestos,
+                Gastos = comisionCompartida.Gastos
+            }
+        };
+    }
+
+
+    private async Task<ComisionPersonalDto> GetComisionPersonal(int idAgente, DateTime periodo)
+    {
+        
+        var query = _context.Documentos
+            .Where(f => f.Fecha.Year == periodo.Year &&
+                        f.Fecha.Month == periodo.Month &&
+                        f.Cancelado == 0 &&
+                        f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas &&
+                        f.Pendiente == 0 &&
+                        f.FechaCreacionPago.HasValue &&
+                        f.FechaCreacionPago.Value.Month == periodo.Month &&
+                        f.FechaCreacionPago.Value.Year == periodo.Year)
+            .Join(_context.Movimientos,
+                  factura => factura.IdComercial,
+                  movimiento => movimiento.IdComercial,
+                  (factura, movimiento) => new { factura, movimiento })
+            .Where(x => x.movimiento.IdAgente == idAgente ||
+                        x.movimiento.IdProducto == CONTPAQi.IdProducto.Poliza);
+
+        var movimientos = await query.Select(x => x.movimiento).ToListAsync();
+
+        var dto = new ComisionPersonalDto();
+
+        if (idAgente == CONTPAQi.IdAgente.RicardoChavez)
+        {
+            dto.Utilidad = movimientos.Sum(m => m.UtilidadRicardo);
+            dto.Iva = movimientos.Sum(m => m.IvaRicardo);
+            dto.Isr = movimientos.Sum(m => m.IsrRicardo);
+        }
+        else
+        {
+            dto.Utilidad = movimientos.Sum(m => m.UtilidadAngie);
+            dto.Iva = movimientos.Sum(m => m.IvaAngie);
+            dto.Isr = movimientos.Sum(m => m.IsrAngie);
+        }
+
+        dto.Descuento = movimientos.Sum(m => m.Descuento);
+        dto.IvaRet = movimientos.Sum(m => m.IvaRetenido);
+        dto.Neto = dto.Utilidad + dto.Isr;
+        dto.IvaAfavor = await GetIvaAfavor(idAgente, periodo);
+        dto.IsrMensual = (dto.Neto - dto.Descuento) * 0.02 - dto.Isr;
+        dto.TotalImpuestos = (dto.Iva + dto.IsrMensual) - dto.IvaAfavor;
+
+        return dto;
+    }
+
+
+    private async Task<ComisionCompartidaDto> GetComisionCompartida(DateTime periodo)
+    {
+        var result = await _context.Documentos
+            .Where(f => f.Fecha.Year == periodo.Year &&
+                        f.Fecha.Month == periodo.Month &&
+                        f.Cancelado == 0 &&
+                        f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas &&
+                        f.Pendiente == 0 &&
+                        f.FechaCreacionPago.HasValue &&
+                        f.FechaCreacionPago.Value.Month == periodo.Month &&
+                        f.FechaCreacionPago.Value.Year == periodo.Year)
+            .Join(_context.Movimientos,
+                  factura => factura.IdComercial,
+                  movimiento => movimiento.IdComercial,
+                  (factura, movimiento) => new { factura, movimiento })
+            .Where(x => x.movimiento.IdAgente == CONTPAQi.IdAgente.Ambos &&
+                        x.movimiento.IdProducto != CONTPAQi.IdProducto.Poliza)
+            .GroupBy(x => 1)
+            .Select(g => new ComisionCompartidaDto
+            {
+                Utilidad = g.Sum(x => x.movimiento.Utilidad),
+                Descuento = g.Sum(x => x.movimiento.Descuento),
+                Iva = g.Sum(x => x.movimiento.IVA),
+                Isr = g.Sum(x => x.movimiento.ISR),
+                IvaRet = g.Sum(x => x.movimiento.IvaRetenido),
+                Neto = g.Sum(x => x.movimiento.Neto)
+            })
+            .FirstOrDefaultAsync();
+
+
+        result ??= new ComisionCompartidaDto();
+
+
+        result.IvaAfavor = await GetIvaAfavor(CONTPAQi.IdAgente.Ambos, periodo);
+        result.IsrMensual = (result.Neto - result.Descuento) * 0.02 - result.Isr;
+        result.TotalImpuestos = (result.Iva + result.IsrMensual) - result.IvaAfavor;
+
+        result.Gastos = await GetTotalGastos(periodo);
+
+
+        return result;
+    }
+
+    private async Task<double> GetIvaAfavor(int idAgente, DateTime periodo)
+    {
+        return await _context.Documentos
+            .Where(f => f.Fecha.Year == periodo.Year &&
+                        f.Fecha.Month == periodo.Month &&
+                        f.Cancelado == 0 &&
+                        f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos)
+            .Join(_context.Movimientos,
+                  factura => factura.IdComercial,
+                  movimiento => movimiento.IdComercial,
+                  (factura, movimiento) => new { factura, movimiento })
+            .Where(x => x.movimiento.IdAgente == idAgente)
+            .SumAsync(x => x.movimiento.IVA);
+    }
+
+    private async Task<double> GetTotalGastos(DateTime periodo)
+    {
+        return await _context.Documentos
+            .Where(d => d.Fecha.Year == periodo.Year &&
+                            d.Fecha.Month == periodo.Month &&
+                            d.Cancelado == 0 &&
+                            d.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos)
+            .Join(_context.Movimientos,
+                  factura => factura.IdComercial,
+                  movimiento => movimiento.IdComercial,
+                  (factura, movimiento) => new { factura, movimiento })
+            .Where( d => d.movimiento.IdAgente == CONTPAQi.IdAgente.Ambos)
+            .SumAsync(x => x.movimiento.Total);
     }
 
     public async Task<MovimientoComisionAngieDto> UpdateMovtoComisionAngieAsync(int Id, MovimientoComisionAngieDto movto)

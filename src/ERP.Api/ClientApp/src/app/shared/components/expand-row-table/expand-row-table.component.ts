@@ -51,19 +51,20 @@ ngOnChanges() {
   this.filteredData = [...this.data];
 }
 
-  formatCell(value: any, format: string): string {
-    switch (format) {
-      case 'currency':
-        return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        }).format(value);
-      case 'date':
-        return new Date(value).toLocaleDateString();
-      default:
-        return value;
-    }
+formatCell(value: any, format: string): string {
+  switch (format) {
+    case 'currency':
+      return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN',
+      }).format(value);
+    case 'date':
+      return new Date(value).toLocaleDateString('es-MX');
+    default:
+      return value;
   }
+}
+
 
 
 calcularTotal(columna: string): number {

@@ -36,6 +36,21 @@ public class GastosRepository : IGastosRepository
         return GetGastosQuery("GASTOS X AGENTE",g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos && g.Movimientos.Any(m => m.IdAgente == idAgente));
     }
 
+    public async Task<double> GetGastosOficina(DateTime periodo)
+    {
+        return await _context.Documentos
+            .Where(d => d.Fecha.Year == periodo.Year &&
+                            d.Fecha.Month == periodo.Month &&
+                            d.Cancelado == 0 &&
+                            d.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos)
+            .Join( _context.Movimientos, 
+            gasto => gasto.IdComercial,
+            movimiento => movimiento.IdComercial,
+            (gasto, movimiento) => new {gasto, movimiento})
+            .Where(x => x.movimiento.AfectaComisiones == 1)
+            .SumAsync(x => x.movimiento.Neto);
+    }
+
     public  Task<List<GastosDto>> GetGastosQuery(string? tag,Expression<Func<Documentos, bool>> whereCondition)
     {
         return _context.Documentos
