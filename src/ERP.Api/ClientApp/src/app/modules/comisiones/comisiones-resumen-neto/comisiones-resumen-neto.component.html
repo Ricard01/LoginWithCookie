@@ -119,8 +119,8 @@
                       placeholder="Comentario aquí"></textarea>
                   </div>
                 </div>
-                </form>
-                <form [formGroup]="comentarioCompartidoForm">
+              </form>
+              <form [formGroup]="comentarioCompartidoForm">
                 <div class="mb-2 d-flex">
                   <div style="width: 120px;">
                     <label for="compartido" class="form-label">Compartido</label>
@@ -164,31 +164,38 @@
             </td>
 
           </tr>
-          <tr [formGroup]="comisionForm">
+          <tr>
+            <!-- Columna Total Pagado -->
             <td colspan="4" class="fw-bold text-start">
-              <div class="mb-2 d-flex">
-                <div style="width: 130px;">
-                  <label for="totalComisionPagada" class="form-label ">
-                    Total Pagado:
-                  </label>
+              <form [formGroup]="comisionForm">
+                <div class="double-underline-purple d-inline-flex align-items-center">
+                  <span class="me-2">Total Pagado:</span>
+                  <div class="input-group" style="width: auto;">
+                    <span class="fs-5 fw-bold text-success input-group-text bg-transparent border-0 p-0 pe-1">$</span>
+                    <input type="number"
+                          style="width: 120px;"
+                           class="form-control fs-5 fw-bold text-success input-double-underline"
+                           formControlName="totalComisionPagada"
+                           id="totalComisionPagada"/>
+                  </div>
                 </div>
-                <div class="ml-2 d-flex double-underline-input">
-                  <input
-                    type="number"
-                    class="form-control double-underline-input"
-                    formControlName="totalComisionPagada"
-                    id="totalComisionPagada"
-                  />
-                </div>
+              </form>
+            </td>
+
+            <!-- Espacio intermedio -->
+            <td style="border: none; background-color: transparent;"></td>
+
+            <!-- Columna Total Depositos -->
+            <td colspan="5" class="fw-bold text-end">
+              <div class="double-underline-purple d-inline-flex align-items-center">
+                <span class="me-2">Total Depositos:</span>
+                <span class="fs-5 text-success amount-display">{{ totalDepositos | currency }}</span>
               </div>
             </td>
-            
-            <td style="border: none; background-color: transparent;"></td>
-            <td colspan="5" class="fw-bold text-end  double-underline"> Total Depositos: <span class="fs-5 text-success">  {{ this.totalDepositos | currency }}</span></td>
           </tr>
 
           <tr>
-            <td colspan="10"> 
+            <td colspan="10">
               <button mat-flat-button color="primary" (click)="guardarTodo()">Guardar</button>
             </td>
           </tr>
