@@ -1,6 +1,6 @@
-using ERP.Domain.Entities;
 using AutoMapper;
 using AutoMapper.Configuration.Annotations;
+using ERP.Domain.Entities;
 
 namespace ERP.Infrastructure.Repositories.Users.Dtos;
 
@@ -9,7 +9,7 @@ public class UserDto
 {
     [Ignore] private Guid? _userId;
     public Guid Id { get; set; }
-    
+
     public string? UserName { get; set; }
 
     public string? Name { get; set; }
@@ -19,11 +19,11 @@ public class UserDto
     public string? ProfilePictureUrl { get; init; }
 
     public IList<UserRoleDto> UserRoles { get; set; }
-    
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<ApplicationUserRole, UserDto>()
-            .ForMember(dto => dto.Id, opt => opt.MapFrom(ur => _userId ));
+            .ForMember(dto => dto.Id, opt => opt.MapFrom(ur => _userId));
 
     }
 }

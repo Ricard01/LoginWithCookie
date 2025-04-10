@@ -13,6 +13,6 @@ public class ApplicationUserRoleConfiguration : IEntityTypeConfiguration<Applica
 
         builder.HasKey(ur => new { ur.UserId, ur.RoleId });
 
-     
+
     }
 }

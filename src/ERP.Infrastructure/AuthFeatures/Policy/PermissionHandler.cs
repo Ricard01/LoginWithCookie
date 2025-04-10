@@ -8,7 +8,7 @@ public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         PermissionRequirement requirement)
     {
-        Log.Warning("HandleRequirement" , requirement);
+        Log.Warning("HandleRequirement", requirement);
         // https://blog.joaograssi.com/posts/2021/asp-net-core-protecting-api-endpoints-with-dynamic-policies/
 
         var packedClaims =

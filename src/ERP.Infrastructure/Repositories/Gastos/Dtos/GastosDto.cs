@@ -2,7 +2,7 @@
 
 namespace ERP.Infrastructure.Repositories.Gastos.Dtos;
 
-public class GastosDto 
+public class GastosDto
 {
     public int Id { get; set; }
     public required string Concepto { get; set; }

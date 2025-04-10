@@ -106,5 +106,13 @@ public async Task SincronizarGastosAsync(DateTime periodo)
 
 > 🔍 Cuando usás `await`, solo tiene sentido si hacés algo con el resultado o con la excepción.
 
+
+## 🔹 async vs await cuando solo redirigís la tarea
+
+**TIP-PRO:**  
+return await _context.SaveChangesAsync() > 0; se puede usar para devolver true cuando se guardaron los cambios de manera correcta es decir si se guardo uno o mas entidades siempre va ser mayor a cero caso contrario seria false;
+
+
+
 ---
 

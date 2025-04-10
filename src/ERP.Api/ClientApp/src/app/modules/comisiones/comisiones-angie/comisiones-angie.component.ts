@@ -95,7 +95,6 @@ export class ComisionesAngieComponent implements OnInit {
 
 
         this.resumenCom = resumenCom;
-        console.log('this.resumenComision:', this.resumenCom);
         this.comisionesAngie = angie;
         this.comisionesAmbos = ambos;
         this.gastosAngie = gastos;

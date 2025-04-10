@@ -105,7 +105,7 @@ public class RoleRepository : IRoleRepository
     {
         //Un HashSet es una colección que no permite duplicados.
         var validPermissions = new HashSet<Permissions>();
-        
+
         var invalidPermissions = new List<string>();
 
         foreach (var permission in rolePermissions)
@@ -115,7 +115,7 @@ public class RoleRepository : IRoleRepository
             {
                 // 	Si la cadena es válida, se convierte a su valor correspondiente en el enum Permissions usando Enum.Parse.
                 var parsedPermission = (Permissions)Enum.Parse(typeof(Permissions), permission, true);
-                
+
                 //El valor convertido se agrega al conjunto de permisos válidos
                 validPermissions.Add(parsedPermission);
             }
@@ -146,16 +146,16 @@ public class RoleRepository : IRoleRepository
         var role = await _roleManager.FindByIdAsync(roleId.ToString());
 
         if (role == null) throw new NotFoundException(nameof(ApplicationRole), roleId);
-        
-     
+
+
         var (isValid, packedPermissions, errorMessage) = ValidateAndPackPermissions(roleRequest.Permissions);
 
-      
+
         if (!isValid)
         {
             return Result.Failure(new string[] { errorMessage! });
         }
-        
+
         role.Name = roleRequest.Name;
         role.Description = roleRequest.Description;
         role.Permissions = packedPermissions;
@@ -165,7 +165,7 @@ public class RoleRepository : IRoleRepository
         return result.ToApplicationResult();
     }
 
- 
+
 
     public async Task<Result> DeleteAsync(Guid roleId)
     {
@@ -176,7 +176,7 @@ public class RoleRepository : IRoleRepository
             var result = IdentityResult.Failed(new IdentityError { Description = $"Role with id {roleId} not Found" });
             return result.ToApplicationResult();
         }
-        
+
         if (role.Name == "Administrator")
         {
             var result = IdentityResult.Failed(new IdentityError { Description = "The Administrator role cannot be deleted" });

@@ -77,14 +77,11 @@ export class DashboardComponent {
   getClaims() {
     return this.http.get("api/auth/getClaims")
       .subscribe(resp => {
-        console.log(resp)
-
       });
   }
 
   getPermissions() {
     this.authService.getUserSession().subscribe(resp => {
-      console.log('permissions' + resp);
       this.resp = resp;
     })
 
@@ -125,9 +122,6 @@ export class DashboardComponent {
 
 
   getAllUsers() {
-    this.usersService.getAll().subscribe(resp => {
-      console.log(resp);
-
-    })
+    this.usersService.getAll().subscribe(resp => { })
   }
 }

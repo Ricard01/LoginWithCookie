@@ -56,24 +56,11 @@ export class GastosDetalleComponent  implements OnInit{
     ).subscribe(gastos => {
       this.gastos = gastos;
 
-      console.log('Gastos:', gastos);
+
       this.countGastos = gastos.length
     });
 
   }
-
-  // updateColumns(idAgente: number) {
-  //   this.columns = this.columnsBase.filter(col => {
-  //     if (idAgente === 3) {
-  //       return col.key !== 'ivaRicardo' && col.key !== 'ivaAngie'; 
-  //     } else if (idAgente === 2) {
-  //       return col.key !== 'ivaRicardo'  && col.key !== 'iva';
-  //     } else if (idAgente === 1) {
-  //       return col.key !== 'ivaAngie' && col.key !== 'iva';
-  //     }
-  //     return true; // Mantener todas si no se cumple ninguna condición
-  //   });
-  // }
 
   onPeriodoChange(selectedValue: Date): void {
     this.selectedPeriodo$.next(selectedValue);
@@ -85,7 +72,7 @@ export class GastosDetalleComponent  implements OnInit{
 
 
   onRowClick(row: any): void {
-    console.log('Fila clickeada:', row);
+
   }
 
 }

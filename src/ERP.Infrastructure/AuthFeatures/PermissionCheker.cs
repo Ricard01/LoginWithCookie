@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using ERP.Infrastructure.AuthFeatures.Policy;
+using System.ComponentModel;
 
 namespace ERP.Infrastructure.AuthFeatures;
 

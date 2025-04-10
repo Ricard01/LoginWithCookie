@@ -1,4 +1,3 @@
-using ERP.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace ERP.Infrastructure.Common.Models;
@@ -18,7 +17,7 @@ public static class IdentityResultExtensions
     //         ? Result.Success(user, roles)
     //         : Result.Failure(result.Errors.Select(e => e.Description));
     // }
-    
+
     public static Result ToApplicationResult(this IdentityResult result, Guid id, bool isUser)
     {
         return result.Succeeded

@@ -47,7 +47,8 @@ public enum Permissions : short
     //This is an example of what to do with permission you don't used anymore.
     //You don't want its number to be reused as it could cause problems 
     //Just mark it as obsolete and the PermissionDisplay code won't show it
-    [Obsolete] [Display(GroupName = "Old", Name = "Not used", Description = "example of old permission")]
+    [Obsolete]
+    [Display(GroupName = "Old", Name = "Not used", Description = "example of old permission")]
     OldPermissionNotUsed = 100,
 
     //This is an example of a permission linked to a optional (paid for?) feature

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { IComisionAngie, IComisionesAmbos, IResumenComisionVm, IComisionRicardo, IMovimientoComisionAngie, IMovimientoComisionRicardo } from '../models/comision.model';
+import { IComisionAngie, IComisionesAmbos, IResumenComisionVm, IComisionRicardo, IMovimientoComisionAngie, IMovimientoComisionRicardo, IcomisionesPorPeriodo } from '../models/comision.model';
 import { Observable } from 'rxjs';
 
 
@@ -43,6 +43,15 @@ export class ComisionService {
 
   updateComisionRicardo(movto: IMovimientoComisionRicardo): Observable<any> {
     return this.http.patch(`${this.comisionesUrl}/ricardo/${movto.idMovimiento}`, movto);
+  }
+
+  getTotalPeriodo(idAgente: number, periodo: Date): Observable<IcomisionesPorPeriodo> {
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IcomisionesPorPeriodo>(`${this.comisionesUrl}/total/${idAgente}?periodo=${formattedPeriodo}`);
+  }
+
+  saveTotals(comision: IcomisionesPorPeriodo): Observable<IcomisionesPorPeriodo> {
+    return this.http.post<IcomisionesPorPeriodo>(`${this.comisionesUrl}/total`, comision);
   }
 
 }

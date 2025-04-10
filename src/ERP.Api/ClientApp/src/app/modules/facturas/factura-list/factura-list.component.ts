@@ -191,7 +191,6 @@ export class FacturaListComponent implements OnInit {
 
     this.facturaService.updateMovimiento(updatedMovimiento).subscribe(
       (response) => {
-        console.log('Movimiento actualizado:', response);
         this.snackBarService.success('Comision guardada con éxito');
       },
       (error) => {

@@ -1,0 +1,14 @@
+.double-underline {
+    text-decoration-line: underline;
+    text-decoration-style: double;
+    text-decoration-color: #8c89d0; 
+    text-underline-offset: 5px; // ligeramente separada del texto
+  }
+
+  .double-underline-input {
+    border:0;
+    border-bottom: double 2px #8c89d0;
+    background-color: transparent;
+    padding-bottom: 6px;
+  }
+  

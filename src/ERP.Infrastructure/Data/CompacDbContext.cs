@@ -3,9 +3,6 @@ using ERP.Infrastructure.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Xml;
 
 namespace ERP.Infrastructure.Data;
 
@@ -33,7 +30,7 @@ public class CompacDbContext : DbContext, ICompacDbContext
 
     public DbSet<AdmAgentes> AdmAgentes => Set<AdmAgentes>();
 
-    public DbSet<AdmAsocCargosAbonos> AdmAsocCargosAbonos => Set<AdmAsocCargosAbonos>();    
+    public DbSet<AdmAsocCargosAbonos> AdmAsocCargosAbonos => Set<AdmAsocCargosAbonos>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -50,7 +47,7 @@ public class CompacDbContext : DbContext, ICompacDbContext
 
         base.OnModelCreating(builder);
 
-    
+
         builder.Entity<AdmAsocCargosAbonos>()
             .HasKey(a => a.CIDAUTOINCSQL);
 

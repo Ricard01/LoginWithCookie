@@ -34,7 +34,7 @@ export class FacturaService {
     return this.http.get<IFacturaVm>(`${this.facturasUrl}/pagadas?periodo=${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        console.log('Pagadas',resp.facturas) 
+
 
       }),
        map(resp => resp.facturas));
@@ -45,7 +45,7 @@ export class FacturaService {
     return this.http.get<IFacturaVm>(`${this.facturasUrl}/pendientes?periodo=${formattedPeriodo}`).pipe(
       tap(resp => {
    
-        console.log('Pendientes',resp.facturas) 
+ 
 
       }),
        map(resp => resp.facturas));

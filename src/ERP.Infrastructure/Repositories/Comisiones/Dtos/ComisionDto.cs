@@ -5,7 +5,7 @@ namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 public class ComisionDto
 {
     public DateTime Fecha { get; set; }
-    public string Folio { get; set; } 
+    public string Folio { get; set; }
     public required string Cliente { get; set; }
     public int IdMovimiento { get; set; }
     public int? IdAgente { get; set; }

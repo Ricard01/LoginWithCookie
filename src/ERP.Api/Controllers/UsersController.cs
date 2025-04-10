@@ -20,7 +20,7 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<UsersVm>> Get()
     {
         var users = await _userRepository.Get();
-        
+
         return Ok(users);
     }
 
@@ -44,7 +44,7 @@ public class UsersController : ApiControllerBase
         return Ok(result);
     }
 
-// Nota: Si no se envian todos las propiedades el sistema las toma por null asi que es neceario enviarlas en el request. 
+    // Nota: Si no se envian todos las propiedades el sistema las toma por null asi que es neceario enviarlas en el request. 
     [HttpPatch("{userId}")]
     // [Requires(Permissions.UserAllAccess)]
     public async Task<IActionResult> Patch(Guid userId, [FromBody] UpdateUser userRequest)

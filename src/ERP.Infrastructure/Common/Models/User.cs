@@ -5,7 +5,7 @@ namespace ERP.Infrastructure.Common.Models;
 /// </summary>
 public class CreateUser
 {
-    
+
     public string UserName { get; set; } = null!;
 
     public string Name { get; set; } = null!;
@@ -28,13 +28,13 @@ public class CreateUser
 /// </summary>
 public class UpdateUser
 {
-    
+
     public string Name { get; set; } = null!;
 
     public string? ProfilePictureUrl { get; set; }
 
     public string? Email { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the role name assigned to the user.
     /// This defines the user's permissions and access levels within the system. It can only have one 
@@ -51,7 +51,7 @@ public class Role
 
     public string Name { get; set; } = null!;
 
-    public string? Description  { get; set;}
+    public string? Description { get; set; }
 
     public IEnumerable<string> Permissions { get; set; } = null!;
 }

@@ -170,6 +170,81 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                     b.ToTable("ANY.UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.Comentarios", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdAgente")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Periodo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comentarios");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.ComisionesPorPeriodo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ComisionCompartida")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ComisionPersonal")
+                        .HasColumnType("float");
+
+                    b.Property<int>("IdAgente")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Periodo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("TotalComisionPagada")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ComisionesPorPeriodo");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Depositos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdAgente")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Importe")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Periodo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Depositos");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Documentos", b =>
                 {
                     b.Property<int>("Id")

@@ -18,7 +18,7 @@ public static class AddIdentity
             .AddClaimsPrincipalFactory<ErpClaimsFactory>();
 
 
-        
+
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie();
 
@@ -31,7 +31,7 @@ public static class AddIdentity
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.SlidingExpiration = true;
             options.Cookie.SameSite = SameSiteMode.Strict;
-            
+
             options.ExpireTimeSpan = TimeSpan.FromHours(3);
             options.LoginPath = "/login";
 
@@ -48,7 +48,7 @@ public static class AddIdentity
 
                 return Task.CompletedTask;
             };
-          
+
         });
 
 

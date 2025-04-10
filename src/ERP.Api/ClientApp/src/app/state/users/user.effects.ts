@@ -42,7 +42,6 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UsersApiActions.errorOccurred),
         tap(({error}) => {
-          console.log('Error occurred action detected:', error);
           this.snackBar.error(`Error: ${error}`)
         })
       ),

@@ -19,23 +19,23 @@ public interface IRoleRepository
     Task<RoleDto> GetAsync(Guid roleId);
 
 
-//     /// <summary>
-//     ///     Creates the role with claims
-//     /// </summary>
-//     /// <returns>The result from and identityResult operation </returns>
-     Task<Result> CreateAsync(Role roleRequest);
-//
-//     /// <summary>
-//     ///     Updates the roles name
-//     /// </summary>
-//     /// <returns>The result from and identityResult operation </returns>
-     Task<Result> UpdateAsync(Guid roleId, Role roleRequest);
-//
-//     /// <summary>
-//     ///     Deletes the role by id
-//     /// </summary>
-//     /// <returns>The result from and identityResult operation </returns>
-     Task<Result> DeleteAsync(Guid roleId);
+    //     /// <summary>
+    //     ///     Creates the role with claims
+    //     /// </summary>
+    //     /// <returns>The result from and identityResult operation </returns>
+    Task<Result> CreateAsync(Role roleRequest);
+    //
+    //     /// <summary>
+    //     ///     Updates the roles name
+    //     /// </summary>
+    //     /// <returns>The result from and identityResult operation </returns>
+    Task<Result> UpdateAsync(Guid roleId, Role roleRequest);
+    //
+    //     /// <summary>
+    //     ///     Deletes the role by id
+    //     /// </summary>
+    //     /// <returns>The result from and identityResult operation </returns>
+    Task<Result> DeleteAsync(Guid roleId);
 
-     Task<List<GroupPermissions>> GetPermissions();
+    Task<List<GroupPermissions>> GetPermissions();
 }

@@ -22,7 +22,7 @@ public class RolesController : ApiControllerBase
         var roles = await _roleRepository.GetAll();
         return Ok(roles);
     }
-    
+
 
     [HttpGet("{roleId}")]
     public async Task<ActionResult<RoleDto>> Get(Guid roleId)
@@ -32,35 +32,35 @@ public class RolesController : ApiControllerBase
         return Ok(rol);
     }
 
-    
+
     [HttpGet("permissions")]
     public async Task<ActionResult<List<GroupPermissions>>> GetPermissions()
     {
         return await _roleRepository.GetPermissions();
     }
-    
-    
+
+
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] Role roleRequest)
     {
         var result = await _roleRepository.CreateAsync(roleRequest);
-    
+
         return Ok(result);
     }
-    
-    
+
+
     [HttpPatch("{roleId}")]
     public async Task<IActionResult> Patch(Guid roleId, [FromBody] Role roleRequest)
     {
         return Ok(await _roleRepository.UpdateAsync(roleId, roleRequest));
     }
-    
-    
+
+
     [HttpDelete("{roleId}")]
     public async Task<ActionResult> Delete(Guid roleId)
     {
         var result = await _roleRepository.DeleteAsync(roleId);
-    
+
         return Ok(result);
     }
 }

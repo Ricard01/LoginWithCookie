@@ -2,7 +2,7 @@
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
 
-public class ComisionRDto
+public class ComisionRicardoDto
 {
 
     public DateTime Fecha { get; set; }

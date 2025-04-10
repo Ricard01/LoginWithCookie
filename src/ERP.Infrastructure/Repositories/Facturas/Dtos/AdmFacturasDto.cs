@@ -1,13 +1,13 @@
 ﻿namespace ERP.Infrastructure.Repositories.Facturas.Dtos;
 
 // DTO para el mapeo del SP  getFacturasConPagosAndMovimientos este debe coinicidir exactamente con mi consulta 
-public class AdmFacturasDto 
+public class AdmFacturasDto
 {
     public int IdComercial { get; set; }
     public int IdDocumentoDe { get; set; }
-    public  string Concepto { get; set; }
+    public string Concepto { get; set; }
     public DateTime Fecha { get; set; }
-    public  string? Serie { get; set; }
+    public string? Serie { get; set; }
     public double Folio { get; set; }
     public required string Cliente { get; set; }
     public int IdAgente { get; set; }

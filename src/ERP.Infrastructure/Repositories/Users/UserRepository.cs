@@ -1,8 +1,8 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Common.Exceptions;
 using ERP.Infrastructure.Common.Models;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using ERP.Infrastructure.Repositories.Users.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +11,13 @@ namespace ERP.Infrastructure.Repositories.Users;
 
 public class UserRepository : IUserRepository
 {
-    
+
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
 
     private readonly IMapper _mapper;
 
-    public UserRepository( UserManager<ApplicationUser> userManager,
+    public UserRepository(UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager, IMapper mapper)
     {
         _userManager = userManager;
@@ -60,7 +60,7 @@ public class UserRepository : IUserRepository
         if (!roleExists)
         {
             return IdentityResult.Failed(new IdentityError
-                    { Description = $"Role {userRequest.RoleName} doesn't exist" })
+            { Description = $"Role {userRequest.RoleName} doesn't exist" })
                 .ToApplicationResult();
         }
 
@@ -78,7 +78,7 @@ public class UserRepository : IUserRepository
         {
             // doesn't return error if roleName doesnt exists so i made the first validation roleExists
             await _userManager.AddToRoleAsync(user, userRequest.RoleName);
-          
+
             return result.ToApplicationResult(user.Id, true);
         }
 
@@ -94,12 +94,12 @@ public class UserRepository : IUserRepository
         if (user == null) throw new NotFoundException(nameof(ApplicationUser), userId);
 
         user.Name = userRequest.Name;
-        user.ProfilePictureUrl = userRequest.ProfilePictureUrl; 
+        user.ProfilePictureUrl = userRequest.ProfilePictureUrl;
         user.Email = userRequest.Email;
 
         var result = await _userManager.UpdateAsync(user);
-        
-        
+
+
         if (result.Succeeded)
         {
             var roleResult = await UpdateRoleAsync(user, userRequest.RoleName);
@@ -107,10 +107,10 @@ public class UserRepository : IUserRepository
         }
 
         // If something when wrong in the update, return the result indicating failure
-      
+
         return result.ToApplicationResult();
     }
-    
+
     private async Task<IdentityResult> UpdateRoleAsync(ApplicationUser user, string userRequestRole)
     {
         // Note: I'm only allowing one role per user. 
@@ -142,7 +142,7 @@ public class UserRepository : IUserRepository
 
         if (!roleExists)
             return IdentityResult.Failed(new IdentityError
-                { Description = $"Role {userRequestRole} doesn't exist" });
+            { Description = $"Role {userRequestRole} doesn't exist" });
 
         return IdentityResult.Success;
     }

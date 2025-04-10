@@ -1,9 +1,10 @@
-using System.Reflection;
 using ERP.Infrastructure.AuthFeatures.Policy;
 using ERP.Infrastructure.Common.Interfaces;
 using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Extensions;
+using ERP.Infrastructure.Repositories.Comentario;
 using ERP.Infrastructure.Repositories.Comisiones;
+using ERP.Infrastructure.Repositories.Depositos;
 using ERP.Infrastructure.Repositories.Facturas;
 using ERP.Infrastructure.Repositories.Gastos;
 using ERP.Infrastructure.Repositories.Roles;
@@ -11,6 +12,7 @@ using ERP.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 
 namespace ERP.Api;
@@ -19,7 +21,7 @@ internal static class Extensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder, IConfiguration configuration)
     {
-      
+
         builder.Services.AddSwaggerConfig();
 
         // Servicios específicos de configuración
@@ -39,6 +41,8 @@ internal static class Extensions
         builder.Services.AddCompacDbContext(builder.Configuration);
 
         builder.Services.AddScoped<ICompacDbContext, CompacDbContext>();
+        builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
 
         builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
@@ -47,6 +51,9 @@ internal static class Extensions
         builder.Services.AddScoped<IFacturasRepository, FacturasRepository>();
         builder.Services.AddScoped<IGastosRepository, GastosRepository>();
         builder.Services.AddScoped<IComisionesRepository, ComisionesRepository>();
+        builder.Services.AddScoped<IDepositosRepository, DepositosRepository>();
+        builder.Services.AddScoped<IComentarioRepository, ComentarioRepository>();
+
 
         builder.Services.AddAuthorization();
 
@@ -70,7 +77,7 @@ internal static class Extensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-    
+
 
         if (app.Environment.IsDevelopment())
         {
@@ -79,7 +86,8 @@ internal static class Extensions
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
             });
-        }  else
+        }
+        else
         {
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();

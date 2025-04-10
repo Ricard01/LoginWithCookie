@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers;
 
-public class FacturasController: ApiControllerBase
+public class FacturasController : ApiControllerBase
 {
     private readonly IFacturasRepository _facRepository;
- 
+
     public FacturasController(IFacturasRepository facRepository)
     {
         _facRepository = facRepository;

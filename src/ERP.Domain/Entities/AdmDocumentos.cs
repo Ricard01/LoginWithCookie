@@ -26,7 +26,7 @@ public class AdmDocumentos
 
     public double CDESCUENTOMOV { get; set; }
 
-    public double CPENDIENTE { get; set; }  
+    public double CPENDIENTE { get; set; }
 
     public int CCANCELADO { get; set; }
 

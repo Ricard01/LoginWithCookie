@@ -80,7 +80,7 @@ public class ApplicationDbContextInitialiser
 
         CreateAdminUser(_userManager);
 
-       var agentes =  _context.Agentes.ToList();
+        var agentes = _context.Agentes.ToList();
 
         if (agentes.Any()) return Task.CompletedTask;
 
@@ -136,8 +136,8 @@ public class ApplicationDbContextInitialiser
         var role = new ApplicationRole
         {
             Name = AdminRole,
-             Description = "Administrator has access to everything",
-             Permissions = packPermissions
+            Description = "Administrator has access to everything",
+            Permissions = packPermissions
         };
 
 

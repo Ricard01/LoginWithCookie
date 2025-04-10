@@ -74,7 +74,8 @@
   vertical-align: middle;
 }
 
-
+.add-icon { color:rgba(22, 199, 249, 0.9); }
+.remove-icon { color:rgba(252, 68, 56, 0.9); }
 .badge.success { background-color: #7CAE7A; } /* Verde para facturas cobradas */
 .badge.warning { background-color: #D84727; } /* Rojo para facturas pendientes */
 .badge.info { background-color: #27c3d8; } /* Rojo para facturas pendientes */

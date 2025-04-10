@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ERP.Infrastructure.Repositories.Comisiones.Dtos;
+﻿namespace ERP.Infrastructure.Repositories.Comisiones.Dtos;
 
 public class ResumenComisionVm
 {

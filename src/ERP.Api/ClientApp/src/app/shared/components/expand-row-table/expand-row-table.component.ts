@@ -90,7 +90,7 @@ calcularTotal(columna: string): number {
     if (!movimientoForm) return;
 
     const idAgente =  Number(movimientoForm.get('idAgente')?.value || 0);
-    console.log('idAgente',idAgente)
+
 
     const neto =  Number(movimientoForm.get('neto')?.value || 0);
     const descuento =  Number(movimientoForm.get('descuento')?.value || 0);
@@ -147,26 +147,23 @@ private filtrarPorColumnas(row: any, filterValue: string): boolean {
     let utilidadRicardo = 0, utilidadAngie = 0;
     let ivaRicardo = 0, ivaAngie = 0;
     let isrRicardo = 0, isrAngie = 0;
-    console.log("idAgente:", idAgente, "Tipo:", typeof idAgente);
-    console.log("utilidadBase:", utilidadBase);
-    console.log("iva:", iva);
-    console.log("isr:", isr);
+
     
     switch (idAgente) {
       case 1:
-        console.log("Entró en case 1");
+
         utilidadRicardo = utilidadBase;
         ivaRicardo = iva;
         isrRicardo = isr;
         break;
       case 2:
-        console.log("Entró en case 1");
+
         utilidadAngie = utilidadBase;
         ivaAngie = iva;
         isrAngie = isr;
         break;
       case 3:
-        console.log("Entró en case 1");
+
         utilidadRicardo = utilidadBase / 2;
         utilidadAngie = utilidadBase / 2;
         ivaRicardo = iva / 2;
@@ -175,7 +172,7 @@ private filtrarPorColumnas(row: any, filterValue: string): boolean {
         isrAngie = isr / 2;
         break;
         default:
-          console.warn("⚠ No entró en ningún case. idAgente:", idAgente);
+          
     }
 
     this.setValues(movimientoForm, utilidadRicardo, utilidadAngie, ivaRicardo, ivaAngie, isrRicardo, isrAngie);

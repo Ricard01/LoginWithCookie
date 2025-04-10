@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ERP.Infrastructure.Common.Interfaces;
+﻿using Dapper;
+using ERP.Domain.Constants;
 using ERP.Domain.Entities;
-using ERP.Infrastructure.Data;
-using ERP.Infrastructure.Repositories.Facturas.Dtos;
-using System.Data;
-using Dapper;
 using ERP.Infrastructure.Common.Exceptions;
+using ERP.Infrastructure.Common.Interfaces;
+using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Repositories.Dtos;
+using ERP.Infrastructure.Repositories.Facturas.Dtos;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq.Expressions;
 
 
@@ -14,24 +15,22 @@ namespace ERP.Infrastructure.Repositories.Facturas;
 
 public class FacturasRepository : IFacturasRepository
 {
-    private const int IdDocumentoDe = 4; 
 
     private readonly IApplicationDbContext _context;
     private readonly ICompacDbContext _compacContext;
 
-   
-
-    public FacturasRepository(ApplicationDbContext context, ICompacDbContext compacContext)
+    public FacturasRepository(IApplicationDbContext context, ICompacDbContext compacContext)
     {
         _context = context;
         _compacContext = compacContext;
 
     }
-    
+
     public async Task SincronizarFacturasAsync(DateTime periodo)
     {
         await GetAndSetFacturasCompacAsync(periodo);
     }
+
     public async Task<FacturasVm> GetFacturasPagadas(DateTime periodo)
     {
 
@@ -39,7 +38,7 @@ public class FacturasRepository : IFacturasRepository
         f => f.Fecha.Year == periodo.Year &&
              f.Fecha.Month == periodo.Month &&
              f.Cancelado == 0 &&
-             f.IdDocumentoDe == IdDocumentoDe &&
+             f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas &&
              f.Pendiente == 0 &&
              f.FechaCreacionPago.HasValue &&
              f.FechaCreacionPago.Value.Month == periodo.Month &&
@@ -54,13 +53,12 @@ public class FacturasRepository : IFacturasRepository
 
     // TIP-PRO: Este método usa async porque se crea un nuevo objeto con el resultado
     // REF: docs/general/tips-pro.md#async-si-se-necesita-si-hay-logica-despues-del-await
-
     public async Task<FacturasVm> GetFacturasPendientes(DateTime periodo)
     {
 
         var facturas = await GetFacturasAsync("FACTURAS PENDIENTES",
             f =>
-        (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == IdDocumentoDe && f.Pendiente > 0)
+        (f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas && f.Pendiente > 0)
         ||
        (f.Pendiente == 0 && f.Fecha.Month == periodo.Month && f.FechaCreacionPago.HasValue && f.FechaCreacionPago.Value.Year == periodo.Year && f.FechaCreacionPago.Value.Month != periodo.Month)
      );
@@ -70,16 +68,16 @@ public class FacturasRepository : IFacturasRepository
         };
     }
 
-    public  Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo)
+    public Task<List<FacturasDto>> GetFacturasCanceladasAsync(DateTime periodo)
     {
-        return  GetFacturasAsync("FACTURAS CANCELADAS", f => f.Cancelado == 1 && f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month);
+        return GetFacturasAsync("FACTURAS CANCELADAS", f => f.Cancelado == 1 && f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month);
     }
 
     // TIP-PRO: No usar async/await si solo retorna un Task directo.
     // REF: docs/general/tips-pro.md#async-vs-await-cuando-devolves-una-consulta-directa
     private Task<List<FacturasDto>> GetFacturasAsync(string tag, Expression<Func<Documentos, bool>> whereCondition)
     {
-       
+
         return _context.Documentos
             .TagWith(tag)
             .AsNoTracking()
@@ -190,10 +188,10 @@ public class FacturasRepository : IFacturasRepository
 
     }
 
-    private async Task<Dictionary<int, Documentos>> GetFacturasToCompareAsync( DateTime periodo)
+    private async Task<Dictionary<int, Documentos>> GetFacturasToCompareAsync(DateTime periodo)
     {
         return await _context.Documentos
-         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.IdDocumentoDe == IdDocumentoDe)
+         .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas)
          .ToDictionaryAsync(f => f.IdComercial);
     }
 

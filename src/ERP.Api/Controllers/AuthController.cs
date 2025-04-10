@@ -83,7 +83,7 @@ public class AuthController : ApiControllerBase
     {
         await _signInManager
             .SignOutAsync(); // ASP.NET Core Identity. Esto eliminará la cookie de autenticación (ERP.Cookie).
-        
+
         // Elimina las cookies de antifalsificación
         var cookies = HttpContext.Request.Cookies;
         foreach (var cookie in cookies)
@@ -100,11 +100,11 @@ public class AuthController : ApiControllerBase
     [AllowAnonymous]
     // [IgnoreAntiforgeryToken] No aplica Para peticiones GET 
     [HttpGet("[action]")]
-    public  IActionResult InactivityLogOut()
+    public IActionResult InactivityLogOut()
     {
 
         var cookies = HttpContext.Request.Cookies;
-        
+
         foreach (var cookie in cookies)
         {
             if (cookie.Key.StartsWith(".AspNetCore.Antiforgery.") || cookie.Key == "ANY-XSRF-TOKEN")

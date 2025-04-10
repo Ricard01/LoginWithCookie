@@ -1,11 +1,10 @@
-﻿using ERP.Infrastructure.Repositories.Doctos.Dtos;
-using Microsoft.EntityFrameworkCore;
-using ERP.Infrastructure.Common.Interfaces;
+﻿using ERP.Domain.Constants;
 using ERP.Domain.Entities;
-using ERP.Infrastructure.Data;
 using ERP.Infrastructure.Common.Exceptions;
-using ERP.Domain.Constants;
+using ERP.Infrastructure.Common.Interfaces;
 using ERP.Infrastructure.Repositories.Comisiones.Dtos;
+using ERP.Infrastructure.Repositories.Doctos.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace ERP.Infrastructure.Repositories.Comisiones;
@@ -13,13 +12,13 @@ namespace ERP.Infrastructure.Repositories.Comisiones;
 public class ComisionesRepository : IComisionesRepository
 {
     private readonly IApplicationDbContext _context;
-   
-    public ComisionesRepository(ApplicationDbContext context)
+
+    public ComisionesRepository(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo)
+    public async Task<List<ComisionDto>> GetComisionesAmbosPorPeriodo(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
@@ -30,12 +29,12 @@ public class ComisionesRepository : IComisionesRepository
                   m => m.IdComercial,
                   (f, m) => new { Factura = f, Movimiento = m }
               )
-              .Where(x => x.Movimiento.IdAgente ==CONTPAQi.IdAgente.Ambos && x.Movimiento.IdProducto != CONTPAQi.IdProducto.Poliza)
+              .Where(x => x.Movimiento.IdAgente == CONTPAQi.IdAgente.Ambos && x.Movimiento.IdProducto != CONTPAQi.IdProducto.Poliza)
               .OrderByDescending(x => x.Factura.Serie)
               .ThenByDescending(x => x.Factura.Fecha)
               .Select(x => new ComisionDto
               {
-                  Fecha = x.Factura.Fecha,                  
+                  Fecha = x.Factura.Fecha,
                   Folio = $"{x.Factura.Serie ?? ""}{x.Factura.Folio}",
                   Cliente = x.Factura.Cliente,
                   IdMovimiento = x.Movimiento.IdMovimiento,
@@ -59,11 +58,11 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<List<ComisionRDto>> GetComisionesRicardo(DateTime periodo)
+    public async Task<List<ComisionRicardoDto>> GetComisionesRicardo(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
-              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe== CONTPAQi.IdDocumentoDe.Facturas)
+              .Where(f => f.Fecha.Year == periodo.Year && f.Fecha.Month == periodo.Month && f.Cancelado == 0 && f.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Facturas)
               .Join(
                   _context.Movimientos,
                   f => f.IdComercial,
@@ -73,7 +72,7 @@ public class ComisionesRepository : IComisionesRepository
               .Where(x => x.Movimiento.IdAgente == CONTPAQi.IdAgente.RicardoChavez || x.Movimiento.IdProducto == CONTPAQi.IdProducto.Poliza)
               .OrderByDescending(x => x.Factura.Serie)
               .ThenByDescending(x => x.Factura.Fecha)
-              .Select(x => new ComisionRDto
+              .Select(x => new ComisionRicardoDto
               {
                   Fecha = x.Factura.Fecha,
                   Serie = (x.Factura.Serie ?? ""),
@@ -97,7 +96,7 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
-    public async Task<List<ComAngelicaDto>> GetComisionesAngie(DateTime periodo)
+    public async Task<List<ComisionAngelicaDto>> GetComisionesAngie(DateTime periodo)
     {
 
         var comisiones = await _context.Documentos
@@ -111,7 +110,7 @@ public class ComisionesRepository : IComisionesRepository
                    .Where(x => x.Movimiento.IdAgente == CONTPAQi.IdAgente.AngelicaPetul || x.Movimiento.IdProducto == CONTPAQi.IdProducto.Poliza)
               .OrderByDescending(x => x.Factura.Serie)
               .ThenByDescending(x => x.Factura.Fecha)
-                  .Select(x => new ComAngelicaDto
+                  .Select(x => new ComisionAngelicaDto
                   {
                       IdComercial = x.Factura.IdComercial,
                       Fecha = x.Factura.Fecha,
@@ -129,7 +128,7 @@ public class ComisionesRepository : IComisionesRepository
                       IsrAngie = x.Movimiento.IsrAngie,
                       IvaRetenido = x.Movimiento.IvaRetenido,
                       UtilidadAngie = x.Movimiento.UtilidadAngie,
-                    
+
                       Observaciones = x.Movimiento.Observaciones
                   })
                   .ToListAsync();
@@ -178,10 +177,9 @@ public class ComisionesRepository : IComisionesRepository
         };
     }
 
-
     private async Task<ComisionPersonalDto> GetComisionPersonal(int idAgente, DateTime periodo)
     {
-        
+
         var query = _context.Documentos
             .Where(f => f.Fecha.Year == periodo.Year &&
                         f.Fecha.Month == periodo.Month &&
@@ -224,7 +222,6 @@ public class ComisionesRepository : IComisionesRepository
 
         return dto;
     }
-
 
     private async Task<ComisionCompartidaDto> GetComisionCompartida(DateTime periodo)
     {
@@ -295,7 +292,7 @@ public class ComisionesRepository : IComisionesRepository
                   factura => factura.IdComercial,
                   movimiento => movimiento.IdComercial,
                   (factura, movimiento) => new { factura, movimiento })
-            .Where( d => d.movimiento.IdAgente == CONTPAQi.IdAgente.Ambos)
+            .Where(d => d.movimiento.IdAgente == CONTPAQi.IdAgente.Ambos)
             .SumAsync(x => x.movimiento.Total);
     }
 
@@ -308,7 +305,7 @@ public class ComisionesRepository : IComisionesRepository
         {
             throw new NotFoundException(nameof(Movimiento), Id);
         }
-       
+
         mov.UtilidadAngie = movto.UtilidadAngie;
         mov.IsrAngie = movto.IsrAngie;
         mov.IvaAngie = movto.IvaAngie;
@@ -320,9 +317,73 @@ public class ComisionesRepository : IComisionesRepository
         return movto;
     }
 
-    public async Task<MovimientoComisionRicardoDto> UpdateMovtoComisionRicardoAsync(int Id, MovimientoComisionRicardoDto movto)
+    /// <summary>
+    /// Inserta o actualiza (Upsert) el total de comisiones para el periodo indicado.
+    /// </summary>
+    /// <param name="dto">total de Comisiones del Periodo a insertar o actualizar.</param>
+    /// <returns>Retorna el total de comisiones del periodo ya actualizados/insertados con su Id correspondiente.</returns>
+    public async Task<ComisionPeriodoDto> UpsertComisionPeriodo(ComisionPeriodoDto dto)
     {
 
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        ComisionesPorPeriodo? entidad = null;
+
+        if (dto.Id > 0)
+        {
+            entidad = await _context.ComisionesPorPeriodo.FindAsync(dto.Id);
+            if (entidad == null)
+                throw new InvalidOperationException($"No se encontró un registro con Id {dto.Id} para actualizar.");
+            entidad.IdAgente = dto.IdAgente;
+            entidad.Periodo = dto.Periodo;
+            entidad.ComisionPersonal = dto.ComisionPersonal;
+            entidad.ComisionCompartida = dto.ComisionCompartida;
+            entidad.TotalComisionPagada = dto.TotalComisionPagada;
+
+        }
+        else
+        {
+            entidad = new ComisionesPorPeriodo
+            {
+                IdAgente = dto.IdAgente,
+                Periodo = dto.Periodo,
+                ComisionPersonal = dto.ComisionPersonal,
+                ComisionCompartida = dto.ComisionCompartida,
+                TotalComisionPagada = dto.TotalComisionPagada
+            };
+            _context.ComisionesPorPeriodo.Add(entidad);
+
+        }
+
+        await _context.SaveChangesAsync();
+
+        dto.Id = entidad.Id;
+
+        return dto;
+
+    }
+
+    public async Task<ComisionPeriodoDto?> GetTotalesComisionPorPeriodo(int IdAgente, DateTime periodo)
+    {
+
+
+        return await _context.ComisionesPorPeriodo
+            .Where(c => c.IdAgente == IdAgente && c.Periodo == periodo)
+            .Select(c => new ComisionPeriodoDto
+            {
+                Id = c.Id,
+                IdAgente = c.IdAgente,
+                Periodo = c.Periodo,
+                ComisionPersonal = c.ComisionPersonal,
+                ComisionCompartida = c.ComisionCompartida,
+                TotalComisionPagada = c.TotalComisionPagada
+            })
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<MovimientoComisionRicardoDto> UpdateMovtoComisionRicardoAsync(int Id, MovimientoComisionRicardoDto movto)
+    {
 
         var mov = await _context.Movimientos.SingleOrDefaultAsync(m => m.IdMovimiento == Id);
         if (mov == null)

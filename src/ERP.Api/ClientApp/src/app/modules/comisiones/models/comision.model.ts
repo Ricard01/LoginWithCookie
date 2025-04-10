@@ -1,3 +1,10 @@
+export interface IcomisionesPorPeriodo {
+  idAgente: number;
+  periodo: Date;
+  comisionPersonal: number;
+  comisionCompartida: number;
+  totalComisionPagada: number; 
+}
 export interface IResumenComisionVm {
 personal: IResumenPersonal;
 compartida: IResumenCompartida;

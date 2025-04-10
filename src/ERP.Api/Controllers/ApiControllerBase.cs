@@ -8,5 +8,5 @@ namespace ERP.Api.Controllers;
 [Route("api/[controller]")]
 public abstract class ApiControllerBase : ControllerBase
 {
-    
+
 }

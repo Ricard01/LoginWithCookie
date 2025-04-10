@@ -2,7 +2,6 @@
 using ERP.Infrastructure.Repositories.Comisiones;
 using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
-using ERP.Infrastructure.Repositories.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Api.Controllers;
@@ -21,47 +20,62 @@ public class ComisionesController : ApiControllerBase
     [HttpGet("{periodo}")]
     public async Task<ActionResult<List<ComisionDto>>> GetComisiones(DateTime periodo)
     {
-        return Ok(await _comisionesRepository.GetComisionesAmbos(periodo));
+        var comisiones = await _comisionesRepository.GetComisionesAmbosPorPeriodo(periodo);
+        return Ok(comisiones);
     }
 
+ 
     [HttpGet("ricardo/{periodo}")]
-    public async Task<ActionResult<Task<List<ComisionRDto>>>> GetComnisionesR(DateTime periodo)
+    public async Task<ActionResult<Task<List<ComisionRicardoDto>>>> GetComisionesRicardo(DateTime periodo)
     {
         var comisiones = await _comisionesRepository.GetComisionesRicardo(periodo);
         return Ok(comisiones);
     }
 
-    [HttpGet("angie/{periodo}")]
-    public async Task<ActionResult<Task<List<ComAngelicaDto>>>> GetComnisionesA(DateTime periodo)
-    {
 
+    [HttpGet("angie/{periodo}")]
+    public async Task<ActionResult<List<ComisionAngelicaDto>>> GetComisionesAngelica(DateTime periodo)
+    {
         var comisiones = await _comisionesRepository.GetComisionesAngie(periodo);
         return Ok(comisiones);
     }
 
     [HttpGet("angie/summary/{periodo}")]
-    public async Task<ActionResult<Task<ResumenComisionVm>>> GetResumenComisionAngelica(DateTime periodo)
+    public async Task<ActionResult<ResumenComisionVm>> GetResumenComisionAngelica(DateTime periodo)
     {
 
         var comisiones = await _comisionesRepository.GetResumenComisionesAngie(periodo);
         return Ok(comisiones);
     }
 
-    [HttpPatch("ricardo/{IdMovimiento}")]
-    public async Task<ActionResult<MovimientoComisionRicardoDto>> UpdateMovientoRicardoAsync(int IdMovimiento, [FromBody] MovimientoComisionRicardoDto Movto)
+    //  api/comisiones/ricardo/123
+    [HttpPatch("ricardo/{idMovimiento}")]
+    public async Task<ActionResult<MovimientoComisionRicardoDto>> ActualizarMovimientoRicardo(int idMovimiento, [FromBody] MovimientoComisionRicardoDto movimiento)
     {
-
-        var mov = await _comisionesRepository.UpdateMovtoComisionRicardoAsync(IdMovimiento, Movto);
-        return Ok(mov);
+        var resultado = await _comisionesRepository.UpdateMovtoComisionRicardoAsync(idMovimiento, movimiento);
+        return Ok(resultado);
     }
 
-    [HttpPatch("angie/{IdMovimiento}")]
-    public async Task<ActionResult<MovimientoComisionAngieDto>> UpdateMovientoAngieAsync(int IdMovimiento, [FromBody] MovimientoComisionAngieDto Movto)
+    // api/comisiones/angie/456
+    [HttpPatch("angie/{idMovimiento}")]
+    public async Task<ActionResult<MovimientoComisionAngieDto>> ActualizarMovimientoAngelica(int idMovimiento, [FromBody] MovimientoComisionAngieDto movimiento)
     {
-
-        var mov = await _comisionesRepository.UpdateMovtoComisionAngieAsync(IdMovimiento, Movto);
-        return Ok(mov);
+        var resultado = await _comisionesRepository.UpdateMovtoComisionAngieAsync(idMovimiento, movimiento);
+        return Ok(resultado);
     }
 
- 
+    [HttpGet("total/{idAgente}")]
+    public async Task<ActionResult<ComisionPeriodoDto>> GetComisionesTotal(int idAgente, [FromQuery]  DateTime periodo)
+    {
+        return Ok(await _comisionesRepository.GetTotalesComisionPorPeriodo(idAgente, periodo));
+    }
+
+
+    [HttpPost("total")]
+    public async Task<ActionResult<ComisionPeriodoDto>> UpsertComisionPeriodo([FromBody] ComisionPeriodoDto dto)
+    {
+        var result = await _comisionesRepository.UpsertComisionPeriodo(dto);
+        return Ok(result);
+    }
+
 }

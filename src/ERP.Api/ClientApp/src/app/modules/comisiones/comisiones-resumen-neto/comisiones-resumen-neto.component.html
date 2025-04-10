@@ -1,149 +1,202 @@
 <div class="container py-4" *ngIf="comision">
 
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-dark text-white">
-        Resumen base Neto
-      </div>
-      <div class="card-body p-2">
-        <table class="table table-bordered text-center align-middle mb-0">
-          <thead class="table-secondary">
-            <tr>
-              <th>Comisión</th>
-              <th>Neto</th>
-              <th>Descuentos</th>
-              <th>IVA</th>
-              <th>ISR</th>
-              <th>Ret IVA</th>
-              <th>ISR Mensual</th>
-              <th>IVA a Favor</th>
-              <th>Total Impuestos</th>
-              <th>Gastos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="fw-bold">Personal</td>
-              <td>{{ comision.personal.neto | currency }}</td>
-              <td>{{ comision.personal.descuento | currency }}</td>
-              <td>{{ comision.personal.iva | currency }}</td>
-              <td>{{ comision.personal.isr | currency }}</td>
-              <td>{{ comision.personal.ivaRet | currency }}</td>
-              <td>{{ comision.personal.isrMensual | currency }}</td>
-              <td>{{ comision.personal.ivaAfavor | currency }}</td>
-              <td class="fw-bold text-danger">
-                {{ comision.personal.totalImpuestos | currency }}
-              </td>
-              <td>$0</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">Compartida</td>
-              <td>{{ comision.compartida.neto | currency }}</td>
-              <td>{{ comision.compartida.descuento | currency }}</td>
-              <td>{{ comision.compartida.iva | currency }}</td>
-              <td>{{ comision.compartida.isr | currency }}</td>
-              <td>{{ comision.compartida.ivaRet | currency }}</td>
-              <td>{{ comision.compartida.isrMensual | currency }}</td>
-              <td>{{ comision.compartida.ivaAfavor | currency }}</td>
-              <td class="fw-bold text-danger">
-                {{ comision.compartida.totalImpuestos | currency }}
-              </td>
-              <td>{{ comision.compartida.gastos | currency }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">
+      Resumen base Neto
     </div>
-
-
-    <div class="card shadow-sm mb-4">
-    
-  
-          <div class="card-header bg-dark text-white">
-            Resumen base Utilidad
-          </div>
-          <div class="card-body p-2">
-            <table class="table table-bordered text-center align-middle mb-0">
-              <thead class="table-secondary">
-                <tr>
-                  <th colspan="4">PERSONAL</th>
-                  <th></th>
-                  <th colspan="5">COMPARTIDA</th>
-                </tr>
-                <tr>
-                  <th>Utilidad</th>
-                  <th>ISR Mensual</th>
-                  <th>IVA a Favor</th>
-                  <th>Total</th>
-                  <th></th>
-                  <th>Utilidad</th>
-                  <th>ISR Mensual</th>
-                  <th>Gastos Of</th>
-                  <th>Total</th>
-                  <th>Entre 2</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ comision.personal.utilidad | currency }}</td>
-                  <td>{{ comision.personal.isrMensual | currency }}</td>
-                  <td>{{ comision.personal.ivaAfavor | currency }}</td>
-                  <td class="fw-bold text-success">{{ utilidadPersonal | currency }}</td>
-                  <td></td>
-                  <td>{{ comision.compartida.utilidad | currency }}</td>
-                  <td>{{ comision.compartida.isrMensual | currency }}</td>
-                  <td>{{ this.gastosOficina | currency }}</td>
-                  <td class="fw-bold text-success">{{ this.utilidadCompartida | currency }}</td>
-                  <td class="fw-bold">{{ this.utilidadCompartidaDivida  | currency }} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-    
-  
-  
-
-  
+    <div class="card-body p-2">
+      <table class="table table-bordered text-center align-middle mb-0">
+        <thead class="table-secondary">
+          <tr>
+            <th>Comisión</th>
+            <th>Neto</th>
+            <th>Descuentos</th>
+            <th>IVA</th>
+            <th>ISR</th>
+            <th>Ret IVA</th>
+            <th>ISR Mensual</th>
+            <th>IVA a Favor</th>
+            <th>Total Impuestos</th>
+            <th>Gastos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-bold">Personal</td>
+            <td>{{ comision.personal.neto | currency }}</td>
+            <td>{{ comision.personal.descuento | currency }}</td>
+            <td>{{ comision.personal.iva | currency }}</td>
+            <td>{{ comision.personal.isr | currency }}</td>
+            <td>{{ comision.personal.ivaRet | currency }}</td>
+            <td>{{ comision.personal.isrMensual | currency }}</td>
+            <td>{{ comision.personal.ivaAfavor | currency }}</td>
+            <td class="fw-bold text-danger">
+              {{ comision.personal.totalImpuestos | currency }}
+            </td>
+            <td>$0</td>
+          </tr>
+          <tr>
+            <td class="fw-bold">Compartida</td>
+            <td>{{ comision.compartida.neto | currency }}</td>
+            <td>{{ comision.compartida.descuento | currency }}</td>
+            <td>{{ comision.compartida.iva | currency }}</td>
+            <td>{{ comision.compartida.isr | currency }}</td>
+            <td>{{ comision.compartida.ivaRet | currency }}</td>
+            <td>{{ comision.compartida.isrMensual | currency }}</td>
+            <td>{{ comision.compartida.ivaAfavor | currency }}</td>
+            <td class="fw-bold text-danger">
+              {{ comision.compartida.totalImpuestos | currency }}
+            </td>
+            <td>{{ comision.compartida.gastos | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-      <!-- 🔹 Resumen base Utilidad -->
-      <!-- <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-          Resumen base Utilidad
-        </div>
-        <div class="card-body p-2">
-          <table class="table table-bordered text-center align-middle mb-0">
-            <thead>
-              <tr class="table-active">
-                <th colspan="4">PERSONAL</th>
-                <th colspan="4">COMPARTIDA</th>
-              </tr>
-              <tr class="table-light">
-                <th>Utilidad</th>
-                <th>ISR Mensual</th>
-                <th>IVA a Favor</th>
-                <th>Total</th>
-                <th>Utilidad</th>
-                <th>ISR Mensual</th>
-                <th>Gastos</th>
-                <th>Entre 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ resumenComision.utilidad | currency }}</td>
-                <td>{{ resumenComision.isrMensual | currency }}</td>
-                <td>{{ resumenComision.ivaAfavor | currency }}</td>
-                <td class="fw-bold">
-                  {{ (resumenComision.utilidad + resumenComision.ivaAfavor - resumenComision.isrMensual) | currency }}
-                </td>
-                <td>{{ resumenAmbos.utilidad | currency }}</td>
-                <td>{{ resumenAmbos.isrMensual | currency }}</td>
-                <td>{{ resumenAmbos.gastos | currency }}</td>
-                <td class="fw-bold text-primary">
-                  {{ ((resumenAmbos.utilidad + resumenAmbos.ivaAfavor - resumenAmbos.isrMensual - resumenAmbos.gastos) / 2) | currency }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
+
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-dark text-white">
+      Resumen GENERAL
+    </div>
+    <div class="card-body p-2">
+      <table class="table text-center align-middle mb-0">
+        <thead class="table-secondary">
+          <tr>
+            <th colspan="4" style="border-left: none; width:48%">PERSONAL</th>
+            <td style="border: none; background-color: transparent; width: 2%;"></td>
+            <th colspan="5" style="width: 48%;">COMPARTIDA</th>
+          </tr>
+          <tr>
+            <th>Utilidad</th>
+            <th>ISR Mensual</th>
+            <th>IVA a Favor</th>
+            <th>Total</th>
+            <td style="border: none; background-color: transparent;"></td>
+            <th>Utilidad</th>
+            <th>ISR Mensual</th>
+            <th>Gastos Of</th>
+            <th>Total</th>
+            <th>Entre 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ comision.personal.utilidad | currency }}</td>
+            <td>{{ comision.personal.isrMensual | currency }}</td>
+            <td>{{ comision.personal.ivaAfavor | currency }}</td>
+            <td class="fw-bold text-success">{{ utilidadPersonal | currency }}</td>
+            <td></td>
+            <td>{{ comision.compartida.utilidad | currency }}</td>
+            <td>{{ comision.compartida.isrMensual | currency }}</td>
+            <td>{{ this.gastosOficina | currency }}</td>
+            <td class="fw-bold">{{ this.utilidadCompartida | currency }}</td>
+            <td class="fw-bold  text-success">{{ this.utilidadCompartidaDivida | currency }} </td>
+          </tr>
+          <tr>
+            <td colspan="10" class="fw-bold text-start border-0 py-2 ">Total de Comisiones: <span class="text-success">
+                {{ this.utilidadTotal | currency }}</span></td>
+          </tr>
+
+          <tr class="table-secondary">
+            <th colspan="4" style="border-left: none;">Comentarios</th>
+            <td style="border: none; background-color: transparent;"></td>
+            <th colspan="5">Depositos</th>
+          </tr>
+
+          <tr>
+            <td colspan="4">
+              <form [formGroup]="comentarioPersonalForm">
+                <div class="mb-2 d-flex">
+                  <div style="width: 120px;">
+                    <label for="personal" class="form-label">
+                      <span *ngIf="idAgente == 2">Angélica</span>
+                      <span *ngIf="idAgente == 1">Ricardo</span>
+                    </label>
+                  </div>
+                  <div class="flex-grow-1">
+                    <textarea formControlName="comentario" class="form-control" id="personal"
+                      placeholder="Comentario aquí"></textarea>
+                  </div>
+                </div>
+                </form>
+                <form [formGroup]="comentarioCompartidoForm">
+                <div class="mb-2 d-flex">
+                  <div style="width: 120px;">
+                    <label for="compartido" class="form-label">Compartido</label>
+                  </div>
+                  <div class="flex-grow-1">
+                    <textarea formControlName="comentario" class="form-control" id="compartido"
+                      placeholder="Comentario aquí"></textarea>
+                  </div>
+                </div>
+              </form>
+            </td>
+
+
+            <td style="border: none; background-color: transparent;"></td>
+            <td colspan="5" class="align-top">
+              <form [formGroup]="fb.group({ depositos: depositosFormArray })">
+
+                <!-- Lista de depósitos -->
+                <div formArrayName="depositos">
+                  <div *ngFor="let depositoCtrl of depositosFormArray.controls; let i = index" [formGroupName]="i"
+                    class="d-flex gap-2 mb-2 align-items-center">
+
+                    <span class="fw-bold" style="width: 30px;">#{{ i + 1 }}</span>
+                    <input type="number" formControlName="importe" class="form-control w-25" placeholder="Importe" />
+                    <input type="text" formControlName="comentario" class="form-control flex-grow-1"
+                      placeholder="Comentario" />
+
+                    <button mat-icon-button aria-label="Eliminar depósito" (click)="eliminarDeposito(i)">
+                      <mat-icon color="warn">remove</mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end mb-2">
+                  <button mat-icon-button aria-label="Agregar depósito" (click)="agregarDeposito()">
+                    <mat-icon style="color: green;">add</mat-icon>
+                  </button>
+                </div>
+
+              </form>
+            </td>
+
+          </tr>
+          <tr [formGroup]="comisionForm">
+            <td colspan="4" class="fw-bold text-start">
+              <div class="mb-2 d-flex">
+                <div style="width: 130px;">
+                  <label for="totalComisionPagada" class="form-label ">
+                    Total Pagado:
+                  </label>
+                </div>
+                <div class="ml-2 d-flex double-underline-input">
+                  <input
+                    type="number"
+                    class="form-control double-underline-input"
+                    formControlName="totalComisionPagada"
+                    id="totalComisionPagada"
+                  />
+                </div>
+              </div>
+            </td>
+            
+            <td style="border: none; background-color: transparent;"></td>
+            <td colspan="5" class="fw-bold text-end  double-underline"> Total Depositos: <span class="fs-5 text-success">  {{ this.totalDepositos | currency }}</span></td>
+          </tr>
+
+          <tr>
+            <td colspan="10"> 
+              <button mat-flat-button color="primary" (click)="guardarTodo()">Guardar</button>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+
+</div>

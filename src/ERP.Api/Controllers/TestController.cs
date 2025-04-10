@@ -1,10 +1,10 @@
-﻿using System.Security.Claims;
-using System.Text.Json.Serialization;
-using ERP.Infrastructure.AuthFeatures;
+﻿using ERP.Infrastructure.AuthFeatures;
 using ERP.Infrastructure.AuthFeatures.Policy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 
 namespace ERP.Api.Controllers;
@@ -22,8 +22,8 @@ public class TestController : ApiControllerBase
 
         [JsonPropertyName("claims")] public IEnumerable<string>? Claims { get; set; }
     }
-    
-    
+
+
     [Requires(Permissions.UserAllAccess)]
     [HttpGet("GetPermissions")]
     public UserInfo GetPermissions()
@@ -31,19 +31,19 @@ public class TestController : ApiControllerBase
         var ienumClaims = User.Claims.Select(c => new { c.Type, c.Value });
 
         Log.Information("claims: {Claims}", ienumClaims);
-        
+
         var packedPermissions = HttpContext.User?.Claims
             .SingleOrDefault(x => x.Type == Constants.ClaimTypePermissions);
         var claims = packedPermissions?.Value.UnpackPermissionsFromString().Select(x => x.ToString());
-       
+
         return new UserInfo()
         {
             Id = "1",
             Claims = claims
         };
     }
-    
-    
+
+
     [HttpGet("getClaims")]
     public IActionResult GetClaims()
     {
@@ -51,8 +51,8 @@ public class TestController : ApiControllerBase
 
         return Ok(userClaims);
     }
-    
-    
+
+
     [HttpGet("getName")]
     public IActionResult GetClaimsV2()
     {
@@ -62,5 +62,5 @@ public class TestController : ApiControllerBase
             .FirstOrDefault();
         return Content($"<p>Hello to Code Maze {userName}</p>");
     }
-    
+
 }

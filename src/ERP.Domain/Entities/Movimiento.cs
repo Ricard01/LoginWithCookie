@@ -15,12 +15,12 @@ public class Movimiento
     public double IvaRetenido { get; set; }
     public required string CodigoProducto { get; set; }
     public required string NombreProducto { get; set; }
-    public  string? Descripcion { get; set; }
+    public string? Descripcion { get; set; }
     public double Comision { get; set; }
     public double Utilidad { get; set; }
     public double UtilidadRicardo { get; set; }
     public double UtilidadAngie { get; set; }
-    public double  IvaRicardo { get; set; }
+    public double IvaRicardo { get; set; }
     public double IvaAngie { get; set; }
     public double IsrRicardo { get; set; }
     public double IsrAngie { get; set; }

@@ -15,10 +15,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<Documentos> Documentos => Set<Documentos>();
-
     public DbSet<Movimiento> Movimientos => Set<Movimiento>();
-
     public DbSet<Agente> Agentes => Set<Agente>();
+    public DbSet<Depositos> Depositos => Set<Depositos>();
+    public DbSet<ComisionesPorPeriodo> ComisionesPorPeriodo => Set<ComisionesPorPeriodo>();
+    public DbSet<Comentarios> Comentarios => Set<Comentarios>();
 
     public Task<int> SaveChangesAsync()
     {

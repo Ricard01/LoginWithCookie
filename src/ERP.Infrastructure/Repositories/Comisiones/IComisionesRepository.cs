@@ -1,6 +1,5 @@
 using ERP.Infrastructure.Repositories.Comisiones.Dtos;
 using ERP.Infrastructure.Repositories.Doctos.Dtos;
-using ERP.Infrastructure.Repositories.Dtos;
 
 namespace ERP.Infrastructure.Repositories.Comisiones;
 
@@ -23,25 +22,24 @@ public interface IComisionesRepository
     /// Obtiene la lista de Comisiones de Angelica
     /// </summary>
     /// <returns>Regresa la lista de comisiones de Angelica y Ambos 
-    Task<List<ComAngelicaDto>> GetComisionesAngie(DateTime periodo);
+    Task<List<ComisionAngelicaDto>> GetComisionesAngie(DateTime periodo);
 
     Task<ResumenComisionVm> GetResumenComisionesAngie(DateTime periodo);
 
+    /// <summary>
+    /// Obtiene la lista de Comisiones de Ricardo
+    /// </summary>
+    /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
+    Task<List<ComisionRicardoDto>> GetComisionesRicardo(DateTime periodo);
 
     /// <summary>
     /// Obtiene la lista de Comisiones de Ricardo
     /// </summary>
     /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
-    Task<List<ComisionRDto>> GetComisionesRicardo(DateTime periodo);
+    Task<List<ComisionDto>> GetComisionesAmbosPorPeriodo(DateTime periodo);
 
+    Task<ComisionPeriodoDto> UpsertComisionPeriodo(ComisionPeriodoDto dto);
 
-
-    /// <summary>
-    /// Obtiene la lista de Comisiones de Ricardo
-    /// </summary>
-    /// <returns>Regresa la lista rde comisiones de Ricardo y Ambos 
-    Task<List<ComisionDto>> GetComisionesAmbos(DateTime periodo);
-
-
+    Task<ComisionPeriodoDto?> GetTotalesComisionPorPeriodo(int IdAgente, DateTime periodo);
 
 }

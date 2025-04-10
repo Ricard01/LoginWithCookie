@@ -1,14 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using ERP.Infrastructure.Common.Interfaces;
-using ERP.Domain.Entities;
-using ERP.Infrastructure.Data;
-using ERP.Infrastructure.Repositories.Gastos.Dtos;
-using Dapper;
-using ERP.Infrastructure.Common.Exceptions;
-using ERP.Infrastructure.Repositories.Dtos;
-using System.Linq.Expressions;
+﻿using Dapper;
 using ERP.Domain.Constants;
+using ERP.Domain.Entities;
+using ERP.Infrastructure.Common.Exceptions;
+using ERP.Infrastructure.Common.Interfaces;
+using ERP.Infrastructure.Data;
+using ERP.Infrastructure.Repositories.Dtos;
+using ERP.Infrastructure.Repositories.Gastos.Dtos;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 
 namespace ERP.Infrastructure.Repositories.Gastos;
@@ -20,20 +19,20 @@ public class GastosRepository : IGastosRepository
     private readonly ICompacDbContext _compacContext;
 
 
-    public GastosRepository(ApplicationDbContext context, ICompacDbContext compacContext)
+    public GastosRepository(IApplicationDbContext context, ICompacDbContext compacContext)
     {
         _context = context;
         _compacContext = compacContext;
     }
 
-    public  Task<List<GastosDto>> GetGastos(DateTime periodo)
+    public Task<List<GastosDto>> GetGastos(DateTime periodo)
     {
         return GetGastosQuery("GASTOS", g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos);
     }
 
-    public  Task<List<GastosDto>> GetGastosAgente(int idAgente, DateTime periodo)
+    public Task<List<GastosDto>> GetGastosAgente(int idAgente, DateTime periodo)
     {
-        return GetGastosQuery("GASTOS X AGENTE",g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos && g.Movimientos.Any(m => m.IdAgente == idAgente));
+        return GetGastosQuery("GASTOS X AGENTE", g => g.Fecha.Year == periodo.Year && g.Fecha.Month == periodo.Month && g.Cancelado == 0 && g.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos && g.Movimientos.Any(m => m.IdAgente == idAgente));
     }
 
     public async Task<double> GetGastosOficina(DateTime periodo)
@@ -43,15 +42,15 @@ public class GastosRepository : IGastosRepository
                             d.Fecha.Month == periodo.Month &&
                             d.Cancelado == 0 &&
                             d.IdDocumentoDe == CONTPAQi.IdDocumentoDe.Gastos)
-            .Join( _context.Movimientos, 
+            .Join(_context.Movimientos,
             gasto => gasto.IdComercial,
             movimiento => movimiento.IdComercial,
-            (gasto, movimiento) => new {gasto, movimiento})
+            (gasto, movimiento) => new { gasto, movimiento })
             .Where(x => x.movimiento.AfectaComisiones == 1)
             .SumAsync(x => x.movimiento.Neto);
     }
 
-    public  Task<List<GastosDto>> GetGastosQuery(string? tag,Expression<Func<Documentos, bool>> whereCondition)
+    public Task<List<GastosDto>> GetGastosQuery(string? tag, Expression<Func<Documentos, bool>> whereCondition)
     {
         return _context.Documentos
             .AsNoTracking()
@@ -105,7 +104,7 @@ public class GastosRepository : IGastosRepository
     // REF: docs/general/tips-pro.md#async-vs-await-cuando-solo-redirigis-la-tarea
     public Task SincronizarGastosAsync(DateTime periodo)
     {
-       return  GetAndSetGastosCompacAsync(CONTPAQi.IdDocumentoDe.Gastos, periodo);
+        return GetAndSetGastosCompacAsync(CONTPAQi.IdDocumentoDe.Gastos, periodo);
     }
 
     private async Task GetAndSetGastosCompacAsync(int idDocumentoDe, DateTime periodo)
@@ -175,10 +174,10 @@ public class GastosRepository : IGastosRepository
         var movtosToAdd = new List<Movimiento>();
         bool cambiosRealizados = false;
 
-        foreach (var g in gastosCompac)      
+        foreach (var g in gastosCompac)
         {
 
-           
+
             if (gastosInDb.TryGetValue(g.IdComercial, out var gastnDb))
             {
                 // 🔹 Si la factura se canceló, solo actualizar el estado
@@ -207,7 +206,7 @@ public class GastosRepository : IGastosRepository
                             var movExistente = _context.Movimientos.FirstOrDefault(m => m.IdMovimiento == movimiento.IdMovimiento);
                             if (movExistente != null)
                             {
-                                movExistente.IdAgente = movimiento.IdAgente;                         
+                                movExistente.IdAgente = movimiento.IdAgente;
                                 movExistente.IvaRicardo = movimiento.IvaRicardo;
                                 movExistente.IvaAngie = movimiento.IvaAngie;
                                 movExistente.IsrRicardo = movimiento.IsrRicardo;
@@ -238,7 +237,7 @@ public class GastosRepository : IGastosRepository
                     Pendiente = g.Pendiente,
                     Cancelado = g.Cancelado,
                     Agente = g.Agente,
-              
+
                 };
 
                 gastosToAdd.Add(newGasto);
@@ -271,11 +270,11 @@ public class GastosRepository : IGastosRepository
 
 
         // 🔹 Si el agente es mayor a 3 hay algun error porque no existe ese agente asi que dejar en ceros 
-        if (idAgente > 3 )
+        if (idAgente > 3)
         {
             return movimientos.Select(m => new Movimiento
             {
-             
+
                 IdAgente = idAgente,
                 IdDocumentoDe = IdDocumentoDe,
                 Neto = m.MovNeto,
@@ -285,7 +284,7 @@ public class GastosRepository : IGastosRepository
                 Total = m.MovTotal,
                 CodigoProducto = m.Codigo,
                 NombreProducto = m.Nombre,
-                Descripcion = m.MovObserva,                     
+                Descripcion = m.MovObserva,
                 IvaRicardo = 0,
                 IvaAngie = 0,
                 IsrRicardo = 0,
@@ -311,35 +310,35 @@ public class GastosRepository : IGastosRepository
                 Descuento = m.MovDescto,
                 IVA = m.MovIVA,
                 ISR = m.MovISR,
-                Total= m.MovTotal,
+                Total = m.MovTotal,
                 CodigoProducto = m.Codigo,
                 NombreProducto = m.Nombre,
                 Descripcion = m.MovObserva,
-    
-              
+
+
             };
 
             // 🔹 Asignar valores según el agente
             switch (idAgente)
-            {           
+            {
                 case 1: // 🔹 Ricardo
-                 
+
                     movimientoCalculado.IvaRicardo = m.MovIVA;
                     movimientoCalculado.IvaAngie = 0;
                     movimientoCalculado.IsrRicardo = m.MovISR;
                     movimientoCalculado.IsrAngie = 0;
                     break;
                 case 2: // 🔹 Angie
-             
+
                     movimientoCalculado.IvaRicardo = 0;
                     movimientoCalculado.IvaAngie = m.MovIVA;
                     movimientoCalculado.IsrRicardo = 0;
                     movimientoCalculado.IsrAngie = m.MovISR;
                     break;
                 case 3: // 🔹 Ambos (50/50)
-              
+
                     double ivaMitad = m.MovIVA / 2;
-                    double isrMitad = m.MovISR / 2;              
+                    double isrMitad = m.MovISR / 2;
                     movimientoCalculado.IvaRicardo = ivaMitad;
                     movimientoCalculado.IvaAngie = ivaMitad;
                     movimientoCalculado.IsrRicardo = isrMitad;
@@ -363,7 +362,7 @@ public class GastosRepository : IGastosRepository
         {
             throw new NotFoundException(nameof(Movimiento), Id);
         }
-     
+
         movBd.AfectaComisiones = movto.AfectaComisiones;
         movBd.IsrAngie = movto.IsrAngie;
         movBd.IsrRicardo = movto.IsrRicardo;

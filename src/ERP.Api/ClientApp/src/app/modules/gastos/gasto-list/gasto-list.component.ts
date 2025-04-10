@@ -73,7 +73,6 @@ export class GastoListComponent implements OnInit {
         )
       )
       .subscribe(gastos => {
-        console.log('gastos', gastos);
         this.gastos = gastos;
         this.setMovimientoForms(gastos);
       });
@@ -184,7 +183,6 @@ export class GastoListComponent implements OnInit {
 
   updateMovimiento(movimiento: IMovimientos): void {
 
-    console.log('iva R:', movimiento.ivaRicardo);
     const movimientoForm = this.movimientoForms.get(movimiento.idMovimiento);
     if (!movimientoForm || movimientoForm.invalid) {
       console.error('El formulario no es válido');

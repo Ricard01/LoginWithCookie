@@ -28,7 +28,7 @@ try
     var app = builder
         .ConfigureServices(configuration)
         .ConfigurePipeline();
-    
+
 
     if (args.Contains("/seed"))
     {

@@ -1,5 +1,3 @@
-using ERP.Domain.Entities;
-
 namespace ERP.Infrastructure.Common.Models;
 
 public class Result
@@ -23,18 +21,18 @@ public class Result
     {
         return new Result(true, Array.Empty<string>());
     }
-    
- 
-    
+
+
+
     public static Result Success(Guid id, bool isUser)
     {
-        return new Result(true, new string[] { }) { Id = id,  IsUser = isUser};
+        return new Result(true, new string[] { }) { Id = id, IsUser = isUser };
     }
 
     public static Result Failure(IEnumerable<string> errors)
     {
         return new Result(false, errors);
     }
-    
+
 
 }

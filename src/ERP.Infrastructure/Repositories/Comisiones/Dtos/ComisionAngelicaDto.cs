@@ -1,7 +1,7 @@
 ﻿
 namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
-public class ComAngelicaDto
+public class ComisionAngelicaDto
 {
     public int IdComercial { get; set; }
     public DateTime Fecha { get; set; }
