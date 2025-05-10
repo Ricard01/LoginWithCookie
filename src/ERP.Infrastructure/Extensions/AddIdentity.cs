@@ -32,7 +32,7 @@ public static class AddIdentity
             options.SlidingExpiration = true;
             options.Cookie.SameSite = SameSiteMode.Strict;
 
-            options.ExpireTimeSpan = TimeSpan.FromHours(3);
+            options.ExpireTimeSpan = TimeSpan.FromDays(7);
             options.LoginPath = "/login";
 
             options.Events.OnRedirectToLogin = context =>

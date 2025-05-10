@@ -1,12 +1,8 @@
 <h1 class="main-title">Comisiones Angelica Petul</h1>
 
-<app-periodo-select 
-  [periodos]="periodos" 
-  [defaultValue]="defaultPeriodo"
-  (periodoChange)="onPeriodoChange($event)">
-</app-periodo-select>
+<app-periodo-select [periodos]="periodos" [defaultValue]="currentPeriodo" (periodoChange)="onPeriodoChange($event)"> </app-periodo-select>
 
-<app-comisiones-resumen-neto [comision]="resumenCom" [periodo]="defaultPeriodo" [idAgente]="2" ></app-comisiones-resumen-neto>
+<app-comisiones-resumen-neto [comision]="resumenCom" [periodo]="currentPeriodo" [idAgente]="idAngelica" ></app-comisiones-resumen-neto>
 
 <app-dynamic-table 
   [tableTitle]="'Comisiones Angie'" 
@@ -32,7 +28,6 @@
   >
 </app-dynamic-table>
 
-<div class="mt-5 mb-5"></div>
 
 <div class="comisiones-ambos">
 

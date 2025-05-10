@@ -18,3 +18,11 @@ export const selectUserError = createSelector(
   getAuthFeatureState,
   state => state.error
 )
+
+export const selectUserViewModel = createSelector(
+  selectUserInfo,
+  user => ({
+    name: user?.name ?? '',
+    profilePictureUrl: user?.profilePictureUrl
+  })
+);

@@ -32,7 +32,6 @@ internal static class Extensions
         builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
 
-
         // Servicios de identidad
         builder.Services.AddMyIdentity();
 

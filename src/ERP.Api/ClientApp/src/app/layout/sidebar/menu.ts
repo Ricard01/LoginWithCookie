@@ -51,21 +51,16 @@ export const MENU: MenuItem[] = [
         icon: 'ph-duotone ph-tip-jar',
         parentId: 8,
         subItems: [
-            {
-                id: 50,
-                label: 'Comisiones Detalle',
-                link: '/comisiones',
-                parentId: 46
-            },
+ 
             {
                 id: 51,
-                label: 'Comisiones Angie',
+                label: 'Angie',
                 link: '/comisiones-angie',
                 parentId: 46,
             },
             {
                 id: 51,
-                label: 'Comisiones Ricardo',
+                label: 'Ricardo',
                 link: '/comisiones-ricardo',
                 parentId: 46,
           

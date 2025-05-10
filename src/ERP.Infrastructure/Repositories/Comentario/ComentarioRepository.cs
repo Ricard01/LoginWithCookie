@@ -15,7 +15,7 @@ public class ComentarioRepository : IComentarioRepository
 
     public async Task<ComentarioDto?> GetComentarioAgentePorPeriodo(int idAgente, DateTime periodo)
     {
-        return await _context.Comentarios
+        var comentario =  await _context.Comentarios
             .Where(x => x.IdAgente == idAgente && x.Periodo == periodo)
             .Select(x => new ComentarioDto
             {
@@ -25,6 +25,19 @@ public class ComentarioRepository : IComentarioRepository
                 Comentario = x.Comentario
             })
             .SingleOrDefaultAsync();
+
+        if (comentario == null)
+        {
+            return (new ComentarioDto
+            {
+                Id = 0,
+                IdAgente = idAgente,
+                Periodo = periodo,
+                Comentario = "" // sin comentario
+            });
+        }      
+
+        return comentario;
     }
 
     public async Task<ComentarioDto> GuardarOActualizarComentario(ComentarioDto dto)

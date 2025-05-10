@@ -16,7 +16,7 @@ public class DepositosRepository : IDepositosRepository
 
     public async Task<List<DepositoDto>> GetDepositos(int IdAgente, DateTime periodo)
     {
-        return await _context.Depositos
+        var depositos = await _context.Depositos
             .Where(c => c.IdAgente == IdAgente && c.Periodo == periodo)
             .Select(c => new DepositoDto
             {
@@ -27,6 +27,13 @@ public class DepositosRepository : IDepositosRepository
                 Comentario = c.Comentario
             })
             .ToListAsync();
+
+        if (depositos == null || depositos.Count == 0)
+        {
+            return new List<DepositoDto>();
+        }
+
+        return depositos; 
     }
 
     /// <summary>

@@ -26,6 +26,8 @@ public interface IComisionesRepository
 
     Task<ResumenComisionVm> GetResumenComisionesAngie(DateTime periodo);
 
+    Task<ResumenComisionVm> GetResumenComisionesRicardo(DateTime periodo);
+
     /// <summary>
     /// Obtiene la lista de Comisiones de Ricardo
     /// </summary>

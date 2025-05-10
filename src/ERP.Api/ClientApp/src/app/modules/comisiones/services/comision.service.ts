@@ -37,6 +37,11 @@ export class ComisionService {
     return this.http.get<IResumenComisionVm>(`${this.comisionesUrl}/angie/summary/${formattedPeriodo}`);
   }
 
+  getResumenComisionesRicardo(periodo: Date) {
+    const formattedPeriodo = periodo.toISOString();
+    return this.http.get<IResumenComisionVm>(`${this.comisionesUrl}/ricardo/summary/${formattedPeriodo}`);
+  }
+
   updateComisionAngie(movto: IMovimientoComisionAngie): Observable<any> {
     return this.http.patch(`${this.comisionesUrl}/angie/${movto.idMovimiento}`, movto);
   }

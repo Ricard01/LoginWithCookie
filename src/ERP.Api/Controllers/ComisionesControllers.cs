@@ -48,6 +48,14 @@ public class ComisionesController : ApiControllerBase
         return Ok(comisiones);
     }
 
+    [HttpGet("ricardo/summary/{periodo}")]
+    public async Task<ActionResult<ResumenComisionVm>> GetResumenComisionesRicardo(DateTime periodo)
+    {
+
+        var comisiones = await _comisionesRepository.GetResumenComisionesRicardo(periodo);
+        return Ok(comisiones);
+    }
+
     //  api/comisiones/ricardo/123
     [HttpPatch("ricardo/{idMovimiento}")]
     public async Task<ActionResult<MovimientoComisionRicardoDto>> ActualizarMovimientoRicardo(int idMovimiento, [FromBody] MovimientoComisionRicardoDto movimiento)

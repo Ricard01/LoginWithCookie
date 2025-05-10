@@ -30,6 +30,7 @@ public class ApplicationDbContextInitialiser
 
     private const string AdminRole = "Administrator";
     private const string AdminUser = "Admin";
+    private const string Angie = "Angie";
 
 
     public ApplicationDbContextInitialiser(
@@ -79,6 +80,7 @@ public class ApplicationDbContextInitialiser
         if (admin != null) return Task.CompletedTask;
 
         CreateAdminUser(_userManager);
+        CreateAngieUser(_userManager);
 
         var agentes = _context.Agentes.ToList();
 
@@ -115,7 +117,7 @@ public class ApplicationDbContextInitialiser
             ProfilePictureUrl = "https://avatars.githubusercontent.com/u/20118398?v=4"
         };
 
-        var result = userMgr.CreateAsync(admin, "Nolose99!").Result;
+        var result = userMgr.CreateAsync(admin, "nolose87").Result;
         if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
 
         result = userMgr.AddToRoleAsync(admin, AdminRole).Result;
@@ -123,6 +125,24 @@ public class ApplicationDbContextInitialiser
         if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
 
         Log.Information("User {Admin} created", admin.UserName);
+    }
+
+    private static void CreateAngieUser(UserManager<ApplicationUser> userMgr)
+    {
+        var angie = new ApplicationUser()
+        {
+            UserName = Angie,
+            Name = "Angélica",
+            Email = "angie891111@gmail.com",
+            ProfilePictureUrl = "https://avatars.githubusercontent.com/u/20118398?v=4"
+        };
+
+        var result = userMgr.CreateAsync(angie, "nolose").Result;
+        if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
+        result = userMgr.AddToRoleAsync(angie, AdminRole).Result;
+        if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
+        Log.Information("User {Angie} created", angie.UserName);
+
     }
 
     private static void CreateAdminRole(RoleManager<ApplicationRole> roleMgr)

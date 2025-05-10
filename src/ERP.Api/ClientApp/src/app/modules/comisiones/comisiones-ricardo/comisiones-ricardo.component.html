@@ -1,96 +1,43 @@
-<h4 class="title">Comisiones Ricardo</h4>
+<h1 class="main-title">Comisiones Ricardo Chavez</h1>
 
-<app-periodo-select 
-[periodos]="periodos" 
-[defaultValue]="defaultPeriodo" 
-(periodoChange)="onPeriodoChange($event)"
-></app-periodo-select>
+<app-periodo-select [periodos]="periodos" [defaultValue]="currentPeriodo" (periodoChange)="onPeriodoChange($event)"> </app-periodo-select>
 
-<div class="table-container">
- 
-      <ng-container *ngIf="this.dataSourceRicardo; else noItems" matSort matSortActive="cliente">
-        <table mat-table [dataSource]="this.dataSourceRicardo" class="mat-elevation-z8" matSort matSortActive="cliente" >
-            <ng-container matColumnDef="folio">
-                <th mat-header-cell *matHeaderCellDef> Folio </th>
-                <td mat-cell *matCellDef="let item"> {{item.serie }} {{item.folio}} </td>
-              </ng-container>
-          
-              <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                <td mat-cell *matCellDef="let item">{{ item.fecha | date: 'dd/MM/yyyy' }}</td>
-              </ng-container>
-          
-              <ng-container matColumnDef="cliente">
-                <th mat-header-cell *matHeaderCellDef> Cliente </th>
-                <td mat-cell *matCellDef="let item"> {{item.cliente}} </td>
-              </ng-container>
+<app-comisiones-resumen-neto [comision]="resumenCom" [periodo]="currentPeriodo" [idAgente]="idRicardo" ></app-comisiones-resumen-neto>
 
-                  
-              <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-                <td mat-cell *matCellDef="let item"> {{item.descripcion}} </td>
-              </ng-container>
-          
+<app-dynamic-table 
+  [tableTitle]="'Comisiones Ricardo'" 
+  [badgeClass]="'badge info'" 
+  [startSpanNum]=0
+  [data]="comisiones"
+  [columns]="columnsRicardoTable"
+  [totalColumns]="totalsRicardoTable"
+  [clickOnFolio]="true"
+  [contenido]="TipoContenidoOrigen.ComisionesAngie"
+  >
+</app-dynamic-table>
 
-              <ng-container matColumnDef="utilidad">
-                <th mat-header-cell *matHeaderCellDef> Utilidad </th>
-                <td mat-cell *matCellDef="let item"> {{item.utilidadRicardo | currency }} </td>
-              </ng-container>
+<app-dynamic-table 
+  [tableTitle]="'Gastos Ricardo'" 
+  [badgeClass]="'badge info'" 
+  [startSpanNum]=0
+  [data]="gastos"
+  [columns]="columnsGastosTable"
+  [totalColumns]="totalsGastosTable"
+  [clickOnFolio]="true"
+  [contenido]="TipoContenidoOrigen.Gastos"
+  >
+</app-dynamic-table>
 
 
-              <ng-container matColumnDef="iva">
-                <th mat-header-cell *matHeaderCellDef> IVA </th>
-                <td mat-cell *matCellDef="let item"> {{item.ivaRicardo | currency }} </td>
-              </ng-container>
+<div class="comisiones-ambos">
 
+  <app-dynamic-table 
+    [tableTitle]="'Comisiones Ambos'" 
+    [badgeClass]="'badge info'" 
+    [startSpanNum]=3
+    [data]="comisionesAmbos" 
+    [columns]="columnsAmbosTable" 
+    [totalColumns]="totalsAmbosTable">
+  </app-dynamic-table>
 
-              <ng-container matColumnDef="isr">
-                <th mat-header-cell *matHeaderCellDef> ISR </th>
-                <td mat-cell *matCellDef="let item"> {{item.isrRicardo | currency }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="empty">
-                <th mat-header-cell *matHeaderCellDef colspan="4"> 
-                    <mat-form-field class="min-w-64">
-                        <mat-icon
-                            class="icon-size-2"
-                            matPrefix
-                            >search</mat-icon>
-                         <input
-                            matInput
-                            (keyup)="applyFilter($event)"
-                            placeholder="Buscar  ..."
-                            #input>
-                    </mat-form-field>
-                 </th>
-              </ng-container>
-
-              <ng-container matColumnDef="utilidad-sum">
-                <th mat-header-cell *matHeaderCellDef >  {{ totalUtilidad | currency }} </th>
-              </ng-container>
-            
-              <ng-container matColumnDef="iva-sum">
-                <th mat-header-cell *matHeaderCellDef> {{totalIva | currency}} </th>
-              </ng-container>
-
-              <ng-container matColumnDef="isr-sum">
-                <th mat-header-cell *matHeaderCellDef> {{ totalIsr | currency }} </th>
-              </ng-container>
-          
-      
-              <tr class="sum-container" mat-header-row *matHeaderRowDef="['empty','utilidad-sum', 'iva-sum','isr-sum']"
-              class="example-second-header-row">
-          </tr>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      
-        </table>
-      </ng-container>
-
-
-      <ng-template #noItems>
-        <p>No hay datos para mostrar.</p>
-      </ng-template>
-    </div>
+</div>

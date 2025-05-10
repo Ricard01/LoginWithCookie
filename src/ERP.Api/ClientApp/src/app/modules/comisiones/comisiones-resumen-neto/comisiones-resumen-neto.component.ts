@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { IcomisionesPorPeriodo, IResumenComisionVm } from '../models/comision.model';
 import { ComisionService } from '../services/comision.service';
 import { GastoService } from '../../gastos/services/gasto.service';
@@ -20,17 +20,16 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './comisiones-resumen-neto.component.html',
   styleUrl: './comisiones-resumen-neto.component.scss'
 })
-export class ComisionesResumenNetoComponent implements OnInit, OnChanges {
-  utilidadPersonal: number = 0;
-  utilidadCompartida: number = 0;
-  utilidadCompartidaDivida: number = 0;
-  gastosOficina: number = 0;
-  utilidadTotal: number = 0;
-
-
+export class ComisionesResumenNetoComponent implements OnChanges {
   @Input() comision!: IResumenComisionVm;
   @Input() periodo!: Date;
-  @Input() idAgente: number = 0;
+  @Input() idAgente = 0;
+
+  utilidadPersonal = 0;
+  utilidadCompartida = 0;
+  utilidadCompartidaDivida = 0;
+  gastosOficina = 0;
+  utilidadTotal = 0;
 
   comentarioPersonalForm!: FormGroup;
   comentarioCompartidoForm!: FormGroup;
@@ -38,80 +37,38 @@ export class ComisionesResumenNetoComponent implements OnInit, OnChanges {
   comisionForm!: FormGroup;
   
 
-  constructor(public fb: FormBuilder, private snackBar: SnackbarService, private comisionesService: ComisionService, private gastosService: GastoService, private comentariosService: ComentarioService, private depositosService: DepositoService) { }
+  constructor(public fb: FormBuilder, private snackBar: SnackbarService, private comisionesService: ComisionService, private gastosService: GastoService, private comentariosService: ComentarioService, private depositosService: DepositoService) 
+  { this.initForms(); }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
 
-    if(this.periodo && this.comision) {
-
-      this.gastosService.getGastosOficina(this.periodo).subscribe({
-        next: (gastoOficina) => {
-          this.gastosOficina = gastoOficina;
-          this.utilidadPersonal =   (this.comision.personal.utilidad + this.comision.personal.ivaAfavor) - this.comision.personal.isrMensual;
-          this.utilidadCompartida =   this.comision.compartida.utilidad - (this.comision.compartida.isrMensual + this.gastosOficina);
-          this.utilidadCompartidaDivida = this.utilidadCompartida / 2;
-          this.utilidadTotal = this.utilidadPersonal + this.utilidadCompartidaDivida;
-        },
-        error: (err) => {
-          console.error('Error al obtener gastos de oficina:', err);
-        }
-      });
-
+    if ((changes['comision'] || changes['periodo']) && this.comision && this.periodo) {
+      this.loadDatos();
     }
 
   }
 
-  ngOnInit(): void {
-
-  
-    this.initForms();
-    this.loadDatos();
-  }
-
-
-
-
   get totalDepositos(): number {
-    return this.depositosFormArray.controls.reduce((acc, control) => {
-      const importe = control.get('importe')?.value || 0;
-      return acc + Number(importe);
+    return (this.depositosFormArray.value as IDeposito[]).reduce((acum, dep) => {
+      return acum + (dep.importe || 0);
     }, 0);
   }
   
-
-  private calcularTotalImportes(): number {
-    return this.depositosFormArray.controls.reduce((sum, ctrl) => {
-      return sum + (ctrl.get('importe')?.value || 0);
-    }, 0);
+  private initForms() {
+    this.comentarioPersonalForm = this.createComentarioForm(this.idAgente);
+    this.comentarioCompartidoForm = this.createComentarioForm(3);
+    this.depositosFormArray = this.fb.array([this.createDepositoForm()]);
+    this.comisionForm = this.createComisionForm();
   }
-  
 
-  private initForms(): void {
-
-    this.comentarioPersonalForm = this.fb.group({
+  private createComentarioForm(idAgente: number): FormGroup {
+    return this.fb.group({
       id: [''],
-      idAgente: [this.idAgente],
-      comentario: [''],
-      
-    });
-
-    this.comentarioCompartidoForm = this.fb.group({
-      id: [''],
-      idAgente: [3],
+      idAgente: [idAgente],
       comentario: ['']
     });
-  
-    this.depositosFormArray = this.fb.array([
-      this.createDepositoForm()
-    ]);
-  
-    this.comisionForm = this.fb.group({
-      comisionPersonal: [0, Validators.required],
-      comisionCompartida: [0, Validators.required],
-      totalComisionPagada: [0, Validators.required]
-    });
   }
-  
+
   private createDepositoForm(): FormGroup {
     return this.fb.group({
       id: [0],
@@ -119,57 +76,91 @@ export class ComisionesResumenNetoComponent implements OnInit, OnChanges {
       comentario: ['']
     });
   }
-  
 
-  private loadDatos(): void {
-    // Comentarios
-    this.comentariosService.getByIdAgenteAndPeriodo(this.idAgente, this.periodo).subscribe(res => {
-     
-      this.comentarioPersonalForm.patchValue({
-        id: res?.id || 0,
-        comentario: res?.comentario || ''
-      });
-    });
-  
-    this.comentariosService.getByIdAgenteAndPeriodo(3, this.periodo).subscribe(res => {
-   
-      this.comentarioCompartidoForm.patchValue({
-        id:res?.id || 0,
-        comentario: res?.comentario || ''
-      });
-    });
-  
-    // Depósitos
-    this.depositosService.get(this.idAgente, this.periodo).subscribe(depositos => {
-      if (depositos.length > 0) {
-        this.depositosFormArray.clear();
-        depositos.forEach(d => {
-
-          console.log('Deposito:', d);
-          this.depositosFormArray.push(this.fb.group({
-            id: [d.id],
-            importe: [d.importe, Validators.required],
-            comentario: [d.comentario || '']
-          }));
-        });
-      }
-    });
-  
-    // Total
-    this.comisionesService.getTotalPeriodo(this.idAgente, this.periodo).subscribe(resp => {
-      console.log('getTotalPeriodo:', resp);
-      this.comisionForm.patchValue(resp);
+  private createComisionForm(): FormGroup {
+    return this.fb.group({
+      comisionPersonal: [0, Validators.required],
+      comisionCompartida: [0, Validators.required],
+      totalComisionPagada: [0, Validators.required]
     });
   }
-  
+
+  private loadGastos(): void {
+    this.gastosService.getGastosOficina(this.periodo).subscribe({
+      next: (gastoOficina) => {
+        this.gastosOficina = gastoOficina;
+        this.calculateUtilities();
+      },
+      error: (err) => console.error('Error al obtener gastos de oficina:', err)
+    });
+  }
+
+  private calculateUtilities(): void {
+    this.utilidadPersonal = (this.comision.personal.utilidad + this.comision.personal.ivaAfavor) - this.comision.personal.isrMensual;
+    this.utilidadCompartida = this.comision.compartida.utilidad - (this.comision.compartida.isrMensual + this.gastosOficina);
+    this.utilidadCompartidaDivida = this.utilidadCompartida / 2;
+    this.utilidadTotal = this.utilidadPersonal + this.utilidadCompartidaDivida;
+  }
+
+  private loadDatos(): void {
+    this.loadGastos();
+    this.loadComentarios();
+    this.loadDepositos();
+    this.loadComisionTotal();
+  }
+
+  private loadComentarios(): void {
+    forkJoin([
+      this.comentariosService.getByIdAgenteAndPeriodo(this.idAgente, this.periodo),
+      this.comentariosService.getByIdAgenteAndPeriodo(3, this.periodo)
+    ]).subscribe(([personal, compartido]) => {
+      this.patchComentarioForm(this.comentarioPersonalForm, personal);
+      this.patchComentarioForm(this.comentarioCompartidoForm, compartido);
+    });
+  }
+
+  private patchComentarioForm(form: FormGroup, comentario: IComentario | undefined): void {
+    form.patchValue({
+      id: comentario?.id || 0,
+      comentario: comentario?.comentario || ''
+    });
+  }
+
+  private loadDepositos(): void {
+    this.depositosService.get(this.idAgente, this.periodo).subscribe(depositos => {
+
+   
+      this.depositosFormArray.clear();
+
+      if (depositos.length === 0) {
+        this.depositosFormArray.push(this.createDepositoForm());
+      } else {
+        depositos.forEach(d => this.depositosFormArray.push(this.createDepositoFormWithData(d)));
+      }
+    
+    });
+  }
+
+  private createDepositoFormWithData(deposito: IDeposito): FormGroup {
+    return this.fb.group({
+      id: [deposito.id],
+      importe: [deposito.importe, Validators.required],
+      comentario: [deposito.comentario || '']
+    });
+  }
+
+  private loadComisionTotal(): void {
+    this.comisionesService.getTotalPeriodo(this.idAgente, this.periodo)
+      .subscribe(resp => this.comisionForm.patchValue(resp));
+  }
+
   agregarDeposito(): void {
     this.depositosFormArray.push(this.createDepositoForm());
   }
 
   eliminarDeposito(index: number): void {
  
-    const depositoFormGroup = this.depositosFormArray.at(index) as FormGroup;
-    const depositoId = depositoFormGroup.get('id')?.value;
+    const depositoId = this.depositosFormArray.at(index).get('id')?.value;
   
     // Si el Id existe y es > 0, significa que está en BD y hay que hacer DELETE
     if (depositoId && depositoId > 0) {
@@ -188,7 +179,6 @@ export class ComisionesResumenNetoComponent implements OnInit, OnChanges {
     }
   }
   
-
   guardarTodo(): void {
     const idAgente = this.idAgente;
     const periodo = this.periodo;
@@ -237,6 +227,5 @@ export class ComisionesResumenNetoComponent implements OnInit, OnChanges {
       error: () => this.snackBar.error('Error al guardar información')
     });
   }
-  
 
 }

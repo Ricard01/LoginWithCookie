@@ -142,6 +142,11 @@ public class ComisionesRepository : IComisionesRepository
         return await GetResumenComisionesAgente(CONTPAQi.IdAgente.AngelicaPetul, periodo);
     }
 
+    public async Task<ResumenComisionVm> GetResumenComisionesRicardo(DateTime periodo)
+    {
+        return await GetResumenComisionesAgente(CONTPAQi.IdAgente.RicardoChavez, periodo);
+    }
+
     public async Task<ResumenComisionVm> GetResumenComisionesAgente(int idAgente, DateTime periodo)
     {
         var comisionPersonal = await GetComisionPersonal(idAgente, periodo);
@@ -176,6 +181,7 @@ public class ComisionesRepository : IComisionesRepository
             }
         };
     }
+
 
     private async Task<ComisionPersonalDto> GetComisionPersonal(int idAgente, DateTime periodo)
     {
@@ -364,11 +370,16 @@ public class ComisionesRepository : IComisionesRepository
 
     }
 
+
+    /// <summary>
+    /// Obtiene el total de comisiones de un agente para un periodo determinado.
+    /// </summary>
+    /// <param name="IdAgente">IdAgente.</param>
+    /// <param name="periodo">Periodo.</param>
+    /// <returns>Regresa el total de comisiones (comisionPersonal, ComisionCompartida, ComisionTotal de un periodo o un elemento vacio en el caso que no existan datos para mostrar en las vistas de resumen por agente.</returns>
     public async Task<ComisionPeriodoDto?> GetTotalesComisionPorPeriodo(int IdAgente, DateTime periodo)
     {
-
-
-        return await _context.ComisionesPorPeriodo
+        var totalComisiones =  await _context.ComisionesPorPeriodo
             .Where(c => c.IdAgente == IdAgente && c.Periodo == periodo)
             .Select(c => new ComisionPeriodoDto
             {
@@ -380,6 +391,21 @@ public class ComisionesRepository : IComisionesRepository
                 TotalComisionPagada = c.TotalComisionPagada
             })
             .FirstOrDefaultAsync();
+
+        if ( totalComisiones == null )
+        {
+            return new ComisionPeriodoDto
+            {
+                Id = 0,
+                IdAgente = IdAgente,
+                Periodo = periodo,
+                ComisionPersonal = 0,
+                ComisionCompartida = 0,
+                TotalComisionPagada = 0
+            };
+        }
+
+        return totalComisiones;
     }
 
     public async Task<MovimientoComisionRicardoDto> UpdateMovtoComisionRicardoAsync(int Id, MovimientoComisionRicardoDto movto)

@@ -10,14 +10,15 @@
     <!-- userMenu STARTS -->
     <button id="userBtn" mat-button [matMenuTriggerFor]="userMenu" (menuOpened)="menuOpened()"
             (menuClosed)=menuClosed()>
-
+<ng-container *ngIf="user$ | async as user">
       <span class="d-flex justify-content-start">
-        <img class="rounded-circle img-profile-user" width="30" height="30" src="assets/images/user.png" alt="Profile Picture">
-        <span>Ricardo Chavez</span>
+        <img class="rounded-circle img-profile-user" width="30" height="30" [src]="user.profilePictureUrl" alt="Profile Picture">
+        <span>{{ user.name}}</span>
 
         <mat-icon class="mx-2" *ngIf="menuOpen">expand_less</mat-icon>
         <mat-icon class="mx-2" *ngIf="!menuOpen">expand_more</mat-icon>
       </span>
+      </ng-container>
     </button>
 
     <mat-menu #userMenu="matMenu"[hasBackdrop]="false" >

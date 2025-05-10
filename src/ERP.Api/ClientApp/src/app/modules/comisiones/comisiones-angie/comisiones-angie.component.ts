@@ -23,7 +23,8 @@ import { ComisionesResumenNetoComponent } from "../comisiones-resumen-neto/comis
 export class ComisionesAngieComponent implements OnInit {
 
   periodos = this.periodoService.getPeriodos();
-  defaultPeriodo: Date = this.periodoService.getCurrentMonth();
+  currentPeriodo: Date = this.periodoService.getCurrentMonth();
+  readonly idAngelica = 2
   TipoContenidoOrigen = TipoContenidoOrigen; 
   resumenCom!: IResumenComisionVm;
 
@@ -76,10 +77,11 @@ export class ComisionesAngieComponent implements OnInit {
   constructor(private periodoService: PeriodoService, private comisionService: ComisionService, private gastoService: GastoService) { }
 
   ngOnInit() {
-    this.cargarComisiones(this.defaultPeriodo);
+    this.cargarComisiones(this.currentPeriodo);
   }
 
   onPeriodoChange(periodo: Date): void {
+    this.currentPeriodo = periodo;
     this.cargarComisiones(periodo);
   }
 

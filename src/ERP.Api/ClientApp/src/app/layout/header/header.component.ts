@@ -3,6 +3,9 @@ import {Store} from "@ngrx/store";
 import * as AuthActions from "../../state/auth/auth.actions";
 import {IAppState} from "../../state/app.state";
 import {TabService} from "../../core/services/tab.service";
+import { Observable } from 'rxjs';
+import { IAuthUser } from 'src/app/core/models/auth-model';
+import { selectUserInfo, selectUserViewModel } from 'src/app/state/auth/auth.selectors';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +17,11 @@ export class HeaderComponent implements DoCheck {
 
   @Output() toggleSidenav = new EventEmitter<void>();
 
+  user$: Observable<IAuthUser>;
   constructor(public store: Store<IAppState>, private tabService: TabService) {
+ 
 
+  this.user$ = this.store.select(selectUserViewModel);
   }
 
   ngDoCheck() {
