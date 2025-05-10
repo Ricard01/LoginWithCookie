@@ -16,7 +16,7 @@ public class ComentarioRepository : IComentarioRepository
     public async Task<ComentarioDto?> GetComentarioAgentePorPeriodo(int idAgente, DateTime periodo)
     {
         var comentario =  await _context.Comentarios
-            .Where(x => x.IdAgente == idAgente && x.Periodo == periodo)
+            .Where(x => x.IdAgente == idAgente && x.Periodo.Year == periodo.Year && x.Periodo.Month == periodo.Month && x.Periodo.Day == periodo.Day)
             .Select(x => new ComentarioDto
             {
                 Id = x.Id,
@@ -54,7 +54,7 @@ public class ComentarioRepository : IComentarioRepository
                 throw new InvalidOperationException($"No se encontró un comentario con Id {dto.Id} para actualizar.");
 
             comentario.IdAgente = dto.IdAgente;
-            comentario.Periodo = dto.Periodo;
+            comentario.Periodo = dto.Periodo.Date;
             comentario.Comentario = dto.Comentario;
         }
         else
@@ -62,7 +62,7 @@ public class ComentarioRepository : IComentarioRepository
             comentario = new Comentarios
             {
                 IdAgente = dto.IdAgente,
-                Periodo = dto.Periodo,
+                Periodo = dto.Periodo.Date,
                 Comentario = dto.Comentario
             };
 

@@ -17,7 +17,7 @@ public class DepositosRepository : IDepositosRepository
     public async Task<List<DepositoDto>> GetDepositos(int IdAgente, DateTime periodo)
     {
         var depositos = await _context.Depositos
-            .Where(c => c.IdAgente == IdAgente && c.Periodo == periodo)
+            .Where(c => c.IdAgente == IdAgente && c.Periodo.Year == periodo.Year && c.Periodo.Month == periodo.Month && c.Periodo.Day == periodo.Day)
             .Select(c => new DepositoDto
             {
                 Id = c.Id,
@@ -75,7 +75,7 @@ public class DepositosRepository : IDepositosRepository
                 depositoEntity = new DepositoEntity
                 {
                     IdAgente = idAgente,
-                    Periodo = periodo,
+                    Periodo = periodo.Date,
                     Importe = dto.Importe,
                     Comentario = dto.Comentario
                 };
@@ -88,7 +88,8 @@ public class DepositosRepository : IDepositosRepository
 
         // Devuelvo los depósitos del agente del respectivo periodo
         var depositosActualizados = await _context.Depositos
-            .Where(d => d.IdAgente == idAgente && d.Periodo == periodo)
+            .Where(d => d.IdAgente == idAgente && 
+            d.Periodo.Year == periodo.Year && d.Periodo.Month == periodo.Month && d.Periodo.Day == periodo.Day)
             .Select(d => new DepositoDto
             {
                 Id = d.Id,

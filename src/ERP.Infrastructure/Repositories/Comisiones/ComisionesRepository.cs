@@ -342,7 +342,7 @@ public class ComisionesRepository : IComisionesRepository
             if (entidad == null)
                 throw new InvalidOperationException($"No se encontró un registro con Id {dto.Id} para actualizar.");
             entidad.IdAgente = dto.IdAgente;
-            entidad.Periodo = dto.Periodo;
+            entidad.Periodo = dto.Periodo.Date;
             entidad.ComisionPersonal = dto.ComisionPersonal;
             entidad.ComisionCompartida = dto.ComisionCompartida;
             entidad.TotalComisionPagada = dto.TotalComisionPagada;
@@ -353,7 +353,7 @@ public class ComisionesRepository : IComisionesRepository
             entidad = new ComisionesPorPeriodo
             {
                 IdAgente = dto.IdAgente,
-                Periodo = dto.Periodo,
+                Periodo = dto.Periodo.Date,
                 ComisionPersonal = dto.ComisionPersonal,
                 ComisionCompartida = dto.ComisionCompartida,
                 TotalComisionPagada = dto.TotalComisionPagada
@@ -380,7 +380,7 @@ public class ComisionesRepository : IComisionesRepository
     public async Task<ComisionPeriodoDto?> GetTotalesComisionPorPeriodo(int IdAgente, DateTime periodo)
     {
         var totalComisiones =  await _context.ComisionesPorPeriodo
-            .Where(c => c.IdAgente == IdAgente && c.Periodo == periodo)
+            .Where(c => c.IdAgente == IdAgente && c.Periodo.Year == periodo.Year && c.Periodo.Month == periodo.Month && c.Periodo.Day == periodo.Day)
             .Select(c => new ComisionPeriodoDto
             {
                 Id = c.Id,
