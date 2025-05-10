@@ -38,7 +38,7 @@ public class GastosController : ApiControllerBase
 
     [HttpPatch("{IdMovimiento}")]
     public async Task<ActionResult<MovimientoDto>> UpdateMovientoAsync(int IdMovimiento, [FromBody] MovimientoDto Movto)
-    {
+     {
         var mov = await _gastosRepository.UpdateMovtoGastoAsync(IdMovimiento, Movto);
 
         return Ok(mov);

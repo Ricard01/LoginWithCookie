@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IDeposito, IDepositosRequestDto } from '../models/depositos.model';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +14,7 @@ export class DepositoService {
 
     get(idAgente: number, periodo: Date) {
         const formattedPeriodo = periodo.toISOString();
-        return this.http.get<IDeposito[]>(`${this.depositosUrl}?idAgente=${idAgente}&periodo=${formattedPeriodo}`);
+        return this.http.get<IDeposito[]>(`${this.depositosUrl}?idAgente=${idAgente}&periodo=${formattedPeriodo}`).pipe(shareReplay(1));
     }
 
     save(requestDto: IDepositosRequestDto): Observable<IDeposito[]> {

@@ -21,6 +21,8 @@ $light-theme: mat.define-light-theme((
 // Apply core and component themes
 @include mat.core-theme($light-theme);
 @include mat.button-theme($light-theme);
+@include mat.select-theme($light-theme);
+@include mat.option-theme($light-theme);
 @include mat.dialog-theme($light-theme);
 @include mat.form-field-theme($light-theme);
 @include mat.input-theme($light-theme);

@@ -35,16 +35,22 @@ export class ComisionesResumenNetoComponent implements OnChanges {
   comentarioCompartidoForm!: FormGroup;
   depositosFormArray!: FormArray;
   comisionForm!: FormGroup;
-  
+  lastPeriodoStr = '';
 
   constructor(public fb: FormBuilder, private snackBar: SnackbarService, private comisionesService: ComisionService, private gastosService: GastoService, private comentariosService: ComentarioService, private depositosService: DepositoService) 
   { this.initForms(); }
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if ((changes['comision'] || changes['periodo']) && this.comision && this.periodo) {
-      this.loadDatos();
-    }
+     const newPeriodoStr = this.periodo?.toISOString();
+
+  if ((changes['comision'] || changes['periodo']) 
+      && this.comision && this.periodo 
+      && newPeriodoStr !== this.lastPeriodoStr) {
+
+    this.lastPeriodoStr = newPeriodoStr;
+    this.loadDatos();
+      }
 
   }
 

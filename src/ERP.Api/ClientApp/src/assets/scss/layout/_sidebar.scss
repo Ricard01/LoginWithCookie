@@ -41,7 +41,7 @@
       font-family: $sidenav-font-family;
       margin: 0.25rem 0.75rem;
       font-weight: $sidenav-font-weight;
-      position: relative; // added 2024
+      // position: relative; // added 2024
 
       &.active {
         font-weight: 500;
