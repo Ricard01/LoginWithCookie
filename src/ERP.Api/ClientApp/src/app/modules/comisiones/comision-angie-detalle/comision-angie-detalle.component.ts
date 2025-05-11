@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -22,14 +22,14 @@ export class ComisionAngieDetalleComponent {
   nuevoNeto: number = 0;
 
 
-  constructor( private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {
+  constructor(private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {
 
   }
 
 
-ngOnInit() {
-  this.nuevoNeto = this.data.neto;
-}
+  ngOnInit() {
+    this.nuevoNeto = this.data.neto;
+  }
 
   guardar() {
 
@@ -49,17 +49,14 @@ ngOnInit() {
 
   }
 
-    calcMovtoComisiones(): void {
-    
+  calcMovtoComisiones(): void {
+    const isr = this.nuevoNeto * 0.0125;
+    const iva = this.nuevoNeto * 0.16;
+    const utilidad = this.nuevoNeto - isr;
 
-      const isr = this.nuevoNeto * 0.0125;
-const iva = this.nuevoNeto * 0.16;
-const utilidad = this.nuevoNeto - isr;
+    this.data.ivaAngie = iva;
+    this.data.isrAngie = isr;
+    this.data.utilidadAngie = utilidad;
+  }
 
-this.data.ivaAngie = iva;
-this.data.isrAngie = isr;
-this.data.utilidadAngie = utilidad;
-
-    }
-  
 }

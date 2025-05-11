@@ -91,7 +91,7 @@ export class ComisionesResumenNetoComponent implements OnChanges {
     });
   }
 
-  private loadGastos(): void {
+  private loadGastosOficina(): void {
     this.gastosService.getGastosOficina(this.periodo).subscribe({
       next: (gastoOficina) => {
         this.gastosOficina = gastoOficina;
@@ -102,6 +102,13 @@ export class ComisionesResumenNetoComponent implements OnChanges {
   }
 
   private calculateUtilities(): void {
+      if (!this.comision || !this.comision.personal || !this.comision.compartida) {
+    console.warn('No se puede calcular: comision incompleta', this.comision);
+    return;
+  }
+
+    console.log('Calculando utilidades');
+    console.log('comision', this.comision);
     this.utilidadPersonal = (this.comision.personal.utilidad + this.comision.personal.ivaAfavor) - this.comision.personal.isrMensual;
     this.utilidadCompartida = this.comision.compartida.utilidad - (this.comision.compartida.isrMensual + this.gastosOficina);
     this.utilidadCompartidaDivida = this.utilidadCompartida / 2;
@@ -109,10 +116,10 @@ export class ComisionesResumenNetoComponent implements OnChanges {
   }
 
   private loadDatos(): void {
-    this.loadGastos();
     this.loadComentarios();
     this.loadDepositos();
     this.loadComisionTotal();
+    this.loadGastosOficina();
   }
 
   private loadComentarios(): void {
@@ -156,8 +163,11 @@ export class ComisionesResumenNetoComponent implements OnChanges {
   }
 
   private loadComisionTotal(): void {
+    console.log('Cargando loadComisionTotal');
     this.comisionesService.getTotalPeriodo(this.idAgente, this.periodo)
-      .subscribe(resp => this.comisionForm.patchValue(resp));
+      .subscribe(resp => {
+        console.log('getTotalPeriodo', resp);
+        this.comisionForm.patchValue(resp);});
   }
 
   agregarDeposito(): void {
