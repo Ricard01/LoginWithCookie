@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Infrastructure.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410000600_AlterTableComisionesPorPeriodo")]
-    partial class AlterTableComisionesPorPeriodo
+    [Migration("20250512232724_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,7 +188,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Periodo")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.HasKey("Id");
 
@@ -213,7 +213,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Periodo")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<double>("TotalComisionPagada")
                         .HasColumnType("float");
@@ -241,7 +241,7 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                         .HasColumnType("float");
 
                     b.Property<DateTime>("Periodo")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.HasKey("Id");
 

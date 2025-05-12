@@ -30,9 +30,6 @@
       <ProjectReference Include="..\ERP.Domain\ERP.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Data\Migrations\" />
-    </ItemGroup>
-    <ItemGroup>
       <None Include="Repositories\Comentario\IComentarioRepository.cs" />
     </ItemGroup>
 

@@ -29,7 +29,7 @@ public class ApplicationDbContextInitialiser
     private readonly RoleManager<ApplicationRole> _roleManager;
 
     private const string AdminRole = "Administrator";
-    private const string AdminUser = "Admin";
+    private const string AdminUser = "Ricardo";
     private const string Angie = "Angie";
 
 
@@ -117,7 +117,7 @@ public class ApplicationDbContextInitialiser
             ProfilePictureUrl = "https://avatars.githubusercontent.com/u/20118398?v=4"
         };
 
-        var result = userMgr.CreateAsync(admin, "nolose87").Result;
+        var result = userMgr.CreateAsync(admin, "nolose8701").Result;
         if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
 
         result = userMgr.AddToRoleAsync(admin, AdminRole).Result;
@@ -134,10 +134,10 @@ public class ApplicationDbContextInitialiser
             UserName = Angie,
             Name = "Angélica",
             Email = "angie891111@gmail.com",
-            ProfilePictureUrl = "https://avatars.githubusercontent.com/u/20118398?v=4"
+            ProfilePictureUrl = "../../assets/images/angie.png"
         };
 
-        var result = userMgr.CreateAsync(angie, "nolose").Result;
+        var result = userMgr.CreateAsync(angie, "nolose89").Result;
         if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
         result = userMgr.AddToRoleAsync(angie, AdminRole).Result;
         if (!result.Succeeded) throw new Exception(result.Errors.First().Description);

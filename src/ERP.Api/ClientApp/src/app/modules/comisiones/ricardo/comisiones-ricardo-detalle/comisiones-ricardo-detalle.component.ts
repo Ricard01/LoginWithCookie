@@ -17,16 +17,12 @@ import { IMovimientoComisionRicardo } from '../../models/comision.model';
 export class ComisionesRicardoDetalleComponent {
 
   @Input() data: any;
-  // MovimientoComisionAngie: IMovimientoComisionRicardo | undefined;
   nuevoNeto: number = 0;
 
-  constructor(private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {
-  }
+  constructor(private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {}
 
   ngOnInit() {
     this.nuevoNeto = this.data.neto;
-
-    console.log('data Ricardo', this.data);
   }
 
   guardar() {

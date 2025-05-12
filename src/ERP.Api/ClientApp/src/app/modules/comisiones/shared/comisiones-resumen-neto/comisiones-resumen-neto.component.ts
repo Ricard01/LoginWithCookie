@@ -10,7 +10,7 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { GastoService } from 'src/app/modules/gastos/services/gasto.service';
-import { IResumenComisionVm, IcomisionesPorPeriodo } from '../../models/comision.model';
+import { IResumenComisionVm, IcomisionesPorPeriodo as IComisionesPorPeriodo } from '../../models/comision.model';
 import { ComisionService } from '../../services/comision.service';
 
 @Component({
@@ -107,8 +107,8 @@ export class ComisionesResumenNetoComponent implements OnChanges {
     return;
   }
 
-    console.log('Calculando utilidades');
-    console.log('comision', this.comision);
+    // console.log('Calculando utilidades');
+    // console.log('comision', this.comision);
     this.utilidadPersonal = (this.comision.personal.utilidad + this.comision.personal.ivaAfavor) - this.comision.personal.isrMensual;
     this.utilidadCompartida = this.comision.compartida.utilidad - (this.comision.compartida.isrMensual + this.gastosOficina);
     this.utilidadCompartidaDivida = this.utilidadCompartida / 2;
@@ -163,10 +163,10 @@ export class ComisionesResumenNetoComponent implements OnChanges {
   }
 
   private loadComisionTotal(): void {
-    console.log('Cargando loadComisionTotal');
+
     this.comisionesService.getTotalPeriodo(this.idAgente, this.periodo)
       .subscribe(resp => {
-        console.log('getTotalPeriodo', resp);
+       
         this.comisionForm.patchValue(resp);});
   }
 
@@ -226,22 +226,23 @@ export class ComisionesResumenNetoComponent implements OnChanges {
       depositos
     }
   
-    const total: IcomisionesPorPeriodo = {
+    const totalesComisionesDelPeriodo: IComisionesPorPeriodo = {
       idAgente,
       periodo,
-      comisionPersonal: this.comisionForm.get('comisionPersonal')?.value,
-      comisionCompartida: this.comisionForm.get('comisionCompartida')?.value,
-      totalComisionPagada: this.comisionForm.get('total')?.value
+      comisionPersonal:   this.utilidadPersonal ,
+      comisionCompartida: this.utilidadCompartidaDivida,
+      totalComisionPagada: this.comisionForm.get('totalComisionPagada')?.value      
     };
+    // console.log('totalesComisionesDelPeriodo', totalesComisionesDelPeriodo);
   
     forkJoin([
       ...comentarios.map(c => this.comentariosService.save(c)),
       this.depositosService.save(depositoRequest),
-      this.comisionesService.saveTotals(total)
+      this.comisionesService.saveTotals(totalesComisionesDelPeriodo)
     ]).subscribe({
       next: () => this.snackBar.success('Información guardada con éxito'),
       error: () => this.snackBar.error('Error al guardar información')
     });
-  }
+   }
 
 }

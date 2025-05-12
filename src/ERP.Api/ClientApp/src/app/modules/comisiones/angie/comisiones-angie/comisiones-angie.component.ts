@@ -95,7 +95,7 @@ export class ComisionesAngieComponent implements OnInit {
       gastos: this.gastoService.getGastosAgente(2, periodo)
     }).subscribe({
       next: ({ resumenCom, angie, ambos, gastos }) => {
-        console.log('Angie', angie);
+        // console.log('Angie', angie);
 
         this.resumenCom = resumenCom;
         this.comisionesAngie = angie;

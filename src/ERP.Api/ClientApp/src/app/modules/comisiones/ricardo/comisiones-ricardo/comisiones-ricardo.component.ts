@@ -15,7 +15,7 @@ import { ComisionesResumenNetoComponent } from '../../shared/comisiones-resumen-
 @Component({
   selector: 'app-comisiones-ricardo',
   standalone: true,
-  imports: [CommonModule, PeriodoSelectComponent, DynamicTableComponent, ComisionesResumenNetoComponent],
+  imports: [CommonModule, PeriodoSelectComponent,  ComisionesResumenNetoComponent],
   templateUrl: './comisiones-ricardo.component.html',
   styleUrl: './comisiones-ricardo.component.scss'
 })
@@ -94,8 +94,7 @@ export class ComisionesRicardoComponent implements OnInit {
       gastosAgente: this.gastoService.getGastosAgente(this.idRicardo, periodo)
     }).subscribe({
       next: ({ resumenCom, ricardo, ambos, gastosAgente }) => {
-
-        console.log(' Comisiones:', ricardo);
+   
         this.resumenCom = resumenCom;
         this.comisiones = ricardo;
         this.comisionesAmbos = ambos;

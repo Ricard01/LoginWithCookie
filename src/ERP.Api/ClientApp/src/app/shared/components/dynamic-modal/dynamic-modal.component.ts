@@ -25,7 +25,6 @@ export class DynamicModalComponent {
       public dialogRef: MatDialogRef<DynamicModalComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-      console.log('data', data);
       this.origen = data.origenContenido as TipoContenidoOrigen;
      }
 

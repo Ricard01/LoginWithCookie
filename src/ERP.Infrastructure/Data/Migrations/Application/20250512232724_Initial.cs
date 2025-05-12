@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -64,6 +65,54 @@ namespace ERP.Infrastructure.Data.Migrations.Application
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ANY.Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comentarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdAgente = table.Column<int>(type: "int", nullable: false),
+                    Periodo = table.Column<DateTime>(type: "Date", nullable: false),
+                    Comentario = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comentarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ComisionesPorPeriodo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdAgente = table.Column<int>(type: "int", nullable: false),
+                    Periodo = table.Column<DateTime>(type: "Date", nullable: false),
+                    ComisionPersonal = table.Column<double>(type: "float", nullable: false),
+                    ComisionCompartida = table.Column<double>(type: "float", nullable: false),
+                    TotalComisionPagada = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComisionesPorPeriodo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Depositos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdAgente = table.Column<int>(type: "int", nullable: false),
+                    Importe = table.Column<double>(type: "float", nullable: false),
+                    Periodo = table.Column<DateTime>(type: "Date", nullable: false),
+                    Comentario = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Depositos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,6 +371,15 @@ namespace ERP.Infrastructure.Data.Migrations.Application
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Comentarios");
+
+            migrationBuilder.DropTable(
+                name: "ComisionesPorPeriodo");
+
+            migrationBuilder.DropTable(
+                name: "Depositos");
 
             migrationBuilder.DropTable(
                 name: "Movimientos");

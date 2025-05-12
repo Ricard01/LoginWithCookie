@@ -21,15 +21,10 @@ export class ComisionesAngieDetalleComponent {
   nuevoNeto: number = 0;
 
 
-  constructor(private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {
-
-  }
-
+  constructor(private dialogRef: MatDialogRef<any>, private comService: ComisionService, private snackBar: SnackbarService) {}
 
   ngOnInit() {
     this.nuevoNeto = this.data.neto;
-
-    console.log('data Angie', this.data);
   }
 
   guardar() {
