@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>
+  <div class="d-flex justify-content-between">
+    <span>{{ data.folio }}</span>
+    <span> {{ data.cliente }} </span>
+    <span>{{ data.fecha | date:'dd/MM/yyyy' }}</span>
+  </div>
+</h2>
+
+<mat-dialog-content>
+  <p class="mb-3"><strong>{{ data.nombreProducto }} </strong> {{ data.descripcion }} </p>
+
+  <div class="d-flex justify-content-end">
+    <p><strong>Neto:</strong> {{ data.neto | currency }}
+      <strong class="ms-3">Utilidad Global:</strong> {{ data.utilidad | currency }}
+    </p>
+  </div>
+
+  <hr class="mt-1">
+
+  <div class="row g-3  mt-1">
+
+    <p class="col-sm-6  align-self-center">
+      <strong>Neto Base ${{ data.utilidadRicardo + data.isrRicardo }} </strong> <small>( con el que se realizaron los
+        cálculos) </small>
+    </p>
+
+    <label for="nuevoNeto" class="col-sm-3 col-form-label col-form-label-sm align-self-center"> Nuevo Neto para calc. </label>
+
+    <div class="col-sm-3">
+      <div class="d-flex align-items-center gap-2">
+        <input class="form-control form-control-sm" id="nuevoNeto" [(ngModel)]="nuevoNeto" name="nuevoNeto"
+          type="number" />
+
+        <button mat-icon-button matTooltip="Calcular comisión" matTooltipPosition="left" aria-label="calcular"
+          (click)="calcMovtoComisiones()">
+          <mat-icon>calculate</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="mt-1">
+
+  <div class="row g-4 mt-1">
+
+    <div class="col">
+      <label for="utilidadRicardo" class="col-form-label col-form-label-sm"> Utilidad Personal</label>
+      <input class="form-control form-control-sm" id="utilidadRicardo" [(ngModel)]="data.utilidadRicardo"
+        name="utilidadRicardo" type="number" />
+    </div>
+    <div class="col">
+      <label class="col-form-label col-form-label-sm">IVA</label>
+      <input class="form-control form-control-sm" [(ngModel)]="data.ivaRicardo" name="ivaRicardo" type="number" />
+    </div>
+
+    <div class="col">
+      <label class="col-form-label col-form-label-sm">ISR</label>
+      <input class="form-control form-control-sm" [(ngModel)]="data.isrRicardo" name="isrRicardo" type="number" />
+    </div>
+    <div class="col">
+      <label class="col-form-label col-form-label-sm">IVA Ret.</label>
+      <input class="form-control form-control-sm" [(ngModel)]="data.ivaRetenido" name="ivaRicardo" type="number" />
+    </div>
+
+  </div>
+
+  <div class="input-group input-group-sm  mt-2">
+    <span class="input-group-text">Observaciones </span>
+    <textarea class="form-control form-control-sm" [(ngModel)]="data.observaciones" name="observaciones"
+      aria-label="observaciones"></textarea>
+  </div>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar </button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

@@ -93,7 +93,7 @@ export class DynamicTableComponent implements OnInit, OnChanges {
   }
 
   
-  mostrarDetalle(row: any ) {
+  showDetail(row: any ) {
 
       this.dialog.open(DynamicModalComponent, {
         width: '800px',

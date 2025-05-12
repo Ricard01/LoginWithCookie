@@ -1,16 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ComisionService } from '../services/comision.service';
-import { PeriodoService } from 'src/app/shared/services/periodo.service';
-import { IComisionAngie, IComisionesAmbos, IResumenComisionVm } from '../models/comision.model';
+import { forkJoin } from 'rxjs';
+import { IGasto } from 'src/app/modules/gastos/models/gasto.model';
+import { GastoService } from 'src/app/modules/gastos/services/gasto.service';
+import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
 import { PeriodoSelectComponent } from 'src/app/shared/components/periodo-select.componet';
 import { ColumnDefinition } from 'src/app/shared/models/column.model';
-import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
-import { forkJoin } from 'rxjs';
 import { TipoContenidoOrigen } from 'src/app/shared/models/tipo.contenido.model';
-import { GastoService } from '../../gastos/services/gasto.service';
-import { IGasto } from '../../gastos/models/gasto.model';
-import { CommonModule } from '@angular/common';
-import { ComisionesResumenNetoComponent } from "../comisiones-resumen-neto/comisiones-resumen-neto.component";
+import { PeriodoService } from 'src/app/shared/services/periodo.service';
+import { IResumenComisionVm, IComisionAngie, IComisionesAmbos } from '../../models/comision.model';
+import { ComisionService } from '../../services/comision.service';
+import { ComisionesResumenNetoComponent } from '../../shared/comisiones-resumen-neto/comisiones-resumen-neto.component';
+
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ComisionesAngieComponent implements OnInit {
   periodos = this.periodoService.getPeriodos();
   currentPeriodo: Date = this.periodoService.getCurrentMonth();
   readonly idAngelica = 2
-  TipoContenidoOrigen = TipoContenidoOrigen; 
+  TipoContenidoOrigen = TipoContenidoOrigen;
   resumenCom!: IResumenComisionVm;
 
 
@@ -42,7 +43,7 @@ export class ComisionesAngieComponent implements OnInit {
     { key: 'ivaRetenido', header: 'Iva Ret', format: 'currency' },
 
   ];
-  totalsAngieTable = ['total_neto', 'total_utilidadAngie', 'total_descuento', 'total_ivaAngie', 'total_isrAngie', 'total_ivaRetenido', ]
+  totalsAngieTable = ['total_neto', 'total_utilidadAngie', 'total_descuento', 'total_ivaAngie', 'total_isrAngie', 'total_ivaRetenido',]
 
 
   gastosAngie: IGasto[] = [];
@@ -55,7 +56,7 @@ export class ComisionesAngieComponent implements OnInit {
     { key: 'total', header: 'Total', format: 'currency' },
 
   ];
-  totalsGastosTable = ['total_neto', 'total_iva', 'total_total' ]
+  totalsGastosTable = ['total_neto', 'total_iva', 'total_total']
 
   comisionesAmbos: IComisionesAmbos[] = [];
   columnsAmbosTable: ColumnDefinition[] = [
@@ -94,14 +95,14 @@ export class ComisionesAngieComponent implements OnInit {
       gastos: this.gastoService.getGastosAgente(2, periodo)
     }).subscribe({
       next: ({ resumenCom, angie, ambos, gastos }) => {
-
+        console.log('Angie', angie);
 
         this.resumenCom = resumenCom;
         this.comisionesAngie = angie;
         this.comisionesAmbos = ambos;
         this.gastosAngie = gastos;
 
-      
+
       },
       error: (err) => {
         console.error('Error al cargar las comisiones:', err);

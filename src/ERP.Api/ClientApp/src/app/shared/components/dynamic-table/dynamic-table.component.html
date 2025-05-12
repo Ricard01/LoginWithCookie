@@ -34,7 +34,7 @@
     
         <ng-container *ngSwitchCase="'folio'">
           <ng-container *ngIf="clickOnFolio; else soloTexto">
-            <a class="clickable-folio" (click)="mostrarDetalle(row)">
+            <a class="clickable-folio" (click)="showDetail(row)">
               {{ row[column.key] }}
             </a>
           </ng-container>

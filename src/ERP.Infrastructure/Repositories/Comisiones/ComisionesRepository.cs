@@ -74,23 +74,24 @@ public class ComisionesRepository : IComisionesRepository
               .ThenByDescending(x => x.Factura.Fecha)
               .Select(x => new ComisionRicardoDto
               {
+                  IdComercial = x.Factura.IdComercial,
                   Fecha = x.Factura.Fecha,
-                  Serie = (x.Factura.Serie ?? ""),
-                  Folio = x.Factura.Folio,
+                  Folio = $"{x.Factura.Serie ?? ""}{x.Factura.Folio}",
                   Cliente = x.Factura.Cliente,
                   IdMovimiento = x.Movimiento.IdMovimiento,
                   IdAgente = x.Movimiento.IdAgente,
                   NombreProducto = x.Movimiento.NombreProducto,
                   Descripcion = x.Movimiento.Descripcion,
                   Neto = x.Movimiento.Neto,
-                  //Comision = x.Movimiento.Comision, // Probablemente no los necesito
-                  //Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
-                  UtilidadRicardo = x.Movimiento.UtilidadRicardo,
+                  Descuento = x.Movimiento.Descuento,
+                  Comision = x.Movimiento.Comision, 
+                  Utilidad = x.Movimiento.Utilidad,
                   IvaRicardo = x.Movimiento.IvaRicardo,
                   IsrRicardo = x.Movimiento.IsrRicardo,
+                  IvaRetenido = x.Movimiento.IvaRetenido,
+                  UtilidadRicardo = x.Movimiento.UtilidadRicardo,
                   Observaciones = x.Movimiento.Observaciones
-              })
-              .ToListAsync();
+              }).ToListAsync();
 
         return comisiones;
 
@@ -122,13 +123,12 @@ public class ComisionesRepository : IComisionesRepository
                       Descripcion = x.Movimiento.Descripcion,
                       Neto = x.Movimiento.Neto,
                       Descuento = x.Movimiento.Descuento,
-                      Comision = x.Movimiento.Comision, // Probablemente no los necesito
-                      Utilidad = x.Movimiento.Utilidad, // Probablemente no los necesito
+                      Comision = x.Movimiento.Comision, 
+                      Utilidad = x.Movimiento.Utilidad, 
                       IvaAngie = x.Movimiento.IvaAngie,
                       IsrAngie = x.Movimiento.IsrAngie,
                       IvaRetenido = x.Movimiento.IvaRetenido,
                       UtilidadAngie = x.Movimiento.UtilidadAngie,
-
                       Observaciones = x.Movimiento.Observaciones
                   })
                   .ToListAsync();

@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IcomisionesPorPeriodo, IResumenComisionVm } from '../models/comision.model';
-import { ComisionService } from '../services/comision.service';
-import { GastoService } from '../../gastos/services/gasto.service';
+import {  Component, Input, OnChanges,  SimpleChanges } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { IComentario } from 'src/app/shared/models/comentarios.model';
@@ -12,6 +9,9 @@ import { IDeposito, IDepositosRequestDto } from 'src/app/shared/models/depositos
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { GastoService } from 'src/app/modules/gastos/services/gasto.service';
+import { IResumenComisionVm, IcomisionesPorPeriodo } from '../../models/comision.model';
+import { ComisionService } from '../../services/comision.service';
 
 @Component({
   selector: 'app-comisiones-resumen-neto',

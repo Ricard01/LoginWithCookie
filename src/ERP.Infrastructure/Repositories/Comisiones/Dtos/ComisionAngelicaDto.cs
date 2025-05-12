@@ -1,5 +1,4 @@
-﻿
-namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
+﻿namespace ERP.Infrastructure.Repositories.Doctos.Dtos;
 
 public class ComisionAngelicaDto
 {
@@ -20,6 +19,5 @@ public class ComisionAngelicaDto
     public double IsrAngie { get; set; }
     public double IvaRetenido { get; set; }
     public string? Observaciones { get; set; }
-
 }
 
