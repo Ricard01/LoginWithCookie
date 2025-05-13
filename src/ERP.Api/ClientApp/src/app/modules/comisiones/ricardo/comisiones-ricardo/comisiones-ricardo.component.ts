@@ -15,7 +15,7 @@ import { ComisionesResumenNetoComponent } from '../../shared/comisiones-resumen-
 @Component({
   selector: 'app-comisiones-ricardo',
   standalone: true,
-  imports: [CommonModule, PeriodoSelectComponent,  ComisionesResumenNetoComponent],
+  imports: [CommonModule, PeriodoSelectComponent, DynamicTableComponent, ComisionesResumenNetoComponent],
   templateUrl: './comisiones-ricardo.component.html',
   styleUrl: './comisiones-ricardo.component.scss'
 })
